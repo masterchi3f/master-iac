@@ -3,7 +3,7 @@ package uks.master.thesis.terraform.syntax.elements
 import uks.master.thesis.terraform.syntax.Element
 import uks.master.thesis.terraform.syntax.Identifier
 
-open class Block private constructor(
+class Block private constructor(
     private val type: Identifier,
     private val labels: List<Identifier>,
     private val elements: List<Element>
