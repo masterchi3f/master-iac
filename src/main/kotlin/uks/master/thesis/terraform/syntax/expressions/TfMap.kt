@@ -3,16 +3,21 @@ package uks.master.thesis.terraform.syntax.expressions
 import uks.master.thesis.terraform.syntax.Expression
 import uks.master.thesis.terraform.syntax.Identifier
 
-class TfMap(
-    map: Map<String, Expression>
+class TfMap private constructor(
+    private val entries: Map<Identifier, Expression>
 ): Expression {
-    var map: Map<Identifier, Expression>
+    class Builder {
+        private var _entries: Map<Identifier, Expression> = mutableMapOf();
 
-    init {
-        this.map = map.mapKeys { entry -> Identifier(entry.key) }
+        fun put(key: String, bool: Boolean) = apply { _entries = _entries + Pair(Identifier(key), TfBool(bool)) }
+        fun put(key: String, number: Double) = apply { _entries = _entries + Pair(Identifier(key), TfNumber(number)) }
+        fun put(key: String, string: String) = apply { _entries = _entries + Pair(Identifier(key), TfString(string)) }
+        fun put(key: String, list: TfList) = apply { _entries = _entries + Pair(Identifier(key), list) }
+        fun put(key: String, map: TfMap) = apply { _entries = _entries + Pair(Identifier(key), map) }
+        fun build() = TfMap(_entries)
     }
 
     override fun toString(): String {
-        return map.toString()
+        return entries.toString()
     }
 }

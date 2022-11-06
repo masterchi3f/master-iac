@@ -2,9 +2,9 @@ package uks.master.thesis.terraform.syntax.elements
 
 import uks.master.thesis.terraform.syntax.Element
 
-data class OneLineComment(
-    val symbol: OneLineSymbol,
-    val text: String
+class OneLineComment(
+    private val symbol: OneLineSymbol,
+    private val text: String
 ): Element {
     override fun toString(): String {
         return "$symbol $text"
@@ -20,17 +20,26 @@ enum class OneLineSymbol(val symbol: String) {
     }
 }
 
-data class MultiLineComment(
-    val body: List<Element>
+class MultiLineComment(
+    private val elements: List<Element>
 ): Element {
     companion object {
         private const val START: String = "/*"
         private const val END: String = "*/"
     }
 
+    class Builder {
+        private var _elements: List<Element> = mutableListOf()
+
+        fun addElement(block: Block) = apply { _elements = _elements + block }
+        fun addElement(argument: Argument) = apply { _elements = _elements + argument }
+        fun addElement(symbol: OneLineSymbol, text: String) = apply { _elements = _elements + OneLineComment(symbol, text) }
+        fun build() = MultiLineComment(_elements)
+    }
+
     override fun toString(): String {
         var bodyStr = ""
-        body.forEach { element: Element -> bodyStr += element }
+        elements.forEach { element: Element -> bodyStr += element }
         return START + System.lineSeparator() + bodyStr + END + System.lineSeparator()
     }
 }

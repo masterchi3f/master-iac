@@ -1,7 +1,7 @@
 package uks.master.thesis.terraform.syntax
 
 class Identifier(name: String) {
-    var name: String
+    private var name: String
 
     init {
         if ("^[a-zA-Z_-][a-zA-Z0-9_-]*\$".toRegex().matches(name)) {
