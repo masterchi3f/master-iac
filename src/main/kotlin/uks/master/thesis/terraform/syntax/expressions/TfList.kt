@@ -13,6 +13,7 @@ class TfList private constructor(
         fun add(string: String) = apply { _expressions = _expressions + TfString(string) }
         fun add(list: TfList) = apply { _expressions = _expressions + list }
         fun add(map: TfMap) = apply { _expressions = _expressions + map }
+        fun add(ref: TfRef) = apply { _expressions = _expressions + ref }
         fun build() = TfList(_expressions)
     }
 

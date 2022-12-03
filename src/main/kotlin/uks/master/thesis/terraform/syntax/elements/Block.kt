@@ -1,5 +1,6 @@
 package uks.master.thesis.terraform.syntax.elements
 
+import uks.master.thesis.terraform.syntax.Child
 import uks.master.thesis.terraform.syntax.Element
 import uks.master.thesis.terraform.syntax.Identifier
 
@@ -7,7 +8,7 @@ class Block private constructor(
     private val type: Identifier,
     private val labels: List<Identifier>,
     private val elements: List<Element>
-): Element {
+): Element, Child {
     class Builder {
         private lateinit var _type: Identifier
         private var _labels: List<Identifier> = mutableListOf()

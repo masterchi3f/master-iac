@@ -1,13 +1,21 @@
 package uks.master.thesis.terraform.syntax.elements
 
+import uks.master.thesis.terraform.SubModule
 import uks.master.thesis.terraform.syntax.Element
 import uks.master.thesis.terraform.syntax.Expression
 import uks.master.thesis.terraform.syntax.Identifier
+import uks.master.thesis.terraform.syntax.elements.blocks.DataSource
+import uks.master.thesis.terraform.syntax.elements.blocks.InputVariable
+import uks.master.thesis.terraform.syntax.elements.blocks.OutputVariable
+import uks.master.thesis.terraform.syntax.elements.blocks.Provider
+import uks.master.thesis.terraform.syntax.elements.blocks.Resource
+import uks.master.thesis.terraform.syntax.expressions.Raw
 import uks.master.thesis.terraform.syntax.expressions.TfBool
 import uks.master.thesis.terraform.syntax.expressions.TfList
 import uks.master.thesis.terraform.syntax.expressions.TfMap
 import uks.master.thesis.terraform.syntax.expressions.TfNull
 import uks.master.thesis.terraform.syntax.expressions.TfNumber
+import uks.master.thesis.terraform.syntax.expressions.TfRef
 import uks.master.thesis.terraform.syntax.expressions.TfString
 
 class Argument private constructor(
@@ -27,6 +35,24 @@ class Argument private constructor(
         fun value(string: String) = apply { preventDupValue(); _value = TfString(string) }
         fun value(list: TfList) = apply { preventDupValue(); _value = list }
         fun value(map: TfMap) = apply { preventDupValue(); _value = map }
+        fun value(inputVariable: InputVariable) = apply { preventDupValue(); _value = TfRef(inputVariable.reference()) }
+        fun value(resource: Resource, attribute: String? = null) = apply { preventDupValue(); _value = TfRef(resource.reference(attribute)) }
+        fun value(dataSource: DataSource, attribute: String? = null) = apply { preventDupValue(); _value = TfRef(dataSource.reference(attribute)) }
+        fun value(subModule: SubModule, outputVariable: OutputVariable) = apply { preventDupValue(); _value = TfRef(subModule.output(outputVariable)) }
+        /**
+         * @param alternate: If true the argument is used in a submodule which has multiple provider from same type.
+         * The dot (.) is switched with a dash (-).
+         * See uks.master.thesis.terraform.syntax.elements.blocks.TfModule for more.
+         * See uks.master.thesis.terraform.syntax.elements.blocks.RequiredProviders for more.
+         */
+        fun value(provider: Provider, alternate: Boolean) = apply {
+            preventDupValue(); provider.alias?.let {
+            // Not sure if alternate with - works because it is done with . in the docs:
+            // https://developer.hashicorp.com/terraform/language/modules/develop/providers
+                _value = TfRef("${provider.name()}${if (alternate) "-" else "."}$it")
+            } ?: throw IllegalArgumentException("alias from ${provider.name()} was null!")
+        }
+        fun raw(raw: String) = apply { preventDupValue(); _value = Raw(raw) }
         fun comment(symbol: OneLineSymbol, text: String) = apply { preventDupComment(); _comment = OneLineComment(symbol, text) }
         fun build() = Argument(_name, _value, _comment)
 

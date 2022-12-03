@@ -3,9 +3,19 @@ package uks.master.thesis.terraform.syntax.expressions
 import uks.master.thesis.terraform.syntax.Expression
 
 class TfString(
-    private val string: String
+    string: String
 ): Expression {
-    override fun toString(): String {
-        return "\"$string\""
+    private var string: String
+
+    init {
+        if (!string.contains("\"")) {
+            this.string = string
+        } else {
+            throw IllegalArgumentException(
+                "Found \"$string\". TfString should not contain \"."
+            )
+        }
     }
+
+    override fun toString(): String = "\"$string\""
 }

@@ -1,5 +1,6 @@
 package uks.master.thesis.terraform.syntax.elements
 
+import uks.master.thesis.terraform.syntax.Child
 import uks.master.thesis.terraform.syntax.Element
 
 class OneLineComment(
@@ -22,8 +23,8 @@ enum class OneLineSymbol(val symbol: String) {
 
 class MultiLineComment(
     private val elements: List<Element>
-): Element {
-    companion object {
+): Element, Child {
+    private companion object {
         private const val START: String = "/*"
         private const val END: String = "*/"
     }
