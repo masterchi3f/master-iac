@@ -33,12 +33,27 @@ class Block private constructor(
         labels.forEach { label: Identifier -> labelStr += "\"$label\" " }
         // Build body
         var bodyStr = ""
-        elements.forEach { element: Element -> bodyStr += "$element" }
+        setAdditionalSpacesForArguments()
+        elements.forEach { element: Element -> bodyStr += element }
         // Make pretty indentation
         if (bodyStr != "") {
             bodyStr = "  " + bodyStr.replace(System.lineSeparator(), "${System.lineSeparator()}  ").dropLast(2)
         }
         // Pack everything together
         return "$type " + labelStr + "{" + System.lineSeparator() + bodyStr + "}" + System.lineSeparator()
+    }
+
+    private fun setAdditionalSpacesForArguments() {
+        var longestName = 0
+        elements.forEach {
+            if (it is Argument && it.nameSize() > longestName) {
+                longestName = it.nameSize()
+            }
+        }
+        elements.forEach {
+            if (it is Argument) {
+                it.setAdditionalSpaces(longestName - it.nameSize())
+            }
+        }
     }
 }

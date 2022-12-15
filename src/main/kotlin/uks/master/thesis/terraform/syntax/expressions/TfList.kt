@@ -18,6 +18,25 @@ class TfList private constructor(
     }
 
     override fun toString(): String {
-        return expressions.toString()
+        var str = "["
+        if (isSizeMoreThanOne()) {
+            str += System.lineSeparator()
+        }
+        expressions.forEachIndexed { index, it ->
+            if (isSizeMoreThanOne()) {
+                str += "  "
+            }
+            str += it
+            if (index + 1 != expressions.size) {
+                str += ","
+            }
+            if (isSizeMoreThanOne()) {
+                str += System.lineSeparator()
+            }
+        }
+        str += "]"
+        return str
     }
+
+    private fun isSizeMoreThanOne(): Boolean = expressions.size > 1
 }

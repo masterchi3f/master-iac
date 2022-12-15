@@ -19,6 +19,21 @@ class TfMap private constructor(
     }
 
     override fun toString(): String {
-        return entries.toString()
+        var str = "{${System.lineSeparator()}"
+        var longestKey = 0
+        entries.forEach {
+            val length = it.key.toString().length
+            if (length > longestKey) {
+                longestKey = length
+            }
+        }
+        entries.forEach {
+            val spaces: Int = longestKey - it.key.toString().length
+            str += "  ${it.key}"
+            str += " ".repeat(spaces)
+            str += " = ${it.value}${System.lineSeparator()}"
+        }
+        str += "}"
+        return str
     }
 }

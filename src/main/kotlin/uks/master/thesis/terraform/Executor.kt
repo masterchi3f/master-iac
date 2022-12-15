@@ -12,7 +12,7 @@ import mu.KotlinLogging
 
 object Executor {
 
-    private const val BINARIES = "binaries"
+    private const val BINARIES_DIR = "binaries"
     private val logger = KotlinLogging.logger {}
     var terraformCommand: String? = null
 
@@ -33,9 +33,9 @@ object Executor {
             ZipInputStream(inputStream).use { zipInputStream ->
                 zipInputStream.nextEntry.let { nextEntry ->
                     nextEntry?.let { zipEntry ->
-                        val binary = File(BINARIES, zipEntry.name)
+                        val binary = File(BINARIES_DIR, zipEntry.name)
                         createBinariesDir(binary)
-                        if(Files.notExists(Paths.get(binary.toURI()))) {
+                        if (Files.notExists(Paths.get(binary.toURI()))) {
                             Channels.newChannel(zipInputStream).use { readableByteChannel ->
                                 FileOutputStream(binary).use { fileOutputStream ->
                                     fileOutputStream.channel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE)
@@ -57,8 +57,8 @@ object Executor {
             return
         }
         if (!parent.mkdirs()) {
-            throw IOException("Failed to create directory $parent")
+            throw IOException("Failed to create directory \"$BINARIES_DIR\"")
         }
-        logger.debug("Created \"$BINARIES\" directory")
+        logger.debug("Created directory \"$BINARIES_DIR\"")
     }
 }

@@ -23,6 +23,8 @@ class Argument private constructor(
     private val value: Expression,
     private val comment: OneLineComment?
 ): Element {
+    private var additionalSpaces: Int = 0
+
     class Builder {
         private lateinit var _name: Identifier
         private lateinit var _value: Expression
@@ -69,7 +71,11 @@ class Argument private constructor(
         }
     }
 
+    fun nameSize(): Int = name.toString().length
+
+    fun setAdditionalSpaces(spaces: Int) = apply { additionalSpaces = spaces }
+
     override fun toString(): String {
-        return "$name = $value${comment?.let { " $it" } ?: ""}${System.lineSeparator()}"
+        return "$name${" ".repeat(additionalSpaces)} = $value${comment?.let { " $it" } ?: ""}${System.lineSeparator()}"
     }
 }
