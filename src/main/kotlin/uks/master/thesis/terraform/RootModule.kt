@@ -2,6 +2,7 @@ package uks.master.thesis.terraform
 
 import java.io.File
 import java.io.IOException
+import java.net.URL
 import java.nio.file.Files
 import java.nio.file.Paths
 import mu.KotlinLogging
@@ -11,6 +12,8 @@ object RootModule: ParentModule<RootModule>() {
     private val logger = KotlinLogging.logger {}
     private const val OUT_DIR = "out"
     private const val MODULE_PREFIX = "module."
+    private const val GITIGNORE_RESOURCE_PATH = "/terraform/.tf.gitignore"
+    private const val GITIGNORE_PREFIX = ".tf"
     var providers: List<Provider> = mutableListOf()
         private set
 
@@ -31,6 +34,8 @@ object RootModule: ParentModule<RootModule>() {
 
     fun generateFiles() = apply {
         createDir(OUT_DIR)
+        createTfVarsFile()
+        createGitignore()
         createFiles(OUT_DIR, toFileStrings())
         createSubModules(OUT_DIR, this)
     }
@@ -49,6 +54,39 @@ object RootModule: ParentModule<RootModule>() {
                 createSubModules(path, child)
             }
         }
+    }
+
+    private fun createGitignore() {
+        val url: URL? = javaClass.getResource(GITIGNORE_RESOURCE_PATH)
+        url?.let {
+            val resourceFile = File(it.path)
+            val name: String = resourceFile.name.removePrefix(GITIGNORE_PREFIX)
+            val outFile = File(OUT_DIR, name)
+            if (Files.notExists(Paths.get(outFile.toURI()))) {
+                resourceFile.copyTo(outFile, false)
+                logger.debug(
+                    "Copied resource \"${GITIGNORE_RESOURCE_PATH.replace("/", File.separator)}\"" +
+                    " to \"$OUT_DIR${File.separator}$name\""
+                )
+            }
+        }
+    }
+
+    private fun createTfVarsFile() {
+        var longestSpaces = 0
+        TfVars.tfVars.forEach {
+            val length: Int = it.key.length
+            if (length > longestSpaces) {
+                longestSpaces = length
+            }
+        }
+        var content = ""
+        TfVars.tfVars.forEach {
+            val spaces: Int = longestSpaces - it.key.length
+            content += "${it.key}${" ".repeat(spaces)} = \"${it.value}\"${System.lineSeparator()}"
+        }
+        val tfVars = File(OUT_DIR, TfVars.FILE_NAME)
+        createFile(tfVars, content)
     }
 
     private fun createFiles(parentPath: String, moduleFiles: ModuleFiles) {
