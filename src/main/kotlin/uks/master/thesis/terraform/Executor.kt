@@ -115,7 +115,6 @@ object Executor {
     }
 
     private fun getTerraformCommandIfFileExists(): String? {
-        logger.debug("hi")
         val name = "terraform" + if (onWindows()) ".exe" else ""
         val binary = File(OUT_DIR, name)
         val exists: Boolean = Files.exists(Paths.get(binary.toURI()))
