@@ -1,5 +1,6 @@
 package uks.master.thesis.terraform
 
+import mu.KLogger
 import mu.KotlinLogging
 import uks.master.thesis.terraform.syntax.Child
 import uks.master.thesis.terraform.syntax.elements.OneLineComment
@@ -16,7 +17,7 @@ abstract class ParentModule<T> {
         const val OUTPUTS = "outputs.tf"
         const val MAIN = "main.tf"
     }
-    private val logger = KotlinLogging.logger {}
+    private val logger: KLogger = KotlinLogging.logger {}
     private var configuration: Terraform? = null
     data class ModuleFiles(val main: String, val variables: String?, val outputs: String?)
     var children: List<Child> = mutableListOf()

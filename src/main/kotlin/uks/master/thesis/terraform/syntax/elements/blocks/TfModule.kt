@@ -8,7 +8,7 @@ import uks.master.thesis.terraform.syntax.elements.Argument
 import uks.master.thesis.terraform.syntax.elements.Block
 import uks.master.thesis.terraform.syntax.expressions.TfMap
 import uks.master.thesis.terraform.syntax.expressions.TfRef
-import uks.master.thesis.terraform.syntax.utils.Utils
+import uks.master.thesis.terraform.utils.Utils
 
 @Suppress("UNCHECKED_CAST")
 class TfModule private constructor(

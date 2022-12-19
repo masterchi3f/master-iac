@@ -1,16 +1,17 @@
 package uks.master.thesis.terraform
 
 import java.io.File
-import java.io.IOException
 import java.net.URL
 import java.nio.file.Files
 import java.nio.file.Paths
+import mu.KLogger
 import mu.KotlinLogging
+import uks.master.thesis.Config.OUT_DIR
 import uks.master.thesis.terraform.syntax.elements.blocks.Provider
+import uks.master.thesis.terraform.utils.Utils.createDir
 
 object RootModule: ParentModule<RootModule>() {
-    private val logger = KotlinLogging.logger {}
-    private const val OUT_DIR = "out"
+    private val logger: KLogger = KotlinLogging.logger {}
     private const val MODULE_PREFIX = "module."
     private const val GITIGNORE_RESOURCE_PATH = "/terraform/.tf.gitignore"
     private const val GITIGNORE_PREFIX = ".tf"
@@ -33,7 +34,7 @@ object RootModule: ParentModule<RootModule>() {
     }
 
     fun generateFiles() = apply {
-        createDir(OUT_DIR)
+        createDir(OUT_DIR, logger)
         createTfVarsFile()
         createGitignore()
         createFiles(OUT_DIR, toFileStrings())
@@ -49,7 +50,7 @@ object RootModule: ParentModule<RootModule>() {
         for (child in parentModule.children) {
             if (child is SubModule) {
                 val path = "$parentPath${File.separator}${child.name().removePrefix(MODULE_PREFIX)}"
-                createDir(path)
+                createDir(path, logger)
                 createFiles(path, child.toFileStrings())
                 createSubModules(path, child)
             }
@@ -117,17 +118,6 @@ object RootModule: ParentModule<RootModule>() {
                 debugChildren(child)
             }
         }
-    }
-
-    private fun createDir(name: String) {
-        val dir = File(name)
-        if (dir.exists()) {
-            return
-        }
-        if (!dir.mkdirs()) {
-            throw IOException("Failed to create directory \"${name}\"")
-        }
-        logger.debug("Created directory \"${name}\"")
     }
 
     override fun name(): String = "module.ROOT"

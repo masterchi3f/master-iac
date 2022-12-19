@@ -1,4 +1,5 @@
 package uks.master.thesis
 
-class Config {
+object Config {
+    const val OUT_DIR = "out"
 }

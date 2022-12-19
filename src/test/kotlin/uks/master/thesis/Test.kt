@@ -1,6 +1,7 @@
 package uks.master.thesis
 
 import kotlin.test.assertEquals
+import mu.KLogger
 import mu.KotlinLogging
 import org.junit.jupiter.api.Test
 import uks.master.thesis.terraform.Executor
@@ -17,10 +18,48 @@ import uks.master.thesis.terraform.syntax.expressions.TfList
 import uks.master.thesis.terraform.syntax.expressions.TfRef
 
 class Test {
-    private val logger = KotlinLogging.logger {}
+    private val logger: KLogger = KotlinLogging.logger {}
 
     @Test
-    fun test() {
+    fun init() {
+        Executor.init()
+    }
+
+    @Test
+    fun validate() {
+        Executor.validate()
+    }
+
+    @Test
+    fun plan() {
+        Executor.plan()
+    }
+
+    @Test
+    fun apply() {
+        Executor.apply()
+    }
+
+    @Test
+    fun destroy() {
+        Executor.destroy()
+    }
+
+    @Test
+    fun help() {
+        Executor.help()
+    }
+
+    @Test
+    fun downloadBinary() {
+        Executor.downloadTerraformBinary(
+            "https://releases.hashicorp.com/terraform/1.3.3/terraform_1.3.3_windows_386.zip"
+        )
+        assertEquals("terraform.exe", Executor.terraformCommand)
+    }
+
+    @Test
+    fun generateTfFiles() {
         val hCloudToken: InputVariable = InputVariable.Builder()
             .name("hcloud_token")
             .sensitive()
@@ -82,7 +121,7 @@ class Test {
                     .name("ssh_keys")
                     .value(
                         TfList.Builder()
-                            .add(TfRef(hCloudSshKey.reference()))
+                            .add(TfRef(hCloudSshKey.reference("id")))
                             .build()
                     ).build()
             ).addElement(
@@ -109,9 +148,5 @@ class Test {
         TfVars
             .addEnv("hcloud_token")
         RootModule.generateFiles()
-        Executor.downloadTerraformBinary(
-            "https://releases.hashicorp.com/terraform/1.3.3/terraform_1.3.3_windows_386.zip"
-        )
-        assertEquals("terraform.exe", Executor.terraformCommand)
     }
 }
