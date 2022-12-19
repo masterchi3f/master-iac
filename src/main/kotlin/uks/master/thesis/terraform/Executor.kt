@@ -16,6 +16,7 @@ import uks.master.thesis.terraform.utils.Utils.createDir
 object Executor {
     private val logger: KLogger = KotlinLogging.logger {}
     var terraformCommand: String? = null
+        get() = field ?: getTerraformCommandIfFileExists()
         private set
 
     /**
@@ -96,10 +97,8 @@ object Executor {
 
     private fun runCommand(command: String) {
         terraformCommand ?: run {
-            if (!doesTerraformCommandExist()) {
-                logger.warn("Terraform binary was not downloaded!")
-                return
-            }
+            logger.warn("Terraform binary was not downloaded!")
+            return
         }
         val processBuilder = ProcessBuilder()
         val process: Process = processBuilder
@@ -115,14 +114,16 @@ object Executor {
         process.waitFor()
     }
 
-    private fun doesTerraformCommandExist(): Boolean {
+    private fun getTerraformCommandIfFileExists(): String? {
+        logger.debug("hi")
         val name = "terraform" + if (onWindows()) ".exe" else ""
         val binary = File(OUT_DIR, name)
-        val exist: Boolean = Files.exists(Paths.get(binary.toURI()))
-        if (exist) {
+        val exists: Boolean = Files.exists(Paths.get(binary.toURI()))
+        if (exists) {
             terraformCommand = name
+            return name
         }
-        return exist
+        return null
     }
 
     private fun getInterpreter(): MutableList<String> {
