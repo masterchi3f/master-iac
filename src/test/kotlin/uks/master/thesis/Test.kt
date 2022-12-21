@@ -21,6 +21,11 @@ class Test {
     private val logger: KLogger = KotlinLogging.logger {}
 
     @Test
+    fun deleteAllFiles() {
+        Config.deleteOutDir()
+    }
+
+    @Test
     fun init() {
         Executor.init()
     }
@@ -53,7 +58,8 @@ class Test {
     @Test
     fun downloadBinary() {
         Executor.downloadTerraformBinary(
-            "https://releases.hashicorp.com/terraform/1.3.3/terraform_1.3.3_windows_386.zip"
+            "https://releases.hashicorp.com/terraform/1.3.3/terraform_1.3.3_windows_386.zip",
+            true
         )
         assertEquals("terraform.exe", Executor.terraformCommand)
     }
@@ -147,6 +153,6 @@ class Test {
             .addChild(hCloudServer)
         TfVars
             .addEnv("hcloud_token")
-        RootModule.generateFiles()
+        RootModule.generateFiles(true)
     }
 }

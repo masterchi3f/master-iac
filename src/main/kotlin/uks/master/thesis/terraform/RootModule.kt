@@ -13,8 +13,11 @@ import uks.master.thesis.terraform.utils.Utils.createDir
 object RootModule: ParentModule<RootModule>() {
     private val logger: KLogger = KotlinLogging.logger {}
     private const val MODULE_PREFIX = "module."
-    private const val GITIGNORE_RESOURCE_PATH = "/terraform/.tf.gitignore"
-    private const val GITIGNORE_PREFIX = ".tf"
+    private const val ROOT_NAME = "${MODULE_PREFIX}ROOT"
+    private const val TERRAFORM_DIR = ".terraform"
+    private const val GITIGNORE = ".gitignore"
+    private const val GITIGNORE_RESOURCE_PATH = "/terraform/.tf${GITIGNORE}"
+    private const val DOT_TF = ".tf"
     var providers: List<Provider> = mutableListOf()
         private set
 
@@ -33,7 +36,8 @@ object RootModule: ParentModule<RootModule>() {
         )
     }
 
-    fun generateFiles() = apply {
+    fun generateFiles(deleteOldFiles: Boolean = false) = apply {
+        deleteOldFiles(deleteOldFiles)
         createDir(OUT_DIR, logger)
         createTfVarsFile()
         createGitignore()
@@ -44,6 +48,36 @@ object RootModule: ParentModule<RootModule>() {
     override fun debugFiles() = apply {
         super.debugFiles()
         debugChildren(this)
+    }
+
+    private fun deleteOldFiles(deleteOldFiles: Boolean) {
+        if (deleteOldFiles) {
+            val files: Array<File>? = File(OUT_DIR).listFiles()
+            files?.filter {
+                it.name.endsWith(DOT_TF)
+                    || it.name == TfVars.FILE_NAME
+                    || it.name == GITIGNORE
+            }?.forEach {
+                if (it.delete()) {
+                    logger.debug("Deleted old ${it.name}")
+                }
+            }
+            files?.filter {
+                it.isDirectory && it.name != TERRAFORM_DIR
+            }?.forEach { submodule ->
+                submodule.walkBottomUp().forEach {
+                    if (// Is file or empty directory
+                        it.walk().toList().size == 1
+                        // Is directory or terraform file
+                        && (it.isDirectory || it.name.endsWith(DOT_TF))
+                        // Is successfully deleted
+                        && it.delete()
+                    ) {
+                        logger.debug("Deleted old ${it.name}")
+                    }
+                }
+            }
+        }
     }
 
     private fun <T>createSubModules(parentPath: String, parentModule: ParentModule<T>) {
@@ -61,7 +95,7 @@ object RootModule: ParentModule<RootModule>() {
         val url: URL? = javaClass.getResource(GITIGNORE_RESOURCE_PATH)
         url?.let {
             val resourceFile = File(it.path)
-            val name: String = resourceFile.name.removePrefix(GITIGNORE_PREFIX)
+            val name: String = resourceFile.name.removePrefix(DOT_TF)
             val outFile = File(OUT_DIR, name)
             if (Files.notExists(Paths.get(outFile.toURI()))) {
                 resourceFile.copyTo(outFile, false)
@@ -120,5 +154,5 @@ object RootModule: ParentModule<RootModule>() {
         }
     }
 
-    override fun name(): String = "module.ROOT"
+    override fun name(): String = ROOT_NAME
 }

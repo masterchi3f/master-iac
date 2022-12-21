@@ -5,6 +5,7 @@ import java.io.FileOutputStream
 import java.net.URL
 import java.nio.channels.Channels
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.concurrent.Executors
 import java.util.zip.ZipInputStream
@@ -89,8 +90,8 @@ object Executor {
         runCommand(command)
     }
 
-    fun downloadTerraformBinary(url: String) = apply {
-        terraformCommand = downloadBinary(url)
+    fun downloadTerraformBinary(url: String, deleteOldBinary: Boolean = false) = apply {
+        terraformCommand = downloadBinary(url, deleteOldBinary)
     }
 
     private fun getVarFile(): String = "-var-file=\"${TfVars.FILE_NAME}\""
@@ -144,7 +145,7 @@ object Executor {
      * terraform_<version, OS, type>.zip -> terraform binary (no folders or additional files in zip-archive)
      * It downloads the zip-archive and decompresses the binary to the "out" folder in the root directory.
      */
-    private fun downloadBinary(url: String): String? {
+    private fun downloadBinary(url: String, deleteOldBinary: Boolean): String? {
         val website = URL(url)
         website.openStream().use { inputStream ->
             ZipInputStream(inputStream).use { zipInputStream ->
@@ -152,7 +153,11 @@ object Executor {
                     nextEntry?.let { zipEntry ->
                         createDir(OUT_DIR, logger)
                         val binary = File(OUT_DIR, zipEntry.name)
-                        if (Files.notExists(Paths.get(binary.toURI()))) {
+                        val path: Path = Paths.get(binary.toURI())
+                        if (deleteOldBinary && Files.exists(path) && binary.delete()) {
+                            logger.debug("Deleted old binary ${zipEntry.name}")
+                        }
+                        if (Files.notExists(path)) {
                             Channels.newChannel(zipInputStream).use { readableByteChannel ->
                                 FileOutputStream(binary).use { fileOutputStream ->
                                     fileOutputStream.channel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE)
