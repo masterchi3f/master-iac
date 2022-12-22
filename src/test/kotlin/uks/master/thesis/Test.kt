@@ -65,6 +65,12 @@ class Test {
     }
 
     @Test
+    fun copyBinaryFromPath() {
+        Executor.copyBinaryFromPath()
+        assertEquals("terraform.exe", Executor.terraformCommand)
+    }
+
+    @Test
     fun generateTfFiles() {
         val hCloudToken: InputVariable = InputVariable.Builder()
             .name("hcloud_token")

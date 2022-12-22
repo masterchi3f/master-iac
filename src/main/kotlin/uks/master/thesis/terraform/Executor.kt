@@ -7,8 +7,11 @@ import java.nio.channels.Channels
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 import java.util.zip.ZipInputStream
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import mu.KLogger
 import mu.KotlinLogging
 import uks.master.thesis.Config.OUT_DIR
@@ -16,9 +19,11 @@ import uks.master.thesis.terraform.utils.Utils.createDir
 
 object Executor {
     private val logger: KLogger = KotlinLogging.logger {}
+    private const val PATH = "PATH"
     var terraformCommand: String? = null
         get() = field ?: getTerraformCommandIfFileExists()
         private set
+    var commandTimeoutSeconds: Long = 60L
 
     /**
      * Prepare your working directory for other commands
@@ -94,29 +99,68 @@ object Executor {
         terraformCommand = downloadBinary(url, deleteOldBinary)
     }
 
-    private fun getVarFile(): String = "-var-file=\"${TfVars.FILE_NAME}\""
+    fun copyBinaryFromPath() = apply {
+        val copyBinary = File(OUT_DIR, getBinaryName())
+        if (Files.exists(Paths.get(copyBinary.toURI()))) {
+            logger.debug("${getBinaryName()} already exists in $OUT_DIR directory")
+            terraformCommand = getBinaryName()
+            return this
+        }
+        var binary: File? = null
+        System.getenv(PATH).split(File.pathSeparator).forEach { pathVar ->
+            binary ?: run {
+                val pathDir = File(pathVar)
+                binary = try {
+                    pathDir.listFiles()?.first { it.name == getBinaryName() }
+                } catch (error: NoSuchElementException) {
+                    null
+                }
+            }
+        }
+        binary ?: run {
+            logger.warn("Never found ${getBinaryName()} in $PATH")
+            return this
+        }
+        if (Files.notExists(Paths.get(copyBinary.toURI()))) {
+            binary?.copyTo(copyBinary)?.let {
+                terraformCommand = it.name
+                logger.debug("Copied ${it.name} from $PATH to $OUT_DIR directory")
+            }
+        }
+    }
 
+    @Suppress("BlockingMethodInNonBlockingContext")
     private fun runCommand(command: String) {
         terraformCommand ?: run {
-            logger.warn("Terraform binary was not downloaded!")
+            logger.warn("Terraform binary was not downloaded or copied from $PATH!")
             return
         }
         val processBuilder = ProcessBuilder()
-        val process: Process = processBuilder
+        val tfCommand = ".${File.separator}$terraformCommand $command"
+        processBuilder
             .directory(File(OUT_DIR))
-            .command(getInterpreter() + ".${File.separator}$terraformCommand $command")
+            .command(getInterpreter() + tfCommand)
             .redirectErrorStream(true)
             .start()
-        Executors.newSingleThreadExecutor().submit {
-            logger.debug(
-                process.inputStream.readAllBytes().decodeToString()
-            )
-        }
-        process.waitFor()
+            .also { process ->
+                runBlocking {
+                    val loggerJob: Job = launch {
+                        logger.debug(
+                            process.inputStream.readAllBytes().decodeToString()
+                        )
+                    }
+                    process.waitFor(commandTimeoutSeconds, TimeUnit.SECONDS)
+                    if(process.isAlive) {
+                        logger.debug("Timeout of $commandTimeoutSeconds seconds occurred when executing $tfCommand")
+                        process.destroy()
+                        loggerJob.cancel()
+                    }
+                }
+            }
     }
 
     private fun getTerraformCommandIfFileExists(): String? {
-        val name = "terraform" + if (onWindows()) ".exe" else ""
+        val name = getBinaryName()
         val binary = File(OUT_DIR, name)
         val exists: Boolean = Files.exists(Paths.get(binary.toURI()))
         if (exists) {
@@ -125,6 +169,10 @@ object Executor {
         }
         return null
     }
+
+    private fun getBinaryName(): String = "terraform" + if (onWindows()) ".exe" else ""
+
+    private fun getVarFile(): String = "-var-file=\"${TfVars.FILE_NAME}\""
 
     private fun getInterpreter(): MutableList<String> {
         return if (onWindows()) {
