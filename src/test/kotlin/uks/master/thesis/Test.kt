@@ -1,8 +1,6 @@
 package uks.master.thesis
 
 import kotlin.test.assertEquals
-import mu.KLogger
-import mu.KotlinLogging
 import org.junit.jupiter.api.Test
 import uks.master.thesis.terraform.Executor
 import uks.master.thesis.terraform.RootModule
@@ -18,7 +16,8 @@ import uks.master.thesis.terraform.syntax.expressions.TfList
 import uks.master.thesis.terraform.syntax.expressions.TfRef
 
 class Test {
-    private val logger: KLogger = KotlinLogging.logger {}
+    private val binaryName = "terraform" +
+        if(System.getProperty("os.name").contains("windows", true)) ".exe" else ""
 
     @Test
     fun deleteAllFiles() {
@@ -61,13 +60,13 @@ class Test {
             "https://releases.hashicorp.com/terraform/1.3.3/terraform_1.3.3_windows_386.zip",
             true
         )
-        assertEquals("terraform.exe", Executor.terraformCommand)
+        assertEquals(binaryName, Executor.terraformCommand)
     }
 
     @Test
     fun copyBinaryFromPath() {
         Executor.copyBinaryFromPath()
-        assertEquals("terraform.exe", Executor.terraformCommand)
+        assertEquals(binaryName, Executor.terraformCommand)
     }
 
     @Test
