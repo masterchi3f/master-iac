@@ -15,7 +15,7 @@ import uks.master.thesis.terraform.syntax.elements.blocks.Terraform
 import uks.master.thesis.terraform.syntax.expressions.TfList
 import uks.master.thesis.terraform.syntax.expressions.TfRef
 
-class Test {
+class Terraform {
     private val binaryName = "terraform" +
         if(System.getProperty("os.name").contains("windows", true)) ".exe" else ""
 
