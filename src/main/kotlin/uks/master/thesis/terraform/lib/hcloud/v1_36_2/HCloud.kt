@@ -1,5 +1,6 @@
 package uks.master.thesis.terraform.lib.hcloud.v1_36_2
 
+import uks.master.thesis.terraform.RootModule
 import uks.master.thesis.terraform.TfVars
 import uks.master.thesis.terraform.syntax.elements.Argument
 import uks.master.thesis.terraform.syntax.elements.blocks.InputVariable
@@ -37,6 +38,12 @@ object HCloud {
     fun endpointRef(ref: String) = apply { providerBuilder.addConfig(endpointBuilder.raw(ref).build()) }
     fun pollInterval(pollInterval: String) = apply { providerBuilder.addConfig(pollIntervalBuilder.value(pollInterval).build()) }
     fun pollIntervalRef(ref: String) = apply { providerBuilder.addConfig(pollIntervalBuilder.raw(ref).build()) }
+
+    fun addProviderToRootModule() = apply {
+        provider?.let {
+            RootModule.addProvider(it)
+        }
+    }
 
     fun addTokenToTfVarsFromEnv(key: String = HCLOUD_TOKEN) = apply {
         TfVars.addEnv(key, HCLOUD_TOKEN)

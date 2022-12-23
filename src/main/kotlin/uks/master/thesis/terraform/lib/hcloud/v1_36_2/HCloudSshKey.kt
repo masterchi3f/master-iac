@@ -1,5 +1,7 @@
 package uks.master.thesis.terraform.lib.hcloud.v1_36_2
 
+import uks.master.thesis.terraform.syntax.Child
+import uks.master.thesis.terraform.syntax.Element
 import uks.master.thesis.terraform.syntax.Identifier
 import uks.master.thesis.terraform.syntax.elements.Argument
 import uks.master.thesis.terraform.syntax.elements.blocks.DataSource
@@ -15,7 +17,7 @@ object HCloudSshKey {
     private const val LABELS: String = "labels"
     private const val WITH_SELECTOR: String = "with_selector"
 
-    class _Resource private constructor(private val res: Resource) {
+    class _Resource private constructor(private val res: Resource): Element, Child {
         val id get() = "${res.reference()}.$ID"
         val name get() = "${res.reference()}.$NAME"
         val publicKey get() = "${res.reference()}.$PUBLIC_KEY"
@@ -53,7 +55,7 @@ object HCloudSshKey {
         override fun toString(): String = res.toString()
     }
 
-    class _DataSource private constructor(private val data: DataSource) {
+    class _DataSource private constructor(private val data: DataSource): Element, Child {
         val id get() = "${data.reference()}.$ID"
         val name get() = "${data.reference()}.$NAME"
         val publicKey get() = "${data.reference()}.$PUBLIC_KEY"

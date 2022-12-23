@@ -1,5 +1,7 @@
 package uks.master.thesis.terraform.lib.hcloud.v1_36_2
 
+import uks.master.thesis.terraform.syntax.Child
+import uks.master.thesis.terraform.syntax.Element
 import uks.master.thesis.terraform.syntax.Identifier
 import uks.master.thesis.terraform.syntax.elements.Argument
 import uks.master.thesis.terraform.syntax.elements.blocks.DataSource
@@ -9,7 +11,7 @@ object HCloudSshKeys {
     private const val WITH_SELECTOR: String = "with_selector"
     private const val SSH_KEYS: String = "ssh_keys"
 
-    class _DataSource private constructor(private val data: DataSource) {
+    class _DataSource private constructor(private val data: DataSource): Element, Child {
         val sshKeys get() = "${data.reference()}.$SSH_KEYS"
 
         class Builder {

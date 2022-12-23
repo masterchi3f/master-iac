@@ -4,12 +4,10 @@ import kotlin.test.assertEquals
 import org.junit.jupiter.api.Test
 import uks.master.thesis.terraform.Executor
 import uks.master.thesis.terraform.RootModule
-import uks.master.thesis.terraform.TfVars
+import uks.master.thesis.terraform.lib.hcloud.v1_36_2.HCloud
+import uks.master.thesis.terraform.lib.hcloud.v1_36_2.HCloudSshKey
 import uks.master.thesis.terraform.syntax.elements.Argument
 import uks.master.thesis.terraform.syntax.elements.Block
-import uks.master.thesis.terraform.syntax.elements.blocks.InputVariable
-import uks.master.thesis.terraform.syntax.elements.blocks.Provider
-import uks.master.thesis.terraform.syntax.elements.blocks.RequiredProviders
 import uks.master.thesis.terraform.syntax.elements.blocks.Resource
 import uks.master.thesis.terraform.syntax.elements.blocks.Terraform
 import uks.master.thesis.terraform.syntax.expressions.TfList
@@ -71,39 +69,15 @@ class Terraform {
 
     @Test
     fun generateTfFiles() {
-        val hCloudToken: InputVariable = InputVariable.Builder()
-            .name("hcloud_token")
-            .sensitive()
-            .build()
-        val hCloud: Provider = Provider.Builder()
-            .name("hcloud")
-            .addConfig(
-                Argument.Builder()
-                    .name("token")
-                    .value(hCloudToken)
-                    .build()
-            ).build()
-        val requiredProviders: RequiredProviders = RequiredProviders.Builder()
-            .addProvider(hCloud, "hetznercloud/${hCloud.name}", "1.35.1")
-            .build()
         val terraform: Terraform = Terraform.Builder()
             .requiredVersion(">= 1.2.4")
-            .requiredProviders(requiredProviders)
+            .requiredProviders(HCloud.requiredProviders)
             .build()
-        val hCloudSshKey: Resource = Resource.Builder()
-            .type("hcloud_ssh_key")
-            .name("default")
-            .addElement(
-                Argument.Builder()
-                    .name("name")
-                    .value("hcloud_ssh_key")
-                    .build()
-            ).addElement(
-                Argument.Builder()
-                    .name("public_key")
-                    .raw("file(\"~/.ssh/id_rsa.pub\")")
-                    .build()
-            ).build()
+        val hCloudSshKey: HCloudSshKey._Resource = HCloudSshKey._Resource.Builder()
+            .resName("default")
+            .name("hcloud_ssh_key")
+            .publicKeyRef("file(\"~/.ssh/id_rsa.pub\")")
+            .build()
         val hCloudServer: Resource = Resource.Builder()
             .type("hcloud_server")
             .name("test")
@@ -132,7 +106,7 @@ class Terraform {
                     .name("ssh_keys")
                     .value(
                         TfList.Builder()
-                            .add(TfRef(hCloudSshKey.reference("id")))
+                            .add(TfRef(hCloudSshKey.id))
                             .build()
                     ).build()
             ).addElement(
@@ -150,14 +124,14 @@ class Terraform {
                             .build()
                     ).build()
             ).build()
+        HCloud
+            .addTokenToTfVarsFromEnv()
+            .addProviderToRootModule()
         RootModule
             .setConfiguration(terraform)
-            .addChild(hCloudToken)
-            .addProvider(hCloud)
+            .addChild(HCloud.token)
             .addChild(hCloudSshKey)
             .addChild(hCloudServer)
-        TfVars
-            .addEnv("hcloud_token")
-        RootModule.generateFiles(true)
+            .generateFiles(true)
     }
 }
