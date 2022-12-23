@@ -14,7 +14,5 @@ class Identifier(name: String) {
         }
     }
 
-    override fun toString(): String {
-        return name
-    }
+    override fun toString(): String = name
 }

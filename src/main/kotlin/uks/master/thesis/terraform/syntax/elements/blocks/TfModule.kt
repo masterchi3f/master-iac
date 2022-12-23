@@ -34,7 +34,7 @@ class TfModule private constructor(
             Identifier(name)
         } as T
         open fun addInputVariable(inputVariable: InputVariable): T =
-            apply { blockBuilder.addElement(Argument.Builder().name(inputVariable.name()).value(inputVariable).build()) } as T
+            apply { blockBuilder.addElement(Argument.Builder().name(inputVariable.name).value(inputVariable).build()) } as T
         open fun addInputVariable(resource: Resource, attribute: String? = null): T =
             apply {
                 blockBuilder.addElement(Argument.Builder()
@@ -49,9 +49,9 @@ class TfModule private constructor(
             } as T
         open fun addInputVariable(subModule: SubModule, outputVariable: OutputVariable): T =
             apply {
-                subModuleNames = subModuleNames + subModule.name()
+                subModuleNames = subModuleNames + subModule.name
                 blockBuilder.addElement(Argument.Builder()
-                    .name(outputVariable.name())
+                    .name(outputVariable.name)
                     .value(subModule, outputVariable).build())
             } as T
         /**
@@ -71,10 +71,10 @@ class TfModule private constructor(
                     // Not sure if alternate with - works because it is done with . in the docs:
                     // https://developer.hashicorp.com/terraform/language/modules/develop/providers
                     providerBuilder?.put(
-                        "${provider.name()}${if (alternate) "-$it" else ""}",
-                        TfRef("${provider.name()}.$it")
+                        "${provider.name}${if (alternate) "-$it" else ""}",
+                        TfRef("${provider.name}.$it")
                     )
-                } ?: throw IllegalArgumentException("alias from ${provider.name()} was null!")
+                } ?: throw IllegalArgumentException("alias from ${provider.name} was null!")
             } as T
 
         abstract fun build(): TfModule

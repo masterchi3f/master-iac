@@ -5,7 +5,5 @@ import uks.master.thesis.terraform.syntax.Expression
 class TfBool(
     private val bool: Boolean
 ): Expression {
-    override fun toString(): String {
-        return bool.toString()
-    }
+    override fun toString(): String = bool.toString()
 }

@@ -5,7 +5,5 @@ import uks.master.thesis.terraform.syntax.Expression
 class TfRef(
     private val reference: String
 ): Expression {
-    override fun toString(): String {
-        return reference
-    }
+    override fun toString(): String = reference
 }

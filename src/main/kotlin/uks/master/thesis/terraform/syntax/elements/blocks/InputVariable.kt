@@ -19,6 +19,9 @@ class InputVariable private constructor(
         const val SENSITIVE: String = "sensitive"
     }
 
+    val reference get() = "$VAR.$self"
+    val name get() = self
+
     class Builder {
         private val blockBuilder: Block.Builder = Block.Builder()
         private val defaultBuilder: Argument.Builder = Argument.Builder().name(DEFAULT)
@@ -43,15 +46,5 @@ class InputVariable private constructor(
         }
     }
 
-    fun reference(): String {
-        return "$VAR.$self"
-    }
-
-    fun name(): String {
-        return self
-    }
-
-    override fun toString(): String {
-        return block.toString()
-    }
+    override fun toString(): String = block.toString()
 }

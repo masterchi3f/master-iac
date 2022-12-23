@@ -18,6 +18,7 @@ object RootModule: ParentModule<RootModule>() {
     private const val GITIGNORE = ".gitignore"
     private const val GITIGNORE_RESOURCE_PATH = "/terraform/.tf${GITIGNORE}"
     private const val DOT_TF = ".tf"
+    override val name: String get() = ROOT_NAME
     var providers: List<Provider> = mutableListOf()
         private set
 
@@ -83,7 +84,7 @@ object RootModule: ParentModule<RootModule>() {
     private fun <T>createSubModules(parentPath: String, parentModule: ParentModule<T>) {
         for (child in parentModule.children) {
             if (child is SubModule) {
-                val path = "$parentPath${File.separator}${child.name().removePrefix(MODULE_PREFIX)}"
+                val path = "$parentPath${File.separator}${child.name.removePrefix(MODULE_PREFIX)}"
                 createDir(path, logger)
                 createFiles(path, child.toFileStrings())
                 createSubModules(path, child)
@@ -147,12 +148,10 @@ object RootModule: ParentModule<RootModule>() {
     private fun <T>debugChildren(parentModule: ParentModule<T>) {
         for (child in parentModule.children) {
             if (child is SubModule) {
-                child.name()
+                child.name
                 child.debugFiles()
                 debugChildren(child)
             }
         }
     }
-
-    override fun name(): String = ROOT_NAME
 }

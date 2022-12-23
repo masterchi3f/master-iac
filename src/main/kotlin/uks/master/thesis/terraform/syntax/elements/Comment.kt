@@ -7,18 +7,14 @@ class OneLineComment(
     private val symbol: OneLineSymbol,
     private val text: String
 ): Element {
-    override fun toString(): String {
-        return "$symbol $text"
-    }
+    override fun toString(): String = "$symbol $text"
 }
 
 enum class OneLineSymbol(val symbol: String) {
     HASHTAG("#"),
     DOUBLE_SLASH("//");
 
-    override fun toString(): String {
-        return symbol
-    }
+    override fun toString(): String = symbol
 }
 
 class MultiLineComment(

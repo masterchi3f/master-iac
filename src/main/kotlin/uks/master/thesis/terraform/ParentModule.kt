@@ -19,6 +19,7 @@ abstract class ParentModule<T> {
     }
     private val logger: KLogger = KotlinLogging.logger {}
     private var configuration: Terraform? = null
+    abstract val name: String
     data class ModuleFiles(val main: String, val variables: String?, val outputs: String?)
     var children: List<Child> = mutableListOf()
         private set
@@ -44,7 +45,7 @@ abstract class ParentModule<T> {
         var main: String = header(MAIN) + System.lineSeparator() + System.lineSeparator()
         configuration?.let {
             main += it.toString() + System.lineSeparator()
-        } ?: throw IllegalStateException("Terraform configuration in ${name()} not set!")
+        } ?: throw IllegalStateException("Terraform configuration in $name not set!")
         for (child in children) {
             when (child) {
                 is OutputVariable -> outputs += child.toString() + System.lineSeparator()
@@ -73,7 +74,5 @@ abstract class ParentModule<T> {
     } as T
 
     private fun header(file: String): String =
-        OneLineComment(OneLineSymbol.DOUBLE_SLASH, "${name()} $file").toString()
-
-    abstract fun name(): String
+        OneLineComment(OneLineSymbol.DOUBLE_SLASH, "$name $file").toString()
 }

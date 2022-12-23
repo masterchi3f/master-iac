@@ -39,13 +39,13 @@ class RequiredProviders private constructor(
                 al.forEach { prov: Map.Entry<Provider, Boolean> ->
                     // Not sure if alternate with - works because it is done with . in the docs:
                     // https://developer.hashicorp.com/terraform/language/modules/develop/providers
-                    prov.key.alias?.let { listBuilder.add(TfRef("${prov.key.name()}${if (prov.value) "-" else "."}$it")) }
-                        ?: throw IllegalArgumentException("alias from ${prov.key.name()} was null!")
+                    prov.key.alias?.let { listBuilder.add(TfRef("${prov.key.name}${if (prov.value) "-" else "."}$it")) }
+                        ?: throw IllegalArgumentException("alias from ${prov.key.name} was null!")
                 }
                 mapBuilder.put(CONFIGURATION_ALIASES, listBuilder.build())
             }
             blockBuilder.addElement(
-                Argument.Builder().name(provider.name()).value(mapBuilder.build()).build()
+                Argument.Builder().name(provider.name).value(mapBuilder.build()).build()
             )
         }
         fun build() = RequiredProviders(blockBuilder.type(REQUIRED_PROVIDERS).build())

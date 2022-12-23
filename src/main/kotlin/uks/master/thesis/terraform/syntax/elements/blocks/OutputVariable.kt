@@ -19,6 +19,8 @@ class OutputVariable private constructor(
         const val SENSITIVE: String = "sensitive"
     }
 
+    val name get() = self
+
     class Builder {
         private val blockBuilder: Block.Builder = Block.Builder()
         private val valueBuilder: Argument.Builder = Argument.Builder().name(VALUE)
@@ -46,11 +48,5 @@ class OutputVariable private constructor(
         }
     }
 
-    fun name(): String {
-        return self
-    }
-
-    override fun toString(): String {
-        return block.toString()
-    }
+    override fun toString(): String = block.toString()
 }

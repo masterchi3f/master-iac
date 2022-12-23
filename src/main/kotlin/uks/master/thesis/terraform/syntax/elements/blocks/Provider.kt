@@ -15,6 +15,8 @@ class Provider private constructor(
         const val ALIAS: String = "alias"
     }
 
+    val name get() = self
+
     class Builder {
         private val blockBuilder: Block.Builder = Block.Builder()
         private val aliasBuilder: Argument.Builder = Argument.Builder().name(ALIAS)
@@ -44,11 +46,5 @@ class Provider private constructor(
         }
     }
 
-    fun name(): String {
-        return self
-    }
-
-    override fun toString(): String {
-        return block.toString()
-    }
+    override fun toString(): String = block.toString()
 }

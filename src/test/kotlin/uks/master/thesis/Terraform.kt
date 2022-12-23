@@ -84,7 +84,7 @@ class Terraform {
                     .build()
             ).build()
         val requiredProviders: RequiredProviders = RequiredProviders.Builder()
-            .addProvider(hCloud, "hetznercloud/${hCloud.name()}", "1.35.1")
+            .addProvider(hCloud, "hetznercloud/${hCloud.name}", "1.35.1")
             .build()
         val terraform: Terraform = Terraform.Builder()
             .requiredVersion(">= 1.2.4")

@@ -9,7 +9,5 @@ import uks.master.thesis.terraform.syntax.Expression
 class Raw(
     private val raw: String
 ): Expression {
-    override fun toString(): String {
-        return raw
-    }
+    override fun toString(): String = raw
 }

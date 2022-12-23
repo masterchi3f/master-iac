@@ -46,7 +46,5 @@ class Cloud private constructor(
         }
     }
 
-    override fun toString(): String {
-        return block.toString()
-    }
+    override fun toString(): String = block.toString()
 }
