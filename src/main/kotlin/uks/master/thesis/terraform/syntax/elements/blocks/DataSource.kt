@@ -8,7 +8,7 @@ import uks.master.thesis.terraform.syntax.elements.Block
 import uks.master.thesis.terraform.syntax.elements.MultiLineComment
 import uks.master.thesis.terraform.syntax.elements.OneLineSymbol
 
-class DataSource private constructor(
+open class DataSource protected constructor(
     private val block: Block,
     private val self: String
 ): Element, Child {
@@ -17,24 +17,24 @@ class DataSource private constructor(
         const val PROVIDER: String = "provider"
     }
 
-    class Builder {
-        private val blockBuilder: Block.Builder = Block.Builder()
+    @Suppress("UNCHECKED_CAST")
+    open class GBuilder<T> {
         private val providerBuilder: Argument.Builder = Argument.Builder().name(PROVIDER)
         private lateinit var _source: Identifier
         private lateinit var _name: Identifier
+        protected val blockBuilder: Block.Builder = Block.Builder()
 
-        fun source(source: String) = apply { preventDupSource(); _source = Identifier(source) }
-        fun name(name: String) = apply { preventDupName(); _name = Identifier(name) }
-        fun addElement(block: Block) = apply { blockBuilder.addElement(block) }
-        fun addElement(argument: Argument) = apply { blockBuilder.addElement(argument) }
-        fun addElement(symbol: OneLineSymbol, text: String) = apply { blockBuilder.addElement(symbol, text) }
-        fun addElement(multiLineComment: MultiLineComment) = apply { blockBuilder.addElement(multiLineComment) }
-        fun provider(provider: Provider, alternate: Boolean = false) =
-            apply { blockBuilder.addElement(providerBuilder.value(provider, alternate).build()) }
-        fun build() = DataSource(
-            blockBuilder.type(DATA).addLabel(_source.toString()).addLabel(_name.toString()).build(),
-            "$DATA.$_source.$_name"
-        )
+        fun dataSource(source: String): T = apply { preventDupSource(); _source = Identifier(source) } as T
+        fun dataName(name: String): T = apply { preventDupName(); _name = Identifier(name) } as T
+        fun addElement(block: Block): T = apply { blockBuilder.addElement(block) } as T
+        fun addElement(argument: Argument): T = apply { blockBuilder.addElement(argument) } as T
+        fun addElement(symbol: OneLineSymbol, text: String): T = apply { blockBuilder.addElement(symbol, text) } as T
+        fun addElement(multiLineComment: MultiLineComment): T = apply { blockBuilder.addElement(multiLineComment) } as T
+        fun provider(provider: Provider, alternate: Boolean = false): T =
+            apply { blockBuilder.addElement(providerBuilder.value(provider, alternate).build()) } as T
+        open fun build() = DataSource(buildBlock(), buildSelf())
+        protected fun buildBlock(): Block = blockBuilder.type(DATA).addLabel(_source.toString()).addLabel(_name.toString()).build()
+        protected fun buildSelf(): String = "$DATA.$_source.$_name"
 
         private fun preventDupSource() {
             if (::_source.isInitialized) throw IllegalArgumentException("source was already set to $_source!")
@@ -44,6 +44,8 @@ class DataSource private constructor(
             if (::_name.isInitialized) throw IllegalArgumentException("name was already set to $_name!")
         }
     }
+
+    class Builder: GBuilder<Builder>()
 
     fun reference(attribute: String? = null): String = attribute?.let { "$self.$it" } ?: self
 

@@ -10,7 +10,6 @@ import uks.master.thesis.terraform.syntax.expressions.TfMap
 import uks.master.thesis.terraform.syntax.expressions.TfRef
 import uks.master.thesis.terraform.utils.Utils
 
-@Suppress("UNCHECKED_CAST")
 class TfModule private constructor(
     private val block: Block,
     val self: String,
@@ -23,6 +22,7 @@ class TfModule private constructor(
         const val PROVIDERS: String = "providers"
     }
 
+    @Suppress("UNCHECKED_CAST")
     abstract class Builder<T> {
         private var subModuleNames: List<String> = mutableListOf()
         private var providerBuilder: TfMap.Builder? = null
