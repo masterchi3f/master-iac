@@ -150,7 +150,7 @@ object Executor {
                         )
                     }
                     process.waitFor(commandTimeoutSeconds, TimeUnit.SECONDS)
-                    if(process.isAlive) {
+                    if (process.isAlive) {
                         logger.debug("Timeout of $commandTimeoutSeconds seconds occurred when executing $tfCommand")
                         process.destroy()
                         loggerJob.cancel()
