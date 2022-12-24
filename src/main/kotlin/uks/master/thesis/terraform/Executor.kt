@@ -7,11 +7,7 @@ import java.nio.channels.Channels
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.concurrent.TimeUnit
 import java.util.zip.ZipInputStream
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import mu.KLogger
 import mu.KotlinLogging
 import uks.master.thesis.Config.OUT_DIR
@@ -23,7 +19,6 @@ object Executor {
     var terraformCommand: String? = null
         get() = field ?: getTerraformCommandIfFileExists()
         private set
-    var commandTimeoutSeconds: Long = 60L
 
     /**
      * Prepare your working directory for other commands
@@ -129,7 +124,6 @@ object Executor {
         }
     }
 
-    @Suppress("BlockingMethodInNonBlockingContext")
     private fun runCommand(command: String) {
         terraformCommand ?: run {
             logger.warn("Terraform binary was not downloaded or copied from $PATH!")
@@ -142,20 +136,8 @@ object Executor {
             .command(getInterpreter() + tfCommand)
             .redirectErrorStream(true)
             .start()
-            .also { process ->
-                runBlocking {
-                    val loggerJob: Job = launch {
-                        logger.debug(
-                            process.inputStream.readAllBytes().decodeToString()
-                        )
-                    }
-                    process.waitFor(commandTimeoutSeconds, TimeUnit.SECONDS)
-                    if (process.isAlive) {
-                        logger.debug("Timeout of $commandTimeoutSeconds seconds occurred when executing $tfCommand")
-                        process.destroy()
-                        loggerJob.cancel()
-                    }
-                }
+            .also {
+                logger.debug(it.inputStream.readAllBytes().decodeToString())
             }
     }
 
