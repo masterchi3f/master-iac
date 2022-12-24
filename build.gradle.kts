@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.6.10"
+    kotlin("jvm") version "1.7.22"
 }
 
 group = "uks.master.thesis"
@@ -12,8 +12,11 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation("io.github.microutils:kotlin-logging-jvm:2.1.23")
-    implementation("org.slf4j:slf4j-simple:2.0.3")
+    implementation("io.github.microutils:kotlin-logging-jvm:3.0.4")
+    implementation("org.slf4j:slf4j-api:2.0.6")
+    implementation("org.apache.logging.log4j:log4j-slf4j2-impl:2.19.0")
+    implementation("org.apache.logging.log4j:log4j-api:2.19.0")
+    implementation("org.apache.logging.log4j:log4j-core:2.19.0")
     testImplementation(kotlin("test"))
 }
 

@@ -137,7 +137,7 @@ object Executor {
             .redirectErrorStream(true)
             .start()
             .also {
-                logger.debug(it.inputStream.readAllBytes().decodeToString())
+                logger.debug(System.lineSeparator() + it.inputStream.readAllBytes().decodeToString())
             }
     }
 
