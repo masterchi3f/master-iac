@@ -167,13 +167,13 @@ object HCloudFirewall {
             init { dataSource(HCLOUD_FIREWALL) }
 
             fun id(id: String) = apply { idOrNameBuilder.name(ID).value(id) }
-            fun idRef(ref: TfRef) = apply { idOrNameBuilder.name(ID).raw(ref.toString()) }
+            fun id(ref: TfRef) = apply { idOrNameBuilder.name(ID).raw(ref.toString()) }
             fun name(name: String) = apply { idOrNameBuilder.name(NAME).value(name) }
-            fun nameRef(ref: TfRef) = apply { idOrNameBuilder.name(NAME).raw(ref.toString()) }
+            fun name(ref: TfRef) = apply { idOrNameBuilder.name(NAME).raw(ref.toString()) }
             fun withSelector(selector: String) = apply { blockBuilder.addElement(withSelectorBuilder.value(selector).build()) }
-            fun withSelectorRef(ref: TfRef) = apply { blockBuilder.addElement(withSelectorBuilder.raw(ref.toString()).build()) }
+            fun withSelector(ref: TfRef) = apply { blockBuilder.addElement(withSelectorBuilder.raw(ref.toString()).build()) }
             fun mostRecent(mostRecent: Boolean) = apply { blockBuilder.addElement(mostRecentBuilder.value(mostRecent).build()) }
-            fun mostRecentRef(ref: TfRef) = apply { blockBuilder.addElement(mostRecentBuilder.raw(ref.toString()).build()) }
+            fun mostRecent(ref: TfRef) = apply { blockBuilder.addElement(mostRecentBuilder.raw(ref.toString()).build()) }
             override fun build(): DataSource {
                 blockBuilder.addElement(idOrNameBuilder.build())
                 return DataSource(buildBlock(), buildSelf())
