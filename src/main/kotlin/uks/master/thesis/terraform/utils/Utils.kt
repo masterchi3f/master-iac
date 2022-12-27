@@ -8,6 +8,8 @@ object Utils {
     fun convertToIdentifier(reference: String): String =
         reference.replace(".", "_")
 
+    fun index(i: Int? = null): String = i?.toString() ?: "*"
+
     fun createDir(name: String, logger: KLogger? = null) {
         val dir = File(name)
         if (dir.exists()) {

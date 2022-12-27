@@ -10,8 +10,8 @@ import uks.master.thesis.terraform.syntax.elements.Argument
 import uks.master.thesis.terraform.syntax.elements.Block
 import uks.master.thesis.terraform.syntax.elements.blocks.Resource
 import uks.master.thesis.terraform.syntax.elements.blocks.Terraform
+import uks.master.thesis.terraform.syntax.expressions.TfFile
 import uks.master.thesis.terraform.syntax.expressions.TfList
-import uks.master.thesis.terraform.syntax.expressions.TfRef
 
 class Terraform {
     private val binaryName = "terraform" +
@@ -76,7 +76,7 @@ class Terraform {
         val hCloudSshKey: HCloudSshKey.Resource = HCloudSshKey.Resource.Builder()
             .resourceName("default")
             .name("hcloud_ssh_key")
-            .publicKeyRef("file(\"~/.ssh/id_rsa.pub\")")
+            .publicKey(TfFile("~/.ssh/id_rsa.pub"))
             .build()
         val hCloudServer: Resource = Resource.Builder()
             .resourceType("hcloud_server")
@@ -106,7 +106,7 @@ class Terraform {
                     .name("ssh_keys")
                     .value(
                         TfList.Builder()
-                            .add(TfRef(hCloudSshKey.id))
+                            .add(hCloudSshKey.id)
                             .build()
                     ).build()
             ).addElement(

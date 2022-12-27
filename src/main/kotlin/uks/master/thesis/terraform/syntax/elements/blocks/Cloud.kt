@@ -26,13 +26,7 @@ class Cloud private constructor(
         fun organization(organization: String) = apply { preventDupOrganization(); _organization = organization }
         fun hostname(hostname: String) = apply { blockBuilder.addElement(hostnameBuilder.value(hostname).build()) }
         fun workspacesName(name: String) = apply { workspacesStrategyBuilder.name(NAME).value(name) }
-        fun workspacesTags(tags: List<String>) = apply {
-            val tfListBuilder = TfList.Builder()
-            tags.forEach {
-                tfListBuilder.add(it)
-            }
-            workspacesStrategyBuilder.name(TAGS).value(tfListBuilder.build())
-        }
+        fun workspacesTags(tags: TfList) = apply { workspacesStrategyBuilder.name(TAGS).value(tags) }
         fun build() = Cloud(
             blockBuilder
                 .type(CLOUD)

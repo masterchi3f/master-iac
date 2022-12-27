@@ -14,6 +14,7 @@ class TfList private constructor(
         fun add(list: TfList) = apply { _expressions = _expressions + list }
         fun add(map: TfMap) = apply { _expressions = _expressions + map }
         fun add(ref: TfRef) = apply { _expressions = _expressions + ref }
+        fun add(file: TfFile) = apply { _expressions = _expressions + file }
         fun build() = TfList(_expressions)
     }
 

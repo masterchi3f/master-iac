@@ -8,7 +8,7 @@ import uks.master.thesis.terraform.syntax.elements.Argument
 import uks.master.thesis.terraform.syntax.elements.Block
 import uks.master.thesis.terraform.syntax.expressions.TfMap
 import uks.master.thesis.terraform.syntax.expressions.TfRef
-import uks.master.thesis.terraform.utils.Utils
+import uks.master.thesis.terraform.utils.Utils.convertToIdentifier
 
 class TfModule private constructor(
     private val block: Block,
@@ -38,13 +38,13 @@ class TfModule private constructor(
         open fun addInputVariable(resource: Resource, attribute: String? = null): T =
             apply {
                 blockBuilder.addElement(Argument.Builder()
-                    .name(attribute ?: Utils.convertToIdentifier(resource.reference()))
+                    .name(attribute ?: convertToIdentifier(resource.reference()))
                     .value(resource, attribute).build())
             } as T
         open fun addInputVariable(dataSource: DataSource, attribute: String? = null): T =
             apply {
                 blockBuilder.addElement(Argument.Builder()
-                    .name(attribute ?: Utils.convertToIdentifier(dataSource.reference()))
+                    .name(attribute ?: convertToIdentifier(dataSource.reference()))
                     .value(dataSource, attribute).build())
             } as T
         open fun addInputVariable(subModule: SubModule, outputVariable: OutputVariable): T =
