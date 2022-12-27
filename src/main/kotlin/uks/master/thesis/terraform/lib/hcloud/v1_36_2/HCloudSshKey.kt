@@ -60,7 +60,7 @@ object HCloudSshKey {
             init { dataSource(HCLOUD_SSH_KEY) }
 
             fun id(id: String) = apply { blockBuilder.addElement(idBuilder.value(id).build()) }
-            fun idRef(ref: TfRef<TfString>) = apply { blockBuilder.addElement(idBuilder.raw(ref.toString()).build()) }
+            fun id(ref: TfRef<TfNumber>) = apply { blockBuilder.addElement(idBuilder.raw(ref.toString()).build()) }
             fun name(name: String) = apply { blockBuilder.addElement(nameBuilder.value(name).build()) }
             fun name(ref: TfRef<TfString>) = apply { blockBuilder.addElement(nameBuilder.raw(ref.toString()).build()) }
             fun fingerprint(fingerprint: String) = apply { blockBuilder.addElement(fingerprintBuilder.value(fingerprint).build()) }

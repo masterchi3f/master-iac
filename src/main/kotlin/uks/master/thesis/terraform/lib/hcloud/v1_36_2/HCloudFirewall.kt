@@ -185,7 +185,7 @@ object HCloudFirewall {
             init { dataSource(HCLOUD_FIREWALL) }
 
             fun id(id: String) = apply { idOrNameBuilder.name(ID).value(id) }
-            fun id(ref: TfRef<TfString>) = apply { idOrNameBuilder.name(ID).raw(ref.toString()) }
+            fun id(ref: TfRef<TfNumber>) = apply { idOrNameBuilder.name(ID).raw(ref.toString()) }
             fun name(name: String) = apply { idOrNameBuilder.name(NAME).value(name) }
             fun name(ref: TfRef<TfString>) = apply { idOrNameBuilder.name(NAME).raw(ref.toString()) }
             fun withSelector(selector: String) = apply { blockBuilder.addElement(withSelectorBuilder.value(selector).build()) }
