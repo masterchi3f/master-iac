@@ -59,7 +59,7 @@ object HCloudSshKey {
             private val withSelectorBuilder: Argument.Builder = Argument.Builder().name(WITH_SELECTOR)
             init { dataSource(HCLOUD_SSH_KEY) }
 
-            fun id(id: String) = apply { blockBuilder.addElement(idBuilder.value(id).build()) }
+            fun id(id: Int) = apply { blockBuilder.addElement(idBuilder.value(id.toDouble()).build()) }
             fun id(ref: TfRef<TfNumber>) = apply { blockBuilder.addElement(idBuilder.raw(ref.toString()).build()) }
             fun name(name: String) = apply { blockBuilder.addElement(nameBuilder.value(name).build()) }
             fun name(ref: TfRef<TfString>) = apply { blockBuilder.addElement(nameBuilder.raw(ref.toString()).build()) }

@@ -184,7 +184,7 @@ object HCloudFirewall {
             private val mostRecentBuilder: Argument.Builder = Argument.Builder().name(MOST_RECENT)
             init { dataSource(HCLOUD_FIREWALL) }
 
-            fun id(id: String) = apply { idOrNameBuilder.name(ID).value(id) }
+            fun id(id: Int) = apply { idOrNameBuilder.name(ID).value(id.toDouble()) }
             fun id(ref: TfRef<TfNumber>) = apply { idOrNameBuilder.name(ID).raw(ref.toString()) }
             fun name(name: String) = apply { idOrNameBuilder.name(NAME).value(name) }
             fun name(ref: TfRef<TfString>) = apply { idOrNameBuilder.name(NAME).raw(ref.toString()) }
