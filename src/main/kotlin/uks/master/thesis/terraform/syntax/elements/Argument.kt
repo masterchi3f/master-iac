@@ -37,10 +37,10 @@ class Argument private constructor(
         fun value(string: String) = apply { preventDupValue(); _value = TfString(string) }
         fun value(list: TfList) = apply { preventDupValue(); _value = list }
         fun value(map: TfMap) = apply { preventDupValue(); _value = map }
-        fun value(inputVariable: InputVariable) = apply { preventDupValue(); _value = TfRef(inputVariable.reference) }
-        fun value(resource: Resource, attribute: String? = null) = apply { preventDupValue(); _value = TfRef(resource.reference(attribute)) }
-        fun value(dataSource: DataSource, attribute: String? = null) = apply { preventDupValue(); _value = TfRef(dataSource.reference(attribute)) }
-        fun value(subModule: SubModule, outputVariable: OutputVariable) = apply { preventDupValue(); _value = TfRef(subModule.output(outputVariable)) }
+        fun value(inputVariable: InputVariable) = apply { preventDupValue(); _value = TfRef<Expression>(inputVariable.reference) }
+        fun value(resource: Resource, attribute: String? = null) = apply { preventDupValue(); _value = TfRef<Expression>(resource.reference(attribute)) }
+        fun value(dataSource: DataSource, attribute: String? = null) = apply { preventDupValue(); _value = TfRef<Expression>(dataSource.reference(attribute)) }
+        fun value(subModule: SubModule, outputVariable: OutputVariable) = apply { preventDupValue(); _value = TfRef<Expression>(subModule.output(outputVariable)) }
         /**
          * @param alternate: If true the argument is used in a submodule which has multiple provider from same type.
          * The dot (.) is switched with a dash (-).
@@ -51,7 +51,7 @@ class Argument private constructor(
             preventDupValue(); provider.alias?.let {
             // Not sure if alternate with - works because it is done with . in the docs:
             // https://developer.hashicorp.com/terraform/language/modules/develop/providers
-                _value = TfRef("${provider.name}${if (alternate) "-" else "."}$it")
+                _value = TfRef<Expression>("${provider.name}${if (alternate) "-" else "."}$it")
             } ?: throw IllegalArgumentException("alias from ${provider.name} was null!")
         }
         fun raw(raw: String) = apply { preventDupValue(); _value = Raw(raw) }
