@@ -22,6 +22,12 @@ object HCloudFloatingIp {
     private const val IP_NETWORK: String = "ip_network"
     private const val WITH_SELECTOR: String = "with_selector"
 
+    enum class Type(private val type: String) {
+        IPV4("ipv4"),
+        IPV6("ipv6");
+        override fun toString(): String = type
+    }
+
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
         val id get() = TfRef<TfNumber>(reference(ID))
@@ -45,7 +51,7 @@ object HCloudFloatingIp {
             private val deleteProtectionBuilder: Argument.Builder = Argument.Builder().name(DELETE_PROTECTION)
             init { resourceType(HCLOUD_FLOATING_IP) }
 
-            fun type(type: String) = apply { typeBuilder.value(type) }
+            fun type(type: Type) = apply { typeBuilder.value(type.toString()) }
             fun type(ref: TfRef<TfString>) = apply { typeBuilder.raw(ref.toString()) }
             fun name(name: String) = apply { blockBuilder.addElement(nameBuilder.value(name).build()) }
             fun name(ref: TfRef<TfString>) = apply { blockBuilder.addElement(nameBuilder.raw(ref.toString()).build()) }
