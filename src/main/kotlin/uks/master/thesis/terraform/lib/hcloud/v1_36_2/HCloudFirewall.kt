@@ -149,7 +149,7 @@ object HCloudFirewall {
             override fun build() = Resource(buildBlock(), buildSelf())
 
             private fun preventDupApplyTo() {
-                if (hasApplyTo) throw IllegalArgumentException("apply_to was already built") else hasApplyTo = true
+                if (hasApplyTo) throw IllegalArgumentException("applyTo was already built") else hasApplyTo = true
             }
         }
 

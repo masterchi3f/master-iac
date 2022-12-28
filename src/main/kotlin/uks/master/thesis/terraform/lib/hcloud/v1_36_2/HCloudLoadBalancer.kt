@@ -97,7 +97,7 @@ object HCloudLoadBalancer {
             fun deleteProtection(ref: TfRef<TfBool>) = apply { blockBuilder.addElement(deleteProtectionBuilder.raw(ref.toString()).build()) }
             override fun build(): Resource {
                 if (!locationOrNetworkZoneSet) {
-                    throw IllegalArgumentException("Either location or network_zone must be set!")
+                    throw IllegalArgumentException("Either location or networkZone must be set!")
                 }
                 blockBuilder.addElement(nameBuilder.build()).addElement(loadBalancerTypeBuilder.build())
                 return Resource(buildBlock(), buildSelf())
