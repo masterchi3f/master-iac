@@ -15,6 +15,7 @@ object HCloudNetwork {
     private const val LABELS: String = "labels"
     private const val DELETE_PROTECTION: String = "delete_protection"
     private const val ID: String = "id"
+    private const val WITH_SELECTOR: String = "with_selector"
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
@@ -42,6 +43,31 @@ object HCloudNetwork {
             override fun build(): Resource {
                 blockBuilder.addElement(nameBuilder.build()).addElement(ipRangeBuilder.build())
                 return Resource(buildBlock(), buildSelf())
+            }
+        }
+    }
+
+    class DataSource private constructor(block: Block, self: String):
+        uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
+        val id get() = TfRef<TfNumber>(reference(ID))
+        val name get() = TfRef<TfString>(reference(NAME))
+        val ipRange get() = TfRef<TfString>(reference(IP_RANGE))
+        val deleteProtection get() = TfRef<TfBool>(reference(DELETE_PROTECTION))
+
+        class Builder: GBuilder<Builder>() {
+            private val idOrNameBuilder: Argument.Builder = Argument.Builder()
+            private val withSelectorBuilder: Argument.Builder = Argument.Builder().name(WITH_SELECTOR)
+            init { dataSource(HCLOUD_NETWORK) }
+
+            fun id(id: Int) = apply { idOrNameBuilder.name(ID).value(id.toDouble()) }
+            fun id(ref: TfRef<TfNumber>) = apply { idOrNameBuilder.name(ID).raw(ref.toString()) }
+            fun name(name: String) = apply { idOrNameBuilder.name(NAME).value(name) }
+            fun name(ref: TfRef<TfString>) = apply { idOrNameBuilder.name(NAME).raw(ref.toString()) }
+            fun withSelector(selector: String) = apply { blockBuilder.addElement(withSelectorBuilder.value(selector).build()) }
+            fun withSelector(ref: TfRef<TfString>) = apply { blockBuilder.addElement(withSelectorBuilder.raw(ref.toString()).build()) }
+            override fun build(): DataSource {
+                blockBuilder.addElement(idOrNameBuilder.build())
+                return DataSource(buildBlock(), buildSelf())
             }
         }
     }
