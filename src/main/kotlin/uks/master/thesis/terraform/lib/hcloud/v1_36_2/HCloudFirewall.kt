@@ -44,7 +44,7 @@ object HCloudFirewall {
             private const val DESTINATION_IPS: String = "destination_ips"
             private const val DESCRIPTION: String = "description"
 
-            fun reference(index: Int? = null): String = "$RULE[${index(index)}]"
+            fun reference(index: Int? = null): String = "$RULE[${index(index)}]".removeSuffix("[*]")
             fun direction(index: Int? = null): String = "$RULE[${index(index)}].$DIRECTION"
             fun protocol(index: Int? = null): String = "$RULE[${index(index)}].$PROTOCOL"
             fun port(index: Int? = null): String = "$RULE[${index(index)}].$PORT"
@@ -124,12 +124,12 @@ object HCloudFirewall {
         val name get() = TfRef<TfString>(reference(NAME))
         val labels get() = TfRef<TfMap>(reference(LABELS))
         val rules get() = TfRef<TfList>(reference(Rule.reference()))
-        val ruleDirections get() = TfRef<TfList>(reference(Rule.direction()))
-        val ruleProtocols get() = TfRef<TfList>(reference(Rule.protocol()))
-        val rulePorts get() = TfRef<TfList>(reference(Rule.port()))
-        val ruleSourceIpLists get() = TfRef<TfList>(reference(Rule.sourceIps()))
-        val ruleDirectionIpLists get() = TfRef<TfList>(reference(Rule.directionIps()))
-        val ruleDescriptions get() = TfRef<TfList>(reference(Rule.description()))
+        val rulesDirections get() = TfRef<TfList>(reference(Rule.direction()))
+        val rulesProtocols get() = TfRef<TfList>(reference(Rule.protocol()))
+        val rulesPorts get() = TfRef<TfList>(reference(Rule.port()))
+        val rulesSourceIpLists get() = TfRef<TfList>(reference(Rule.sourceIps()))
+        val rulesDirectionIpLists get() = TfRef<TfList>(reference(Rule.directionIps()))
+        val rulesDescriptions get() = TfRef<TfList>(reference(Rule.description()))
         val applyTo get() = TfRef<Raw>(reference(ApplyTo.reference(0)))
         val applyToLabelSelector get() = TfRef<TfString>(reference(ApplyTo.labelSelector(0)))
         val applyToServer get() = TfRef<TfNumber>(reference(ApplyTo.server(0)))

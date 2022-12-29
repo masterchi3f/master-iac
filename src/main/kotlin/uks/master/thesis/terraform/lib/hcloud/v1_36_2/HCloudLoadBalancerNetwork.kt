@@ -14,7 +14,7 @@ object HCloudLoadBalancerNetwork {
     private const val IP: String = "ip"
     private const val ENABLE_PUBLIC_INTERFACE: String = "enable_public_interface"
     private const val ID: String = "id"
-    private const val LOAD_BALANCER_ID: String = "network_id"
+    private const val LOAD_BALANCER_ID: String = "load_balancer_id"
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
