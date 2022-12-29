@@ -8,7 +8,10 @@ object Utils {
     fun convertToIdentifier(reference: String): String =
         reference.replace(".", "_")
 
-    fun index(i: Int? = null): String = i?.toString() ?: "*"
+    fun splatExp(blockType: String, i: Int? = null, attr: String? = null): String {
+        i ?: attr ?: return blockType
+        return "$blockType[${i?.toString() ?: "*"}]${attr?.let { ".$it" } ?: ""}"
+    }
 
     fun createDir(name: String, logger: KLogger? = null) {
         val dir = File(name)

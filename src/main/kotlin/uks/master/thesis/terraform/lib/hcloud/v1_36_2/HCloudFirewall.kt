@@ -9,7 +9,7 @@ import uks.master.thesis.terraform.syntax.expressions.TfMap
 import uks.master.thesis.terraform.syntax.expressions.TfNumber
 import uks.master.thesis.terraform.syntax.expressions.TfRef
 import uks.master.thesis.terraform.syntax.expressions.TfString
-import uks.master.thesis.terraform.utils.Utils.index
+import uks.master.thesis.terraform.utils.Utils.splatExp
 
 object HCloudFirewall {
     private const val HCLOUD_FIREWALL: String = "hcloud_firewall"
@@ -44,13 +44,13 @@ object HCloudFirewall {
             private const val DESTINATION_IPS: String = "destination_ips"
             private const val DESCRIPTION: String = "description"
 
-            fun reference(index: Int? = null): String = "$RULE[${index(index)}]".removeSuffix("[*]")
-            fun direction(index: Int? = null): String = "$RULE[${index(index)}].$DIRECTION"
-            fun protocol(index: Int? = null): String = "$RULE[${index(index)}].$PROTOCOL"
-            fun port(index: Int? = null): String = "$RULE[${index(index)}].$PORT"
-            fun sourceIps(index: Int? = null): String = "$RULE[${index(index)}].$SOURCE_IPS"
-            fun directionIps(index: Int? = null): String = "$RULE[${index(index)}].$DESTINATION_IPS"
-            fun description(index: Int? = null): String = "$RULE[${index(index)}].$DESCRIPTION"
+            fun reference(index: Int? = null): String = splatExp(RULE, index)
+            fun direction(index: Int? = null): String = splatExp(RULE, index, DIRECTION)
+            fun protocol(index: Int? = null): String = splatExp(RULE, index, PROTOCOL)
+            fun port(index: Int? = null): String = splatExp(RULE, index, PORT)
+            fun sourceIps(index: Int? = null): String = splatExp(RULE, index, SOURCE_IPS)
+            fun directionIps(index: Int? = null): String = splatExp(RULE, index, DESTINATION_IPS)
+            fun description(index: Int? = null): String = splatExp(RULE, index, DESCRIPTION)
         }
 
         class Builder {
@@ -99,9 +99,9 @@ object HCloudFirewall {
             private const val LABEL_SELECTOR: String = "label_selector"
             private const val SERVER: String = "server"
 
-            fun reference(index: Int? = null): String = "$APPLY_TO[${index(index)}]"
-            fun labelSelector(index: Int? = null): String = "$APPLY_TO[${index(index)}].$LABEL_SELECTOR"
-            fun server(index: Int? = null): String = "$APPLY_TO[${index(index)}].$SERVER"
+            fun reference(index: Int? = null): String = splatExp(APPLY_TO, index)
+            fun labelSelector(index: Int? = null): String = splatExp(APPLY_TO, index, LABEL_SELECTOR)
+            fun server(index: Int? = null): String = splatExp(APPLY_TO, index, SERVER)
         }
 
         class Builder {

@@ -33,8 +33,8 @@ object HCloudLoadBalancer {
             private const val ALGORITHM: String = "algorithm"
             private const val TYPE: String = "type"
 
-            fun reference(index: Int? = null): String = "$ALGORITHM[${Utils.index(index)}]"
-            fun type(index: Int? = null): String = "$ALGORITHM[${Utils.index(index)}].$TYPE"
+            fun reference(index: Int? = null): String = Utils.splatExp(ALGORITHM, index)
+            fun type(index: Int? = null): String = Utils.splatExp(ALGORITHM, index, TYPE)
         }
 
         enum class Type(private val type: String) {
