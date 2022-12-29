@@ -65,7 +65,7 @@ object HCloudLoadBalancer {
         val ipv6 get() = TfRef<TfString>(reference(IPV6))
         val algorithm get() = TfRef<Raw>(reference(Algorithm.reference(0)))
         val algorithmType get() = TfRef<Raw>(reference(Algorithm.type(0)))
-        val services get() = TfRef<TfList>(reference(SERVICE)) // TODO? hcloud_load_balancer_service attributes?
+        val services get() = TfRef<TfList>(reference(SERVICE))
         val labels get() = TfRef<TfMap>(reference(LABELS))
         val deleteProtection get() = TfRef<TfBool>(reference(DELETE_PROTECTION))
         val networkId get() = TfRef<TfNumber>(reference(NETWORK_ID))
@@ -111,7 +111,6 @@ object HCloudLoadBalancer {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        private val targetExportedAttributes = HCloudLoadBalancerTarget.ExportedAttributes(reference(TARGET))
         val id get() = TfRef<TfNumber>(reference(ID))
         val loadBalancerType get() = TfRef<TfString>(reference(LOAD_BALANCER_TYPE))
         val name get() = TfRef<TfString>(reference(NAME))
@@ -120,13 +119,8 @@ object HCloudLoadBalancer {
         val ipv6 get() = TfRef<TfString>(reference(IPV6))
         val algorithm get() = TfRef<Raw>(reference(Algorithm.reference(0)))
         val algorithmType get() = TfRef<Raw>(reference(Algorithm.type(0)))
-        val targets get() = TfRef<TfList>(targetExportedAttributes.reference())
-        val targetsTypes get() = TfRef<TfList>(targetExportedAttributes.type())
-        val targetsServerIds get() = TfRef<TfList>(targetExportedAttributes.serverId())
-        val targetsLabelSelectors get() = TfRef<TfList>(targetExportedAttributes.labelSelector())
-        val targetsIps get() = TfRef<TfList>(targetExportedAttributes.ip())
-        val targetsUsePrivateIps get() = TfRef<TfList>(targetExportedAttributes.usePrivateIp())
-        val services get() = TfRef<TfList>(reference(SERVICE)) // TODO? hcloud_load_balancer_service attributes?
+        val targets get() = TfRef<TfList>(reference(TARGET))
+        val services get() = TfRef<TfList>(reference(SERVICE))
         val labels get() = TfRef<TfMap>(reference(LABELS))
         val deleteProtection get() = TfRef<TfBool>(reference(DELETE_PROTECTION))
         val networkId get() = TfRef<TfNumber>(reference(NETWORK_ID))
@@ -148,12 +142,5 @@ object HCloudLoadBalancer {
                 return DataSource(buildBlock(), buildSelf())
             }
         }
-
-        fun target(index: Int) = TfRef<Raw>(targetExportedAttributes.reference(index))
-        fun targetType(index: Int) = TfRef<TfString>(targetExportedAttributes.type(index))
-        fun targetServerId(index: Int) = TfRef<TfNumber>(targetExportedAttributes.serverId(index))
-        fun targetLabelSelector(index: Int) = TfRef<TfString>(targetExportedAttributes.labelSelector(index))
-        fun targetIp(index: Int) = TfRef<TfString>(targetExportedAttributes.ip(index))
-        fun targetUsePrivateIp(index: Int) = TfRef<TfBool>(targetExportedAttributes.usePrivateIp(index))
     }
 }

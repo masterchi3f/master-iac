@@ -6,7 +6,6 @@ import uks.master.thesis.terraform.syntax.expressions.TfBool
 import uks.master.thesis.terraform.syntax.expressions.TfNumber
 import uks.master.thesis.terraform.syntax.expressions.TfRef
 import uks.master.thesis.terraform.syntax.expressions.TfString
-import uks.master.thesis.terraform.utils.Utils
 
 object HCloudLoadBalancerTarget {
     private const val HCLOUD_LOAD_BALANCER_TARGET: String = "hcloud_load_balancer_target"
@@ -16,15 +15,6 @@ object HCloudLoadBalancerTarget {
     private const val LABEL_SELECTOR: String = "label_selector"
     private const val IP: String = "ip"
     private const val USE_PRIVATE_IP: String = "use_private_ip"
-
-    class ExportedAttributes(private val referencePrefix: String) {
-        fun reference(index: Int? = null): String = "$referencePrefix[${Utils.index(index)}]".removeSuffix("[*]")
-        fun type(index: Int? = null): String = "$referencePrefix[${Utils.index(index)}].$TYPE"
-        fun serverId(index: Int? = null): String = "$referencePrefix[${Utils.index(index)}].$SERVER_ID"
-        fun labelSelector(index: Int? = null): String = "$referencePrefix[${Utils.index(index)}].$LABEL_SELECTOR"
-        fun ip(index: Int? = null): String = "$referencePrefix[${Utils.index(index)}].$IP"
-        fun usePrivateIp(index: Int? = null): String = "$referencePrefix[${Utils.index(index)}].$USE_PRIVATE_IP"
-    }
 
     enum class Type(private val type: String) {
         SERVER("server"),
