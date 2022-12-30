@@ -51,13 +51,12 @@ object HCloudNetworkSubnet {
             fun vswitchId(vswitchId: Int) = apply { hasVswitchId = true; vswitchIdBuilder.value(vswitchId.toDouble()) }
             fun vswitchId(ref: TfRef<TfNumber>) = apply { hasVswitchId = true; vswitchIdBuilder.raw(ref.toString()) }
             override fun build(): Resource {
-                blockBuilder
-                    .addElement(networkIdBuilder.build())
-                    .addElement(typeBuilder.build())
-                    .addElement(ipRangeBuilder.build())
-                    .addElement(networkZoneBuilder.build())
+                addElement(networkIdBuilder.build())
+                addElement(typeBuilder.build())
+                addElement(ipRangeBuilder.build())
+                addElement(networkZoneBuilder.build())
                 if (_type == Type.VSWITCH) {
-                    blockBuilder.addElement(vswitchIdBuilder.build())
+                    addElement(vswitchIdBuilder.build())
                 } else if (hasVswitchId) {
                     throw IllegalArgumentException("vswitchId was set but subnet type is $_type")
                 }

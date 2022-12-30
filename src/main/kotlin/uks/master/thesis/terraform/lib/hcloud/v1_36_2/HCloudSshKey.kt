@@ -36,10 +36,11 @@ object HCloudSshKey {
             fun publicKey(publicKey: String) = apply { publicKeyBuilder.value(publicKey) }
             fun publicKey(ref: TfRef<TfString>) = apply { publicKeyBuilder.raw(ref.toString()) }
             fun publicKey(file: TfFile) = apply { publicKeyBuilder.raw(file.toString()) }
-            fun labels(labels: TfMap) = apply { blockBuilder.addElement(labelsBuilder.value(labels).build()) }
-            fun labels(ref: TfRef<TfMap>) = apply { blockBuilder.addElement(labelsBuilder.raw(ref.toString()).build()) }
+            fun labels(labels: TfMap) = apply { addElement(labelsBuilder.value(labels).build()) }
+            fun labels(ref: TfRef<TfMap>) = apply { addElement(labelsBuilder.raw(ref.toString()).build()) }
             override fun build(): Resource {
-                blockBuilder.addElement(nameBuilder.build()).addElement(publicKeyBuilder.build())
+                addElement(nameBuilder.build())
+                addElement(publicKeyBuilder.build())
                 return Resource(buildBlock(), buildSelf())
             }
         }
@@ -59,14 +60,14 @@ object HCloudSshKey {
             private val withSelectorBuilder: Argument.Builder = Argument.Builder().name(WITH_SELECTOR)
             init { dataSource(HCLOUD_SSH_KEY) }
 
-            fun id(id: Int) = apply { blockBuilder.addElement(idBuilder.value(id.toDouble()).build()) }
-            fun id(ref: TfRef<TfNumber>) = apply { blockBuilder.addElement(idBuilder.raw(ref.toString()).build()) }
-            fun name(name: String) = apply { blockBuilder.addElement(nameBuilder.value(name).build()) }
-            fun name(ref: TfRef<TfString>) = apply { blockBuilder.addElement(nameBuilder.raw(ref.toString()).build()) }
-            fun fingerprint(fingerprint: String) = apply { blockBuilder.addElement(fingerprintBuilder.value(fingerprint).build()) }
-            fun fingerprint(ref: TfRef<TfString>) = apply { blockBuilder.addElement(fingerprintBuilder.raw(ref.toString()).build()) }
-            fun withSelector(selector: String) = apply { blockBuilder.addElement(withSelectorBuilder.value(selector).build()) }
-            fun withSelector(ref: TfRef<TfString>) = apply { blockBuilder.addElement(withSelectorBuilder.raw(ref.toString()).build()) }
+            fun id(id: Int) = apply { addElement(idBuilder.value(id.toDouble()).build()) }
+            fun id(ref: TfRef<TfNumber>) = apply { addElement(idBuilder.raw(ref.toString()).build()) }
+            fun name(name: String) = apply { addElement(nameBuilder.value(name).build()) }
+            fun name(ref: TfRef<TfString>) = apply { addElement(nameBuilder.raw(ref.toString()).build()) }
+            fun fingerprint(fingerprint: String) = apply { addElement(fingerprintBuilder.value(fingerprint).build()) }
+            fun fingerprint(ref: TfRef<TfString>) = apply { addElement(fingerprintBuilder.raw(ref.toString()).build()) }
+            fun withSelector(selector: String) = apply { addElement(withSelectorBuilder.value(selector).build()) }
+            fun withSelector(ref: TfRef<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
             override fun build(): DataSource = DataSource(buildBlock(), buildSelf())
         }
     }

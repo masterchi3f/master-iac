@@ -52,10 +52,12 @@ object HCloudLoadBalancerTarget {
             fun usePrivateIp(usePrivateIp: Boolean) = apply { usePrivateIpIsSet = true; usePrivateIpBuilder.value(usePrivateIp) }
             fun usePrivateIp(ref: TfRef<TfBool>) = apply { usePrivateIpIsSet = true; usePrivateIpBuilder.raw(ref.toString()) }
             override fun build(): Resource {
-                blockBuilder.addElement(typeBuilder.build()).addElement(loadBalancerIdBuilder.build()).addElement(valueBuilder.build())
+                addElement(typeBuilder.build())
+                addElement(loadBalancerIdBuilder.build())
+                addElement(valueBuilder.build())
                 if (usePrivateIpIsSet) {
                     if (_type != Type.IP) {
-                        blockBuilder.addElement(usePrivateIpBuilder.build())
+                        addElement(usePrivateIpBuilder.build())
                     } else {
                         throw IllegalArgumentException("usePrivateIp is only allowed with type ${Type.LABEL_SELECTOR} and ${Type.SERVER}")
                     }

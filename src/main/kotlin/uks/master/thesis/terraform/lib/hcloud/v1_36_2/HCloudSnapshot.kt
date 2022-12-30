@@ -29,12 +29,12 @@ object HCloudSnapshot {
 
             fun serverId(serverId: Int) = apply { serverIdBuilder.value(serverId.toDouble()) }
             fun serverId(ref: TfRef<TfNumber>) = apply { serverIdBuilder.raw(ref.toString()) }
-            fun description(description: String) = apply { blockBuilder.addElement(descriptionBuilder.value(description).build()) }
-            fun description(ref: TfRef<TfString>) = apply { blockBuilder.addElement(descriptionBuilder.raw(ref.toString()).build()) }
-            fun labels(labels: TfMap) = apply { blockBuilder.addElement(labelsBuilder.value(labels).build()) }
-            fun labels(ref: TfRef<TfMap>) = apply { blockBuilder.addElement(labelsBuilder.raw(ref.toString()).build()) }
+            fun description(description: String) = apply { addElement(descriptionBuilder.value(description).build()) }
+            fun description(ref: TfRef<TfString>) = apply { addElement(descriptionBuilder.raw(ref.toString()).build()) }
+            fun labels(labels: TfMap) = apply { addElement(labelsBuilder.value(labels).build()) }
+            fun labels(ref: TfRef<TfMap>) = apply { addElement(labelsBuilder.raw(ref.toString()).build()) }
             override fun build(): Resource {
-                blockBuilder.addElement(serverIdBuilder.build())
+                addElement(serverIdBuilder.build())
                 return Resource(buildBlock(), buildSelf())
             }
         }

@@ -33,7 +33,9 @@ object HCloudNetworkRoute {
             fun gateway(gateway: String) = apply { gatewayBuilder.value(gateway) }
             fun gateway(ref: TfRef<TfString>) = apply { gatewayBuilder.raw(ref.toString()) }
             override fun build(): Resource {
-                blockBuilder.addElement(networkIdBuilder.build()).addElement(destinationBuilder.build()).addElement(gatewayBuilder.build())
+                addElement(networkIdBuilder.build())
+                addElement(destinationBuilder.build())
+                addElement(gatewayBuilder.build())
                 return Resource(buildBlock(), buildSelf())
             }
         }

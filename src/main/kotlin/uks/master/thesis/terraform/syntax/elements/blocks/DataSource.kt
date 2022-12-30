@@ -19,10 +19,10 @@ open class DataSource protected constructor(
 
     @Suppress("UNCHECKED_CAST")
     open class GBuilder<T> {
+        private val blockBuilder: Block.Builder = Block.Builder()
         private val providerBuilder: Argument.Builder = Argument.Builder().name(PROVIDER)
         private lateinit var _source: Identifier
         private lateinit var _name: Identifier
-        protected val blockBuilder: Block.Builder = Block.Builder()
 
         fun dataSource(source: String): T = apply { preventDupSource(); _source = Identifier(source) } as T
         fun dataName(name: String): T = apply { preventDupName(); _name = Identifier(name) } as T

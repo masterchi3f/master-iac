@@ -53,20 +53,20 @@ object HCloudFloatingIp {
 
             fun type(type: Type) = apply { typeBuilder.value(type.toString()) }
             fun type(ref: TfRef<TfString>) = apply { typeBuilder.raw(ref.toString()) }
-            fun name(name: String) = apply { blockBuilder.addElement(nameBuilder.value(name).build()) }
-            fun name(ref: TfRef<TfString>) = apply { blockBuilder.addElement(nameBuilder.raw(ref.toString()).build()) }
-            fun serverId(serverId: Int) = apply { blockBuilder.addElement(serverIdBuilder.value(serverId.toDouble()).build()) }
-            fun serverId(ref: TfRef<TfNumber>) = apply { blockBuilder.addElement(serverIdBuilder.raw(ref.toString()).build()) }
-            fun homeLocation(homeLocation: String) = apply { blockBuilder.addElement(homeLocationBuilder.value(homeLocation).build()) }
-            fun homeLocation(ref: TfRef<TfString>) = apply { blockBuilder.addElement(homeLocationBuilder.raw(ref.toString()).build()) }
-            fun description(description: String) = apply { blockBuilder.addElement(descriptionBuilder.value(description).build()) }
-            fun description(ref: TfRef<TfString>) = apply { blockBuilder.addElement(descriptionBuilder.raw(ref.toString()).build()) }
-            fun labels(labels: TfMap) = apply { blockBuilder.addElement(labelsBuilder.value(labels).build()) }
-            fun labels(ref: TfRef<TfMap>) = apply { blockBuilder.addElement(labelsBuilder.raw(ref.toString()).build()) }
-            fun deleteProtection(deleteProtection: Boolean) = apply { blockBuilder.addElement(deleteProtectionBuilder.value(deleteProtection).build()) }
-            fun deleteProtection(ref: TfRef<TfBool>) = apply { blockBuilder.addElement(deleteProtectionBuilder.raw(ref.toString()).build()) }
+            fun name(name: String) = apply { addElement(nameBuilder.value(name).build()) }
+            fun name(ref: TfRef<TfString>) = apply { addElement(nameBuilder.raw(ref.toString()).build()) }
+            fun serverId(serverId: Int) = apply { addElement(serverIdBuilder.value(serverId.toDouble()).build()) }
+            fun serverId(ref: TfRef<TfNumber>) = apply { addElement(serverIdBuilder.raw(ref.toString()).build()) }
+            fun homeLocation(homeLocation: String) = apply { addElement(homeLocationBuilder.value(homeLocation).build()) }
+            fun homeLocation(ref: TfRef<TfString>) = apply { addElement(homeLocationBuilder.raw(ref.toString()).build()) }
+            fun description(description: String) = apply { addElement(descriptionBuilder.value(description).build()) }
+            fun description(ref: TfRef<TfString>) = apply { addElement(descriptionBuilder.raw(ref.toString()).build()) }
+            fun labels(labels: TfMap) = apply { addElement(labelsBuilder.value(labels).build()) }
+            fun labels(ref: TfRef<TfMap>) = apply { addElement(labelsBuilder.raw(ref.toString()).build()) }
+            fun deleteProtection(deleteProtection: Boolean) = apply { addElement(deleteProtectionBuilder.value(deleteProtection).build()) }
+            fun deleteProtection(ref: TfRef<TfBool>) = apply { addElement(deleteProtectionBuilder.raw(ref.toString()).build()) }
             override fun build(): Resource {
-                blockBuilder.addElement(typeBuilder.build())
+                addElement(typeBuilder.build())
                 return Resource(buildBlock(), buildSelf())
             }
         }
@@ -92,14 +92,14 @@ object HCloudFloatingIp {
             private val withSelectorBuilder: Argument.Builder = Argument.Builder().name(WITH_SELECTOR)
             init { dataSource(HCLOUD_FLOATING_IP) }
 
-            fun id(id: Int) = apply { blockBuilder.addElement(idBuilder.value(id.toDouble()).build()) }
-            fun id(ref: TfRef<TfNumber>) = apply { blockBuilder.addElement(idBuilder.raw(ref.toString()).build()) }
-            fun name(name: String) = apply { blockBuilder.addElement(nameBuilder.value(name).build()) }
-            fun name(ref: TfRef<TfString>) = apply { blockBuilder.addElement(nameBuilder.raw(ref.toString()).build()) }
-            fun ipAddress(ipAddress: String) = apply { blockBuilder.addElement(ipAddressBuilder.value(ipAddress).build()) }
-            fun ipAddress(ref: TfRef<TfString>) = apply { blockBuilder.addElement(ipAddressBuilder.raw(ref.toString()).build()) }
-            fun withSelector(selector: String) = apply { blockBuilder.addElement(withSelectorBuilder.value(selector).build()) }
-            fun withSelector(ref: TfRef<TfString>) = apply { blockBuilder.addElement(withSelectorBuilder.raw(ref.toString()).build()) }
+            fun id(id: Int) = apply { addElement(idBuilder.value(id.toDouble()).build()) }
+            fun id(ref: TfRef<TfNumber>) = apply { addElement(idBuilder.raw(ref.toString()).build()) }
+            fun name(name: String) = apply { addElement(nameBuilder.value(name).build()) }
+            fun name(ref: TfRef<TfString>) = apply { addElement(nameBuilder.raw(ref.toString()).build()) }
+            fun ipAddress(ipAddress: String) = apply { addElement(ipAddressBuilder.value(ipAddress).build()) }
+            fun ipAddress(ref: TfRef<TfString>) = apply { addElement(ipAddressBuilder.raw(ref.toString()).build()) }
+            fun withSelector(selector: String) = apply { addElement(withSelectorBuilder.value(selector).build()) }
+            fun withSelector(ref: TfRef<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
             override fun build(): DataSource = DataSource(buildBlock(), buildSelf())
         }
     }

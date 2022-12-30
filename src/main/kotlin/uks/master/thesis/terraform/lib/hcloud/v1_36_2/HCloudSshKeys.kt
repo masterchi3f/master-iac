@@ -19,8 +19,8 @@ object HCloudSshKeys {
             private val withSelectorBuilder: Argument.Builder = Argument.Builder().name(WITH_SELECTOR)
             init { dataSource(HCLOUD_SSH_KEYS) }
 
-            fun withSelector(selector: String) = apply { blockBuilder.addElement(withSelectorBuilder.value(selector).build()) }
-            fun withSelector(ref: TfRef<TfString>) = apply { blockBuilder.addElement(withSelectorBuilder.raw(ref.toString()).build()) }
+            fun withSelector(selector: String) = apply { addElement(withSelectorBuilder.value(selector).build()) }
+            fun withSelector(ref: TfRef<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
             override fun build() = DataSource(buildBlock(), buildSelf())
         }
     }

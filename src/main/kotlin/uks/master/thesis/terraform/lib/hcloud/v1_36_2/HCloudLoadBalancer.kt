@@ -86,20 +86,21 @@ object HCloudLoadBalancer {
             fun name(ref: TfRef<TfString>) = apply { nameBuilder.raw(ref.toString()) }
             fun loadBalancerType(loadBalancerType: String) = apply { loadBalancerTypeBuilder.value(loadBalancerType) }
             fun loadBalancerType(ref: TfRef<TfString>) = apply { loadBalancerTypeBuilder.raw(ref.toString()) }
-            fun location(location: String) = apply { locationOrNetworkZoneSet = true; blockBuilder.addElement(locationBuilder.value(location).build()) }
-            fun location(ref: TfRef<TfString>) = apply { locationOrNetworkZoneSet = true; blockBuilder.addElement(locationBuilder.raw(ref.toString()).build()) }
-            fun networkZone(networkZone: String) = apply { locationOrNetworkZoneSet = true; blockBuilder.addElement(networkZoneBuilder.value(networkZone).build()) }
-            fun networkZone(ref: TfRef<TfString>) = apply { locationOrNetworkZoneSet = true; blockBuilder.addElement(networkZoneBuilder.raw(ref.toString()).build()) }
-            fun algorithm(algorithm: Algorithm) = apply { preventDupAlgorithm(); blockBuilder.addElement(algorithm.block) }
-            fun labels(labels: TfMap) = apply { blockBuilder.addElement(labelsBuilder.value(labels).build()) }
-            fun labels(ref: TfRef<TfMap>) = apply { blockBuilder.addElement(labelsBuilder.raw(ref.toString()).build()) }
-            fun deleteProtection(deleteProtection: Boolean) = apply { blockBuilder.addElement(deleteProtectionBuilder.value(deleteProtection).build()) }
-            fun deleteProtection(ref: TfRef<TfBool>) = apply { blockBuilder.addElement(deleteProtectionBuilder.raw(ref.toString()).build()) }
+            fun location(location: String) = apply { locationOrNetworkZoneSet = true; addElement(locationBuilder.value(location).build()) }
+            fun location(ref: TfRef<TfString>) = apply { locationOrNetworkZoneSet = true; addElement(locationBuilder.raw(ref.toString()).build()) }
+            fun networkZone(networkZone: String) = apply { locationOrNetworkZoneSet = true; addElement(networkZoneBuilder.value(networkZone).build()) }
+            fun networkZone(ref: TfRef<TfString>) = apply { locationOrNetworkZoneSet = true; addElement(networkZoneBuilder.raw(ref.toString()).build()) }
+            fun algorithm(algorithm: Algorithm) = apply { preventDupAlgorithm(); addElement(algorithm.block) }
+            fun labels(labels: TfMap) = apply { addElement(labelsBuilder.value(labels).build()) }
+            fun labels(ref: TfRef<TfMap>) = apply { addElement(labelsBuilder.raw(ref.toString()).build()) }
+            fun deleteProtection(deleteProtection: Boolean) = apply { addElement(deleteProtectionBuilder.value(deleteProtection).build()) }
+            fun deleteProtection(ref: TfRef<TfBool>) = apply { addElement(deleteProtectionBuilder.raw(ref.toString()).build()) }
             override fun build(): Resource {
                 if (!locationOrNetworkZoneSet) {
                     throw IllegalArgumentException("Either location or networkZone must be set!")
                 }
-                blockBuilder.addElement(nameBuilder.build()).addElement(loadBalancerTypeBuilder.build())
+                addElement(nameBuilder.build())
+                addElement(loadBalancerTypeBuilder.build())
                 return Resource(buildBlock(), buildSelf())
             }
 
@@ -135,10 +136,10 @@ object HCloudLoadBalancer {
             fun id(ref: TfRef<TfNumber>) = apply { idOrNameBuilder.name(ID).raw(ref.toString()) }
             fun name(name: String) = apply { idOrNameBuilder.name(NAME).value(name) }
             fun name(ref: TfRef<TfString>) = apply { idOrNameBuilder.name(NAME).raw(ref.toString()) }
-            fun withSelector(selector: String) = apply { blockBuilder.addElement(withSelectorBuilder.value(selector).build()) }
-            fun withSelector(ref: TfRef<TfString>) = apply { blockBuilder.addElement(withSelectorBuilder.raw(ref.toString()).build()) }
+            fun withSelector(selector: String) = apply { addElement(withSelectorBuilder.value(selector).build()) }
+            fun withSelector(ref: TfRef<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
             override fun build(): DataSource {
-                blockBuilder.addElement(idOrNameBuilder.build())
+                addElement(idOrNameBuilder.build())
                 return DataSource(buildBlock(), buildSelf())
             }
         }

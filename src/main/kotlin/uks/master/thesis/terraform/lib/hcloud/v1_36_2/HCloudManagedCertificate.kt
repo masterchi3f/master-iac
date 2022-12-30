@@ -43,10 +43,11 @@ object HCloudManagedCertificate {
             fun name(ref: TfRef<TfString>) = apply { nameBuilder.raw(ref.toString()) }
             fun domains(domains: TfList) = apply { domainsBuilder.value(domains) }
             fun domains(ref: TfRef<TfList>) = apply { domainsBuilder.raw(ref.toString()) }
-            fun labels(labels: TfMap) = apply { blockBuilder.addElement(labelsBuilder.value(labels).build()) }
-            fun labels(ref: TfRef<TfMap>) = apply { blockBuilder.addElement(labelsBuilder.raw(ref.toString()).build()) }
+            fun labels(labels: TfMap) = apply { addElement(labelsBuilder.value(labels).build()) }
+            fun labels(ref: TfRef<TfMap>) = apply { addElement(labelsBuilder.raw(ref.toString()).build()) }
             override fun build(): Resource {
-                blockBuilder.addElement(nameBuilder.build()).addElement(domainsBuilder.build())
+                addElement(nameBuilder.build())
+                addElement(domainsBuilder.build())
                 return Resource(buildBlock(), buildSelf())
             }
         }

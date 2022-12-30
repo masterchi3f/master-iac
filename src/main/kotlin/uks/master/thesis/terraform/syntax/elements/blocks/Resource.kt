@@ -19,10 +19,10 @@ open class Resource protected constructor(
 
     @Suppress("UNCHECKED_CAST")
     open class GBuilder<T> {
+        private val blockBuilder: Block.Builder = Block.Builder()
         private val providerBuilder: Argument.Builder = Argument.Builder().name(PROVIDER)
         private lateinit var _type: Identifier
         private lateinit var _name: Identifier
-        protected val blockBuilder: Block.Builder = Block.Builder()
 
         fun resourceType(type: String): T = apply { preventDupType(); _type = Identifier(type) } as T
         fun resourceName(name: String): T = apply { preventDupName(); _name = Identifier(name) } as T

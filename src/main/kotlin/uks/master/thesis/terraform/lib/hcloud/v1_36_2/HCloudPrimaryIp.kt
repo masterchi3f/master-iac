@@ -62,18 +62,17 @@ object HCloudPrimaryIp {
             fun autoDelete(autoDelete: Boolean) = apply { autoDeleteBuilder.value(autoDelete) }
             fun autoDelete(ref: TfRef<TfBool>) = apply { autoDeleteBuilder.raw(ref.toString()) }
             fun assigneeType(assigneeType: AssigneeType) = apply { assigneeTypeBuilder.value(assigneeType.toString()) }
-            fun datacenter(datacenter: String) = apply { blockBuilder.addElement(datacenterBuilder.value(datacenter).build()) }
-            fun datacenter(ref: TfRef<TfString>) = apply { blockBuilder.addElement(datacenterBuilder.raw(ref.toString()).build()) }
-            fun labels(labels: TfMap) = apply { blockBuilder.addElement(labelsBuilder.value(labels).build()) }
-            fun labels(ref: TfRef<TfMap>) = apply { blockBuilder.addElement(labelsBuilder.raw(ref.toString()).build()) }
-            fun deleteProtection(deleteProtection: Boolean) = apply { blockBuilder.addElement(deleteProtectionBuilder.value(deleteProtection).build()) }
-            fun deleteProtection(ref: TfRef<TfBool>) = apply { blockBuilder.addElement(deleteProtectionBuilder.raw(ref.toString()).build()) }
+            fun datacenter(datacenter: String) = apply { addElement(datacenterBuilder.value(datacenter).build()) }
+            fun datacenter(ref: TfRef<TfString>) = apply { addElement(datacenterBuilder.raw(ref.toString()).build()) }
+            fun labels(labels: TfMap) = apply { addElement(labelsBuilder.value(labels).build()) }
+            fun labels(ref: TfRef<TfMap>) = apply { addElement(labelsBuilder.raw(ref.toString()).build()) }
+            fun deleteProtection(deleteProtection: Boolean) = apply { addElement(deleteProtectionBuilder.value(deleteProtection).build()) }
+            fun deleteProtection(ref: TfRef<TfBool>) = apply { addElement(deleteProtectionBuilder.raw(ref.toString()).build()) }
             override fun build(): Resource {
-                blockBuilder
-                    .addElement(typeBuilder.build())
-                    .addElement(nameBuilder.build())
-                    .addElement(autoDeleteBuilder.build())
-                    .addElement(assigneeTypeBuilder.build())
+                addElement(typeBuilder.build())
+                addElement(nameBuilder.build())
+                addElement(autoDeleteBuilder.build())
+                addElement(assigneeTypeBuilder.build())
                 return Resource(buildBlock(), buildSelf())
             }
         }
@@ -103,10 +102,10 @@ object HCloudPrimaryIp {
             fun name(ref: TfRef<TfString>) = apply { idOrNameOrIpAddressBuilder.name(NAME).raw(ref.toString()) }
             fun ipAddress(ipAddress: String) = apply { idOrNameOrIpAddressBuilder.name(IP_ADDRESS).value(ipAddress) }
             fun ipAddress(ref: TfRef<TfString>) = apply { idOrNameOrIpAddressBuilder.name(IP_ADDRESS).raw(ref.toString()) }
-            fun withSelector(selector: String) = apply { blockBuilder.addElement(withSelectorBuilder.value(selector).build()) }
-            fun withSelector(ref: TfRef<TfString>) = apply { blockBuilder.addElement(withSelectorBuilder.raw(ref.toString()).build()) }
+            fun withSelector(selector: String) = apply { addElement(withSelectorBuilder.value(selector).build()) }
+            fun withSelector(ref: TfRef<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
             override fun build(): DataSource {
-                blockBuilder.addElement(idOrNameOrIpAddressBuilder.build())
+                addElement(idOrNameOrIpAddressBuilder.build())
                 return DataSource(buildBlock(), buildSelf())
             }
         }

@@ -41,8 +41,9 @@ object HCloudRdns {
             fun loadBalancerId(loadBalancerId: Int) = apply { serverIdOrFloatingIpIdOrLoadBalancerIdBuilder.name(LOAD_BALANCER_ID).value(loadBalancerId.toDouble()) }
             fun loadBalancerId(ref: TfRef<TfNumber>) = apply { serverIdOrFloatingIpIdOrLoadBalancerIdBuilder.name(LOAD_BALANCER_ID).raw(ref.toString()) }
             override fun build(): Resource {
-                blockBuilder.addElement(dnsPtrBuilder.build()).addElement(ipAddressBuilder.build())
-                    .addElement(serverIdOrFloatingIpIdOrLoadBalancerIdBuilder.build())
+                addElement(dnsPtrBuilder.build())
+                addElement(ipAddressBuilder.build())
+                addElement(serverIdOrFloatingIpIdOrLoadBalancerIdBuilder.build())
                 return Resource(buildBlock(), buildSelf())
             }
         }

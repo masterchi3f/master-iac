@@ -27,7 +27,8 @@ object HCloudFloatingIpAssignment {
             fun serverId(serverId: Int) = apply { serverIdBuilder.value(serverId.toDouble()) }
             fun serverId(ref: TfRef<TfNumber>) = apply { serverIdBuilder.raw(ref.toString()) }
             override fun build(): Resource {
-                blockBuilder.addElement(floatingIpIdBuilder.build()).addElement(serverIdBuilder.build())
+                addElement(floatingIpIdBuilder.build())
+                addElement(serverIdBuilder.build())
                 return Resource(buildBlock(), buildSelf())
             }
         }

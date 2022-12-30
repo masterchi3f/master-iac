@@ -34,19 +34,19 @@ object HCloudLoadBalancerNetwork {
 
             fun loadBalancerId(loadBalancerId: Int) = apply { loadBalancerIdBuilder.value(loadBalancerId.toDouble()) }
             fun loadBalancerId(ref: TfRef<TfNumber>) = apply { loadBalancerIdBuilder.raw(ref.toString()) }
-            fun networkId(networkId: Int) = apply { networkIdOrSubnetIdSet = true; blockBuilder.addElement(networkIdBuilder.value(networkId.toDouble()).build()) }
-            fun networkId(ref: TfRef<TfNumber>) = apply { networkIdOrSubnetIdSet = true; blockBuilder.addElement(networkIdBuilder.raw(ref.toString()).build()) }
-            fun subnetId(subnetId: Int) = apply { networkIdOrSubnetIdSet = true; blockBuilder.addElement(subnetIdBuilder.value(subnetId.toDouble()).build()) }
-            fun subnetId(ref: TfRef<TfNumber>) = apply { networkIdOrSubnetIdSet = true; blockBuilder.addElement(subnetIdBuilder.raw(ref.toString()).build()) }
-            fun ip(ip: String) = apply { blockBuilder.addElement(ipBuilder.value(ip).build()) }
-            fun ip(ref: TfRef<TfString>) = apply { blockBuilder.addElement(ipBuilder.raw(ref.toString()).build()) }
-            fun enablePublicInterface(enablePublicInterface: Boolean) = apply { blockBuilder.addElement(enablePublicInterfaceBuilder.value(enablePublicInterface).build()) }
-            fun enablePublicInterface(ref: TfRef<TfBool>) = apply { blockBuilder.addElement(enablePublicInterfaceBuilder.raw(ref.toString()).build()) }
+            fun networkId(networkId: Int) = apply { networkIdOrSubnetIdSet = true; addElement(networkIdBuilder.value(networkId.toDouble()).build()) }
+            fun networkId(ref: TfRef<TfNumber>) = apply { networkIdOrSubnetIdSet = true; addElement(networkIdBuilder.raw(ref.toString()).build()) }
+            fun subnetId(subnetId: Int) = apply { networkIdOrSubnetIdSet = true; addElement(subnetIdBuilder.value(subnetId.toDouble()).build()) }
+            fun subnetId(ref: TfRef<TfNumber>) = apply { networkIdOrSubnetIdSet = true; addElement(subnetIdBuilder.raw(ref.toString()).build()) }
+            fun ip(ip: String) = apply { addElement(ipBuilder.value(ip).build()) }
+            fun ip(ref: TfRef<TfString>) = apply { addElement(ipBuilder.raw(ref.toString()).build()) }
+            fun enablePublicInterface(enablePublicInterface: Boolean) = apply { addElement(enablePublicInterfaceBuilder.value(enablePublicInterface).build()) }
+            fun enablePublicInterface(ref: TfRef<TfBool>) = apply { addElement(enablePublicInterfaceBuilder.raw(ref.toString()).build()) }
             override fun build(): Resource {
                 if (!networkIdOrSubnetIdSet) {
                     throw IllegalArgumentException("Either networkId or subnetId must be set!")
                 }
-                blockBuilder.addElement(loadBalancerIdBuilder.build())
+                addElement(loadBalancerIdBuilder.build())
                 return Resource(buildBlock(), buildSelf())
             }
         }

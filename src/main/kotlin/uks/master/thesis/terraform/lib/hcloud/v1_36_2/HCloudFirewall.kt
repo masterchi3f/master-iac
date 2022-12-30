@@ -140,12 +140,12 @@ object HCloudFirewall {
             private var hasApplyTo = false
             init { resourceType(HCLOUD_FIREWALL) }
 
-            fun name(name: String) = apply { blockBuilder.addElement(nameBuilder.value(name).build()) }
-            fun name(ref: TfRef<TfString>) = apply { blockBuilder.addElement(nameBuilder.raw(ref.toString()).build()) }
-            fun labels(labels: TfMap) = apply { blockBuilder.addElement(labelsBuilder.value(labels).build()) }
-            fun labels(ref: TfRef<TfMap>) = apply { blockBuilder.addElement(labelsBuilder.raw(ref.toString()).build()) }
-            fun applyTo(applyTo: ApplyTo) = apply { preventDupApplyTo(); blockBuilder.addElement(applyTo.block) }
-            fun rule(rule: Rule) = apply { blockBuilder.addElement(rule.block) }
+            fun name(name: String) = apply { addElement(nameBuilder.value(name).build()) }
+            fun name(ref: TfRef<TfString>) = apply { addElement(nameBuilder.raw(ref.toString()).build()) }
+            fun labels(labels: TfMap) = apply { addElement(labelsBuilder.value(labels).build()) }
+            fun labels(ref: TfRef<TfMap>) = apply { addElement(labelsBuilder.raw(ref.toString()).build()) }
+            fun applyTo(applyTo: ApplyTo) = apply { preventDupApplyTo(); addElement(applyTo.block) }
+            fun rule(rule: Rule) = apply { addElement(rule.block) }
             override fun build() = Resource(buildBlock(), buildSelf())
 
             private fun preventDupApplyTo() {
@@ -188,12 +188,12 @@ object HCloudFirewall {
             fun id(ref: TfRef<TfNumber>) = apply { idOrNameBuilder.name(ID).raw(ref.toString()) }
             fun name(name: String) = apply { idOrNameBuilder.name(NAME).value(name) }
             fun name(ref: TfRef<TfString>) = apply { idOrNameBuilder.name(NAME).raw(ref.toString()) }
-            fun withSelector(selector: String) = apply { blockBuilder.addElement(withSelectorBuilder.value(selector).build()) }
-            fun withSelector(ref: TfRef<TfString>) = apply { blockBuilder.addElement(withSelectorBuilder.raw(ref.toString()).build()) }
-            fun mostRecent(mostRecent: Boolean) = apply { blockBuilder.addElement(mostRecentBuilder.value(mostRecent).build()) }
-            fun mostRecent(ref: TfRef<TfBool>) = apply { blockBuilder.addElement(mostRecentBuilder.raw(ref.toString()).build()) }
+            fun withSelector(selector: String) = apply { addElement(withSelectorBuilder.value(selector).build()) }
+            fun withSelector(ref: TfRef<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
+            fun mostRecent(mostRecent: Boolean) = apply { addElement(mostRecentBuilder.value(mostRecent).build()) }
+            fun mostRecent(ref: TfRef<TfBool>) = apply { addElement(mostRecentBuilder.raw(ref.toString()).build()) }
             override fun build(): DataSource {
-                blockBuilder.addElement(idOrNameBuilder.build())
+                addElement(idOrNameBuilder.build())
                 return DataSource(buildBlock(), buildSelf())
             }
         }

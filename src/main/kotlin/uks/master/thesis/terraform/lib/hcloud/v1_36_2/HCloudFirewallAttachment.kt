@@ -28,12 +28,12 @@ object HCloudFirewallAttachment {
 
             fun firewallId(id: Int) = apply { firewallIdBuilder.value(id.toDouble()) }
             fun firewallId(ref: TfRef<TfNumber>) = apply { firewallIdBuilder.raw(ref.toString()) }
-            fun serverIds(ids: TfList) = apply { blockBuilder.addElement(serverIdsBuilder.value(ids).build()) }
-            fun serverIds(ref: TfRef<TfList>) = apply { blockBuilder.addElement(serverIdsBuilder.raw(ref.toString()).build()) }
-            fun labelsSelectors(labelSelectors: TfList) = apply { blockBuilder.addElement(labelSelectorsBuilder.value(labelSelectors).build()) }
-            fun labelsSelectors(ref: TfRef<TfList>) = apply { blockBuilder.addElement(labelSelectorsBuilder.raw(ref.toString()).build()) }
+            fun serverIds(ids: TfList) = apply { addElement(serverIdsBuilder.value(ids).build()) }
+            fun serverIds(ref: TfRef<TfList>) = apply { addElement(serverIdsBuilder.raw(ref.toString()).build()) }
+            fun labelsSelectors(labelSelectors: TfList) = apply { addElement(labelSelectorsBuilder.value(labelSelectors).build()) }
+            fun labelsSelectors(ref: TfRef<TfList>) = apply { addElement(labelSelectorsBuilder.raw(ref.toString()).build()) }
             override fun build(): Resource {
-                blockBuilder.addElement(firewallIdBuilder.build())
+                addElement(firewallIdBuilder.build())
                 return Resource(buildBlock(), buildSelf())
             }
         }
