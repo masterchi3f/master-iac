@@ -33,14 +33,14 @@ object HCloudServerNetwork {
             private var hasNetworkIdOrSubnetId = false
             init { resourceType(HCLOUD_SERVER_NETWORK) }
 
-            fun serverId(serverId: String) = apply { serverIdBuilder.value(serverId) }
-            fun serverId(ref: TfRef<TfString>) = apply { serverIdBuilder.raw(ref.toString()) }
+            fun serverId(serverId: Int) = apply { serverIdBuilder.value(serverId.toDouble()) }
+            fun serverId(ref: TfRef<TfNumber>) = apply { serverIdBuilder.raw(ref.toString()) }
             fun aliasIps(aliasIps: TfList) = apply { blockBuilder.addElement(aliasIpsBuilder.value(aliasIps).build()) }
             fun aliasIps(ref: TfRef<TfList>) = apply { blockBuilder.addElement(aliasIpsBuilder.raw(ref.toString()).build()) }
-            fun networkId(networkId: String) = apply { hasNetworkIdOrSubnetId = true; blockBuilder.addElement(networkIdBuilder.value(networkId).build()) }
-            fun networkId(ref: TfRef<TfString>) = apply { hasNetworkIdOrSubnetId = true; blockBuilder.addElement(networkIdBuilder.raw(ref.toString()).build()) }
-            fun subnetId(subnetId: String) = apply { hasNetworkIdOrSubnetId = true; blockBuilder.addElement(subnetIdBuilder.value(subnetId).build()) }
-            fun subnetId(ref: TfRef<TfString>) = apply { hasNetworkIdOrSubnetId = true; blockBuilder.addElement(subnetIdBuilder.raw(ref.toString()).build()) }
+            fun networkId(networkId: Int) = apply { hasNetworkIdOrSubnetId = true; blockBuilder.addElement(networkIdBuilder.value(networkId.toDouble()).build()) }
+            fun networkId(ref: TfRef<TfNumber>) = apply { hasNetworkIdOrSubnetId = true; blockBuilder.addElement(networkIdBuilder.raw(ref.toString()).build()) }
+            fun subnetId(subnetId: Int) = apply { hasNetworkIdOrSubnetId = true; blockBuilder.addElement(subnetIdBuilder.value(subnetId.toDouble()).build()) }
+            fun subnetId(ref: TfRef<TfNumber>) = apply { hasNetworkIdOrSubnetId = true; blockBuilder.addElement(subnetIdBuilder.raw(ref.toString()).build()) }
             fun ip(ip: String) = apply { blockBuilder.addElement(ipBuilder.value(ip).build()) }
             fun ip(ref: TfRef<TfString>) = apply { blockBuilder.addElement(ipBuilder.raw(ref.toString()).build()) }
             override fun build(): Resource {

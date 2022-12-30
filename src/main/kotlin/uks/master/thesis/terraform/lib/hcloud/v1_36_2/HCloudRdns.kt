@@ -34,12 +34,12 @@ object HCloudRdns {
             fun dnsPtr(ref: TfRef<TfString>) = apply { dnsPtrBuilder.raw(ref.toString()) }
             fun ipAddress(ipAddress: String) = apply { ipAddressBuilder.value(ipAddress) }
             fun ipAddress(ref: TfRef<TfString>) = apply { ipAddressBuilder.raw(ref.toString()) }
-            fun serverId(serverId: String) = apply { serverIdOrFloatingIpIdOrLoadBalancerIdBuilder.name(SERVER_ID).value(serverId) }
-            fun serverId(ref: TfRef<TfString>) = apply { serverIdOrFloatingIpIdOrLoadBalancerIdBuilder.name(SERVER_ID).raw(ref.toString()) }
-            fun floatingIpId(floatingIpId: String) = apply { serverIdOrFloatingIpIdOrLoadBalancerIdBuilder.name(FLOATING_IP_ID).value(floatingIpId) }
-            fun floatingIpId(ref: TfRef<TfString>) = apply { serverIdOrFloatingIpIdOrLoadBalancerIdBuilder.name(FLOATING_IP_ID).raw(ref.toString()) }
-            fun loadBalancerId(loadBalancerId: String) = apply { serverIdOrFloatingIpIdOrLoadBalancerIdBuilder.name(LOAD_BALANCER_ID).value(loadBalancerId) }
-            fun loadBalancerId(ref: TfRef<TfString>) = apply { serverIdOrFloatingIpIdOrLoadBalancerIdBuilder.name(LOAD_BALANCER_ID).raw(ref.toString()) }
+            fun serverId(serverId: Int) = apply { serverIdOrFloatingIpIdOrLoadBalancerIdBuilder.name(SERVER_ID).value(serverId.toDouble()) }
+            fun serverId(ref: TfRef<TfNumber>) = apply { serverIdOrFloatingIpIdOrLoadBalancerIdBuilder.name(SERVER_ID).raw(ref.toString()) }
+            fun floatingIpId(floatingIpId: Int) = apply { serverIdOrFloatingIpIdOrLoadBalancerIdBuilder.name(FLOATING_IP_ID).value(floatingIpId.toDouble()) }
+            fun floatingIpId(ref: TfRef<TfNumber>) = apply { serverIdOrFloatingIpIdOrLoadBalancerIdBuilder.name(FLOATING_IP_ID).raw(ref.toString()) }
+            fun loadBalancerId(loadBalancerId: Int) = apply { serverIdOrFloatingIpIdOrLoadBalancerIdBuilder.name(LOAD_BALANCER_ID).value(loadBalancerId.toDouble()) }
+            fun loadBalancerId(ref: TfRef<TfNumber>) = apply { serverIdOrFloatingIpIdOrLoadBalancerIdBuilder.name(LOAD_BALANCER_ID).raw(ref.toString()) }
             override fun build(): Resource {
                 blockBuilder.addElement(dnsPtrBuilder.build()).addElement(ipAddressBuilder.build())
                     .addElement(serverIdOrFloatingIpIdOrLoadBalancerIdBuilder.build())
