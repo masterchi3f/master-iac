@@ -44,12 +44,12 @@ object HCloudLoadBalancer {
         }
 
         class Builder {
-            private val blockBuilder: Block.Builder = Block.Builder()
+            private val blockBuilder: Block.Builder = Block.Builder().type(ALGORITHM)
             private val typeBuilder: Argument.Builder = Argument.Builder().name(TYPE)
 
             fun type(type: Type) = apply { blockBuilder.addElement(typeBuilder.value(type.toString()).build()) }
             fun type(ref: TfRef<TfString>) = apply { blockBuilder.addElement(typeBuilder.raw(ref.toString()).build()) }
-            fun build() = Algorithm(blockBuilder.type(ALGORITHM).build())
+            fun build() = Algorithm(blockBuilder.build())
         }
 
         override fun toString(): String = block.toString()

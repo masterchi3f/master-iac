@@ -54,7 +54,7 @@ object HCloudFirewall {
         }
 
         class Builder {
-            private val blockBuilder: Block.Builder = Block.Builder()
+            private val blockBuilder: Block.Builder = Block.Builder().type(RULE)
             private val directionBuilder: Argument.Builder = Argument.Builder().name(DIRECTION)
             private val protocolBuilder: Argument.Builder = Argument.Builder().name(PROTOCOL)
             private val portBuilder: Argument.Builder = Argument.Builder().name(PORT)
@@ -74,13 +74,11 @@ object HCloudFirewall {
             fun description(description: String) = apply { blockBuilder.addElement(descriptionBuilder.value(description).build()) }
             fun description(ref: TfRef<TfString>) = apply { blockBuilder.addElement(descriptionBuilder.raw(ref.toString()).build()) }
             fun build(): Rule {
-                val builder: Block.Builder = blockBuilder
-                    .type(RULE)
-                    .addElement(directionBuilder.build())
-                    .addElement(protocolBuilder.value(_protocol.toString()).build())
-                    .addElement(ipsBuilder.build())
+                blockBuilder.addElement(directionBuilder.build())
+                blockBuilder.addElement(protocolBuilder.value(_protocol.toString()).build())
+                blockBuilder.addElement(ipsBuilder.build())
                 if (_protocol == Protocol.TCP || _protocol == Protocol.UDP) {
-                    builder.addElement(portBuilder.build())
+                    blockBuilder.addElement(portBuilder.build())
                 }
                 return Rule(blockBuilder.build())
             }
@@ -105,14 +103,14 @@ object HCloudFirewall {
         }
 
         class Builder {
-            private val blockBuilder: Block.Builder = Block.Builder()
+            private val blockBuilder: Block.Builder = Block.Builder().type(APPLY_TO)
             private val argumentBuilder: Argument.Builder = Argument.Builder()
 
             fun labelSelector(labelSelector: String) = apply { blockBuilder.addElement(argumentBuilder.name(LABEL_SELECTOR).value(labelSelector).build()) }
             fun labelSelector(ref: TfRef<TfString>) = apply { blockBuilder.addElement(argumentBuilder.name(LABEL_SELECTOR).raw(ref.toString()).build()) }
             fun server(server: Int) = apply { blockBuilder.addElement(argumentBuilder.name(SERVER).value(server.toString()).build()) }
             fun server(ref: TfRef<TfNumber>) = apply { blockBuilder.addElement(argumentBuilder.name(SERVER).raw(ref.toString()).build()) }
-            fun build() = ApplyTo(blockBuilder.type(APPLY_TO).build())
+            fun build() = ApplyTo(blockBuilder.build())
         }
 
         override fun toString(): String = block.toString()
