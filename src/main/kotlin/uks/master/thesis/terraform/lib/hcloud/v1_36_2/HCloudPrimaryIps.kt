@@ -2,7 +2,7 @@ package uks.master.thesis.terraform.lib.hcloud.v1_36_2
 
 import uks.master.thesis.terraform.syntax.elements.Argument
 import uks.master.thesis.terraform.syntax.elements.Block
-import uks.master.thesis.terraform.syntax.expressions.TfNumber
+import uks.master.thesis.terraform.syntax.expressions.TfList
 import uks.master.thesis.terraform.syntax.expressions.TfRef
 import uks.master.thesis.terraform.syntax.expressions.TfString
 
@@ -13,7 +13,7 @@ object HCloudPrimaryIps {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val primaryIps get() = TfRef<TfNumber>(reference(PRIMARY_IPS))
+        val primaryIps get() = TfRef<TfList>(reference(PRIMARY_IPS))
 
         class Builder: GBuilder<Builder>() {
             private val withSelectorBuilder: Argument.Builder = Argument.Builder().name(WITH_SELECTOR)
