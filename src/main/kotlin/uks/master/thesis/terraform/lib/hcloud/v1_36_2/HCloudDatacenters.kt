@@ -21,7 +21,7 @@ object HCloudDatacenters {
         class Builder: GBuilder<Builder>() {
             init { dataSource(HCLOUD_DATACENTERS) }
 
-            override fun build(): DataSource = DataSource(buildBlock(), buildSelf())
+            override fun build() = DataSource(buildBlock(), buildSelf())
         }
     }
 }

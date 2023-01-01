@@ -21,7 +21,7 @@ object HCloudFloatingIps {
 
             fun withSelector(selector: String) = apply { addElement(withSelectorBuilder.value(selector).build()) }
             fun withSelector(ref: TfRef<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
-            override fun build(): DataSource = DataSource(buildBlock(), buildSelf())
+            override fun build() = DataSource(buildBlock(), buildSelf())
         }
     }
 }
