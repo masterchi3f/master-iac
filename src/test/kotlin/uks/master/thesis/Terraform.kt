@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test
 import uks.master.thesis.terraform.Executor
 import uks.master.thesis.terraform.RootModule
 import uks.master.thesis.terraform.lib.hcloud.v1_36_2.HCloud
+import uks.master.thesis.terraform.lib.hcloud.v1_36_2.HCloudServer
 import uks.master.thesis.terraform.lib.hcloud.v1_36_2.HCloudSshKey
 import uks.master.thesis.terraform.syntax.elements.Argument
 import uks.master.thesis.terraform.syntax.elements.Block
@@ -78,51 +79,17 @@ class Terraform {
             .name("hcloud_ssh_key")
             .publicKey(TfFile("~/.ssh/id_rsa.pub"))
             .build()
-        val hCloudServer: Resource = Resource.Builder()
-            .resourceType("hcloud_server")
+        val hCloudServer: HCloudServer.Resource = HCloudServer.Resource.Builder()
             .resourceName("test")
-            .addElement(
-                Argument.Builder()
-                    .name("name")
-                    .value("test")
+            .name("test")
+            .image("debian-11")
+            .serverType("cx11")
+            .location(HCloudServer.Location.NBG1)
+            .publicNet(ipv4Enabled = true, ipv6Enabled = true)
+            .sshKeys(
+                TfList.Builder()
+                    .add(hCloudSshKey.id)
                     .build()
-            ).addElement(
-                Argument.Builder()
-                    .name("image")
-                    .value("debian-11")
-                    .build()
-            ).addElement(
-                Argument.Builder()
-                    .name("server_type")
-                    .value("cx11")
-                    .build()
-            ).addElement(
-                Argument.Builder()
-                    .name("location")
-                    .value("nbg1")
-                    .build()
-            ).addElement(
-                Argument.Builder()
-                    .name("ssh_keys")
-                    .value(
-                        TfList.Builder()
-                            .add(hCloudSshKey.id)
-                            .build()
-                    ).build()
-            ).addElement(
-                Block.Builder()
-                    .type("public_net")
-                    .addElement(
-                        Argument.Builder()
-                            .name("ipv4_enabled")
-                            .value(true)
-                            .build()
-                    ).addElement(
-                        Argument.Builder()
-                            .name("ipv6_enabled")
-                            .value(true)
-                            .build()
-                    ).build()
             ).build()
         HCloud
             .addTokenToTfVarsFromEnv()

@@ -108,7 +108,7 @@ object HCloudFirewall {
 
             fun labelSelector(labelSelector: String) = apply { blockBuilder.addElement(argumentBuilder.name(LABEL_SELECTOR).value(labelSelector).build()) }
             fun labelSelector(ref: TfRef<TfString>) = apply { blockBuilder.addElement(argumentBuilder.name(LABEL_SELECTOR).raw(ref.toString()).build()) }
-            fun server(server: Int) = apply { blockBuilder.addElement(argumentBuilder.name(SERVER).value(server.toString()).build()) }
+            fun server(server: Int) = apply { blockBuilder.addElement(argumentBuilder.name(SERVER).value(server.toDouble()).build()) }
             fun server(ref: TfRef<TfNumber>) = apply { blockBuilder.addElement(argumentBuilder.name(SERVER).raw(ref.toString()).build()) }
             fun build() = ApplyTo(blockBuilder.build())
         }
