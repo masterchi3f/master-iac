@@ -1,12 +1,16 @@
 package uks.master.thesis.terraform.syntax.elements.blocks
 
+import uks.master.thesis.terraform.SubModule
 import uks.master.thesis.terraform.syntax.Child
+import uks.master.thesis.terraform.syntax.DependsOn
 import uks.master.thesis.terraform.syntax.Element
 import uks.master.thesis.terraform.syntax.Identifier
 import uks.master.thesis.terraform.syntax.elements.Argument
 import uks.master.thesis.terraform.syntax.elements.Block
 import uks.master.thesis.terraform.syntax.elements.MultiLineComment
 import uks.master.thesis.terraform.syntax.elements.OneLineSymbol
+import uks.master.thesis.terraform.syntax.expressions.Raw
+import uks.master.thesis.terraform.syntax.expressions.TfRef
 
 open class Resource protected constructor(
     private val block: Block,
@@ -18,9 +22,10 @@ open class Resource protected constructor(
     }
 
     @Suppress("UNCHECKED_CAST")
-    open class GBuilder<T> {
+    open class GBuilder<T>: DependsOn() {
         private val blockBuilder: Block.Builder = Block.Builder()
         private val providerBuilder: Argument.Builder = Argument.Builder().name(PROVIDER)
+        private var dependencies: List<TfRef<Raw>> = mutableListOf()
         private lateinit var _type: Identifier
         private lateinit var _name: Identifier
 
@@ -32,8 +37,15 @@ open class Resource protected constructor(
         fun addElement(multiLineComment: MultiLineComment): T = apply { blockBuilder.addElement(multiLineComment) } as T
         fun provider(provider: Provider, alternate: Boolean = false): T =
             apply { blockBuilder.addElement(providerBuilder.value(provider, alternate).build()) } as T
+        fun addDependency(resource: Resource): T = apply { dependencies = dependencies + TfRef(resource.reference()) } as T
+        fun addDependency(inputVariable: InputVariable): T = apply { dependencies = dependencies + TfRef(inputVariable.reference) } as T
+        fun addDependency(subModule: SubModule): T = apply { dependencies = dependencies + TfRef(subModule.name) } as T
         open fun build() = Resource(buildBlock(), buildSelf())
-        protected fun buildBlock(): Block = blockBuilder.type(RESOURCE).addLabel(_type.toString()).addLabel(_name.toString()).build()
+        protected fun buildBlock(): Block {
+            blockBuilder.type(RESOURCE).addLabel(_type.toString()).addLabel(_name.toString())
+            buildDependencies(blockBuilder, dependencies)
+            return blockBuilder.build()
+        }
         protected fun buildSelf(): String = "$_type.$_name"
 
         private fun preventDupType() {

@@ -2,10 +2,12 @@ package uks.master.thesis.terraform.syntax.elements.blocks
 
 import uks.master.thesis.terraform.SubModule
 import uks.master.thesis.terraform.syntax.Child
+import uks.master.thesis.terraform.syntax.DependsOn
 import uks.master.thesis.terraform.syntax.Element
 import uks.master.thesis.terraform.syntax.Identifier
 import uks.master.thesis.terraform.syntax.elements.Argument
 import uks.master.thesis.terraform.syntax.elements.Block
+import uks.master.thesis.terraform.syntax.expressions.Raw
 import uks.master.thesis.terraform.syntax.expressions.TfMap
 import uks.master.thesis.terraform.syntax.expressions.TfRef
 import uks.master.thesis.terraform.utils.Utils.convertToIdentifier
@@ -23,9 +25,10 @@ class TfModule private constructor(
     }
 
     @Suppress("UNCHECKED_CAST")
-    abstract class Builder<T> {
+    abstract class Builder<T>: DependsOn() {
         private var subModuleNames: List<String> = mutableListOf()
         private var providerBuilder: TfMap.Builder? = null
+        private var dependencies: List<TfRef<Raw>> = mutableListOf()
         protected lateinit var _name: Identifier
         protected val blockBuilder: Block.Builder = Block.Builder()
         protected val sourceBuilder: Argument.Builder = Argument.Builder().name(SOURCE)
@@ -33,6 +36,9 @@ class TfModule private constructor(
         open fun name(name: String): T = apply { preventDupName(); _name =
             Identifier(name)
         } as T
+        open fun addDependency(resource: Resource): T = apply { dependencies = dependencies + TfRef(resource.reference()) } as T
+        open fun addDependency(inputVariable: InputVariable): T = apply { dependencies = dependencies + TfRef(inputVariable.reference) } as T
+        open fun addDependency(subModule: SubModule): T = apply { dependencies = dependencies + TfRef(subModule.name) } as T
         open fun addInputVariable(inputVariable: InputVariable): T =
             apply { blockBuilder.addElement(Argument.Builder().name(inputVariable.name).value(inputVariable).build()) } as T
         open fun addInputVariable(resource: Resource, attribute: String? = null): T =
@@ -80,6 +86,7 @@ class TfModule private constructor(
         abstract fun build(): TfModule
 
         protected fun build(sourceBuilder: Argument.Builder, type: Type): TfModule {
+            blockBuilder.type(MODULE).addLabel(_name.toString()).addElement(sourceBuilder.build())
             providerBuilder?.let {
                 blockBuilder.addElement(Argument.Builder().name(PROVIDERS).value(it.build()).build())
             }
@@ -87,7 +94,8 @@ class TfModule private constructor(
             if (subModuleNames.contains(name)) {
                 throw IllegalStateException("An output variable from this module was defined as input variable!")
             }
-            return TfModule(blockBuilder.type(MODULE).addLabel(_name.toString()).addElement(sourceBuilder.build()).build(), name, type)
+            buildDependencies(blockBuilder, dependencies)
+            return TfModule(blockBuilder.build(), name, type)
         }
 
         private fun preventDupName() {
