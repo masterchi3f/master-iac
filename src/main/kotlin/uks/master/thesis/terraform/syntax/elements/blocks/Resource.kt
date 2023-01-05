@@ -5,6 +5,7 @@ import uks.master.thesis.terraform.syntax.Child
 import uks.master.thesis.terraform.syntax.DependsOn
 import uks.master.thesis.terraform.syntax.Element
 import uks.master.thesis.terraform.syntax.Identifier
+import uks.master.thesis.terraform.syntax.Import
 import uks.master.thesis.terraform.syntax.elements.Argument
 import uks.master.thesis.terraform.syntax.elements.Block
 import uks.master.thesis.terraform.syntax.elements.MultiLineComment
@@ -60,6 +61,8 @@ open class Resource protected constructor(
     class Builder: GBuilder<Builder>()
 
     fun reference(attribute: String? = null): String = attribute?.let { "$self.$it" } ?: self
+
+    fun import(id: String): Import = Import(self, id)
 
     override fun toString(): String = block.toString()
 }

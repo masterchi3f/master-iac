@@ -11,6 +11,7 @@ import java.util.zip.ZipInputStream
 import mu.KLogger
 import mu.KotlinLogging
 import uks.master.thesis.Config.OUT_DIR
+import uks.master.thesis.terraform.syntax.Import
 import uks.master.thesis.terraform.utils.Utils.createDir
 
 object Executor {
@@ -55,6 +56,14 @@ object Executor {
      */
     fun destroy() = apply {
         val command = "destroy -auto-approve ${getVarFile()}"
+        runCommand(command)
+    }
+
+    /**
+     *  Import existing infrastructure into your Terraform state
+     */
+    fun import(import: Import) = apply {
+        val command = "import ${getVarFile()} ${import.address} ${import.id}"
         runCommand(command)
     }
 
