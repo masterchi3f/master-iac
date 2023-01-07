@@ -4,6 +4,7 @@ import uks.master.thesis.terraform.SubModule
 import uks.master.thesis.terraform.syntax.Child
 import uks.master.thesis.terraform.syntax.DependsOn
 import uks.master.thesis.terraform.syntax.Element
+import uks.master.thesis.terraform.syntax.Expression
 import uks.master.thesis.terraform.syntax.Identifier
 import uks.master.thesis.terraform.syntax.elements.Argument
 import uks.master.thesis.terraform.syntax.elements.Block
@@ -36,24 +37,40 @@ class TfModule private constructor(
         open fun name(name: String): T = apply { preventDupName(); _name =
             Identifier(name)
         } as T
-        open fun addDependency(resource: Resource): T = apply { dependencies = dependencies + TfRef(resource.reference()) } as T
-        open fun addDependency(inputVariable: InputVariable): T = apply { dependencies = dependencies + TfRef(inputVariable.reference) } as T
+        open fun addDependency(resource: Resource): T = apply { dependencies = dependencies + TfRef(resource.referenceString()) } as T
+        open fun addDependency(inputVariable: InputVariable<Raw>): T = apply { dependencies = dependencies + inputVariable.reference } as T
         open fun addDependency(subModule: SubModule): T = apply { dependencies = dependencies + TfRef(subModule.name) } as T
-        open fun addInputVariable(inputVariable: InputVariable): T =
+        open fun addInputVariable(inputVariable: InputVariable<out Expression>): T =
             apply { blockBuilder.addElement(Argument.Builder().name(inputVariable.name).value(inputVariable).build()) } as T
-        open fun addInputVariable(resource: Resource, attribute: String? = null): T =
+        open fun <S: Expression>addInputVariable(resource: Resource, attribute: String? = null): T =
             apply {
                 blockBuilder.addElement(Argument.Builder()
-                    .name(attribute ?: convertToIdentifier(resource.reference()))
-                    .value(resource, attribute).build())
+                    .name(convertToIdentifier(resource.referenceString(attribute)))
+                    .value<S>(resource, attribute).build())
             } as T
-        open fun addInputVariable(dataSource: DataSource, attribute: String? = null): T =
+        open fun <S: Expression>addInputVariable(resource: Resource, tfRef: TfRef<S>): T =
+            apply {
+                if (tfRef.toString().replace(Regex("[^.]+"), "").length == 1) {
+                    throw IllegalArgumentException("Wrong method when using $tfRef! To add a resource reference use the resource as parameter.")
+                }
+                val attribute: String = tfRef.toString().removePrefix("${resource.referenceString()}.")
+                addInputVariable<S>(resource, attribute)
+            } as T
+        open fun <S: Expression>addInputVariable(dataSource: DataSource, attribute: String? = null): T =
             apply {
                 blockBuilder.addElement(Argument.Builder()
-                    .name(attribute ?: convertToIdentifier(dataSource.reference()))
-                    .value(dataSource, attribute).build())
+                    .name(convertToIdentifier(dataSource.referenceString(attribute)))
+                    .value<S>(dataSource, attribute).build())
             } as T
-        open fun addInputVariable(subModule: SubModule, outputVariable: OutputVariable): T =
+        open fun <S: Expression>addInputVariable(dataSource: DataSource, tfRef: TfRef<S>): T =
+            apply {
+                if (tfRef.toString().replace(Regex("[^.]+"), "").length == 2) {
+                    throw IllegalArgumentException("Wrong method when using $tfRef! To add a datasource reference use the datasource as parameter.")
+                }
+                val attribute: String = tfRef.toString().removePrefix("${dataSource.referenceString()}.")
+                addInputVariable<S>(dataSource, attribute)
+            } as T
+        open fun addInputVariable(subModule: SubModule, outputVariable: OutputVariable<out Expression>): T =
             apply {
                 subModuleNames = subModuleNames + subModule.name
                 blockBuilder.addElement(Argument.Builder()

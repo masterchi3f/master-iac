@@ -30,15 +30,15 @@ object HCloudCertificate {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val name get() = TfRef<TfString>(reference(NAME))
-        val certificate get() = TfRef<TfString>(reference(CERTIFICATE))
-        val labels get() = TfRef<TfMap>(reference(LABELS))
-        val domainNames get() = TfRef<TfList>(reference(DOMAIN_NAMES))
-        val fingerprint get() = TfRef<TfString>(reference(FINGERPRINT))
-        val created get() = TfRef<TfString>(reference(CREATED))
-        val notValidBefore get() = TfRef<TfString>(reference(NOT_VALID_BEFORE))
-        val notValidAfter get() = TfRef<TfString>(reference(NOT_VALID_AFTER))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val name get() = TfRef<TfString>(referenceString(NAME))
+        val certificate get() = TfRef<TfString>(referenceString(CERTIFICATE))
+        val labels get() = TfRef<TfMap>(referenceString(LABELS))
+        val domainNames get() = TfRef<TfList>(referenceString(DOMAIN_NAMES))
+        val fingerprint get() = TfRef<TfString>(referenceString(FINGERPRINT))
+        val created get() = TfRef<TfString>(referenceString(CREATED))
+        val notValidBefore get() = TfRef<TfString>(referenceString(NOT_VALID_BEFORE))
+        val notValidAfter get() = TfRef<TfString>(referenceString(NOT_VALID_AFTER))
 
         class Builder: GBuilder<Builder>() {
             private val idOrNameBuilder: Argument.Builder = Argument.Builder()

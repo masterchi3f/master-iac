@@ -17,12 +17,12 @@ object HCloudServerType {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val name get() = TfRef<TfString>(reference(NAME))
-        val description get() = TfRef<TfString>(reference(DESCRIPTION))
-        val cores get() = TfRef<TfNumber>(reference(CORES))
-        val memory get() = TfRef<TfNumber>(reference(MEMORY))
-        val disk get() = TfRef<TfNumber>(reference(DISK))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val name get() = TfRef<TfString>(referenceString(NAME))
+        val description get() = TfRef<TfString>(referenceString(DESCRIPTION))
+        val cores get() = TfRef<TfNumber>(referenceString(CORES))
+        val memory get() = TfRef<TfNumber>(referenceString(MEMORY))
+        val disk get() = TfRef<TfNumber>(referenceString(DISK))
 
         class Builder: GBuilder<Builder>() {
             private val idOrNameBuilder: Argument.Builder = Argument.Builder()

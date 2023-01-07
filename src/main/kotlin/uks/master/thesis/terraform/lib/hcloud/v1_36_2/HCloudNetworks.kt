@@ -13,7 +13,7 @@ object HCloudNetworks {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val networks get() = TfRef<TfList>(reference(NETWORKS))
+        val networks get() = TfRef<TfList>(referenceString(NETWORKS))
 
         class Builder: GBuilder<Builder>() {
             private val withSelectorBuilder: Argument.Builder = Argument.Builder().name(WITH_SELECTOR)

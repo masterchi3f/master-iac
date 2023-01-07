@@ -19,10 +19,10 @@ object HCloudPlacementGroup {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val name get() = TfRef<TfString>(reference(NAME))
-        val type get() = TfRef<TfString>(reference(TYPE))
-        val labels get() = TfRef<TfMap>(reference(LABELS))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val name get() = TfRef<TfString>(referenceString(NAME))
+        val type get() = TfRef<TfString>(referenceString(TYPE))
+        val labels get() = TfRef<TfMap>(referenceString(LABELS))
 
         class Builder: GBuilder<Builder>() {
             private val typeBuilder: Argument.Builder = Argument.Builder().name(TYPE)
@@ -45,10 +45,10 @@ object HCloudPlacementGroup {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val name get() = TfRef<TfString>(reference(NAME))
-        val type get() = TfRef<TfString>(reference(TYPE))
-        val labels get() = TfRef<TfMap>(reference(LABELS))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val name get() = TfRef<TfString>(referenceString(NAME))
+        val type get() = TfRef<TfString>(referenceString(TYPE))
+        val labels get() = TfRef<TfMap>(referenceString(LABELS))
 
         class Builder: GBuilder<Builder>() {
             private val idOrNameBuilder: Argument.Builder = Argument.Builder()

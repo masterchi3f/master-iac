@@ -13,7 +13,7 @@ object HCloudPrimaryIps {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val primaryIps get() = TfRef<TfList>(reference(PRIMARY_IPS))
+        val primaryIps get() = TfRef<TfList>(referenceString(PRIMARY_IPS))
 
         class Builder: GBuilder<Builder>() {
             private val withSelectorBuilder: Argument.Builder = Argument.Builder().name(WITH_SELECTOR)

@@ -19,11 +19,11 @@ object HCloudSshKey {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val name get() = TfRef<TfString>(reference(NAME))
-        val publicKey get() = TfRef<TfString>(reference(PUBLIC_KEY))
-        val fingerprint get() = TfRef<TfString>(reference(FINGERPRINT))
-        val labels get() = TfRef<TfMap>(reference(LABELS))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val name get() = TfRef<TfString>(referenceString(NAME))
+        val publicKey get() = TfRef<TfString>(referenceString(PUBLIC_KEY))
+        val fingerprint get() = TfRef<TfString>(referenceString(FINGERPRINT))
+        val labels get() = TfRef<TfMap>(referenceString(LABELS))
 
         class Builder: GBuilder<Builder>() {
             private val nameBuilder: Argument.Builder = Argument.Builder().name(NAME)
@@ -48,10 +48,10 @@ object HCloudSshKey {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val name get() = TfRef<TfString>(reference(NAME))
-        val publicKey get() = TfRef<TfString>(reference(PUBLIC_KEY))
-        val fingerprint get() = TfRef<TfString>(reference(FINGERPRINT))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val name get() = TfRef<TfString>(referenceString(NAME))
+        val publicKey get() = TfRef<TfString>(referenceString(PUBLIC_KEY))
+        val fingerprint get() = TfRef<TfString>(referenceString(FINGERPRINT))
 
         class Builder: GBuilder<Builder>() {
             private val idBuilder: Argument.Builder = Argument.Builder().name(ID)

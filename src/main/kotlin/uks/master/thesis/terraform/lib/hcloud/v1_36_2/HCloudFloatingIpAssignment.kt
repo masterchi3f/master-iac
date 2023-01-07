@@ -13,9 +13,9 @@ object HCloudFloatingIpAssignment {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val floatingIpId get() = TfRef<TfNumber>(reference(FLOATING_IP_ID))
-        val serverId get() = TfRef<TfNumber>(reference(SERVER_ID))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val floatingIpId get() = TfRef<TfNumber>(referenceString(FLOATING_IP_ID))
+        val serverId get() = TfRef<TfNumber>(referenceString(SERVER_ID))
 
         class Builder: GBuilder<Builder>() {
             private val floatingIpIdBuilder: Argument.Builder = Argument.Builder().name(FLOATING_IP_ID)

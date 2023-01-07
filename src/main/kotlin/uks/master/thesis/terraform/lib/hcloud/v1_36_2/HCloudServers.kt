@@ -27,7 +27,7 @@ object HCloudServers {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val servers get() = TfRef<TfList>(reference(SERVERS))
+        val servers get() = TfRef<TfList>(referenceString(SERVERS))
 
         class Builder: GBuilder<Builder>() {
             private val withSelectorBuilder: Argument.Builder = Argument.Builder().name(WITH_SELECTOR)

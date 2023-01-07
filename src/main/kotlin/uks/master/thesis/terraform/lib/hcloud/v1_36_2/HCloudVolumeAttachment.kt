@@ -15,9 +15,9 @@ object HCloudVolumeAttachment {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val volumeId get() = TfRef<TfNumber>(reference(VOLUME_ID))
-        val serverId get() = TfRef<TfNumber>(reference(SERVER_ID))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val volumeId get() = TfRef<TfNumber>(referenceString(VOLUME_ID))
+        val serverId get() = TfRef<TfNumber>(referenceString(SERVER_ID))
 
         class Builder: GBuilder<Builder>() {
             private val volumeIdBuilder: Argument.Builder = Argument.Builder().name(VOLUME_ID)

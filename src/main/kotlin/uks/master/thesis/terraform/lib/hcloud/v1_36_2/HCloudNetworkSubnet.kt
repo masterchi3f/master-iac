@@ -24,12 +24,12 @@ object HCloudNetworkSubnet {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val networkId get() = TfRef<TfNumber>(reference(NETWORK_ID))
-        val type get() = TfRef<TfString>(reference(TYPE))
-        val ipRange get() = TfRef<TfString>(reference(IP_RANGE))
-        val networkZone get() = TfRef<TfString>(reference(NETWORK_ZONE))
-        val vswitchId get() = TfRef<TfNumber>(reference(VSWITCH_ID))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val networkId get() = TfRef<TfNumber>(referenceString(NETWORK_ID))
+        val type get() = TfRef<TfString>(referenceString(TYPE))
+        val ipRange get() = TfRef<TfString>(referenceString(IP_RANGE))
+        val networkZone get() = TfRef<TfString>(referenceString(NETWORK_ZONE))
+        val vswitchId get() = TfRef<TfNumber>(referenceString(VSWITCH_ID))
 
         class Builder: GBuilder<Builder>() {
             private val networkIdBuilder: Argument.Builder = Argument.Builder().name(NETWORK_ID)

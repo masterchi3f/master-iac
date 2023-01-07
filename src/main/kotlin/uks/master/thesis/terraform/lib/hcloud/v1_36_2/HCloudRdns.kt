@@ -17,12 +17,12 @@ object HCloudRdns {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val dnsPtr get() = TfRef<TfString>(reference(DNS_PTR))
-        val ipAddress get() = TfRef<TfString>(reference(IP_ADDRESS))
-        val serverId get() = TfRef<TfNumber>(reference(SERVER_ID))
-        val floatingIpId get() = TfRef<TfNumber>(reference(FLOATING_IP_ID))
-        val loadBalancerId get() = TfRef<TfNumber>(reference(LOAD_BALANCER_ID))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val dnsPtr get() = TfRef<TfString>(referenceString(DNS_PTR))
+        val ipAddress get() = TfRef<TfString>(referenceString(IP_ADDRESS))
+        val serverId get() = TfRef<TfNumber>(referenceString(SERVER_ID))
+        val floatingIpId get() = TfRef<TfNumber>(referenceString(FLOATING_IP_ID))
+        val loadBalancerId get() = TfRef<TfNumber>(referenceString(LOAD_BALANCER_ID))
 
         class Builder: GBuilder<Builder>() {
             private val dnsPtrBuilder: Argument.Builder = Argument.Builder().name(DNS_PTR)

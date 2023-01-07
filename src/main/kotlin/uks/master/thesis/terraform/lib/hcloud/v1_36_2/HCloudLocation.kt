@@ -19,14 +19,14 @@ object HCloudLocation {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val name get() = TfRef<TfString>(reference(NAME))
-        val description get() = TfRef<TfString>(reference(DESCRIPTION))
-        val city get() = TfRef<TfString>(reference(CITY))
-        val country get() = TfRef<TfString>(reference(COUNTRY))
-        val latitude get() = TfRef<TfNumber>(reference(LATITUDE))
-        val longitude get() = TfRef<TfNumber>(reference(LONGITUDE))
-        val networkZone get() = TfRef<TfString>(reference(NETWORK_ZONE))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val name get() = TfRef<TfString>(referenceString(NAME))
+        val description get() = TfRef<TfString>(referenceString(DESCRIPTION))
+        val city get() = TfRef<TfString>(referenceString(CITY))
+        val country get() = TfRef<TfString>(referenceString(COUNTRY))
+        val latitude get() = TfRef<TfNumber>(referenceString(LATITUDE))
+        val longitude get() = TfRef<TfNumber>(referenceString(LONGITUDE))
+        val networkZone get() = TfRef<TfString>(referenceString(NETWORK_ZONE))
 
         class Builder: GBuilder<Builder>() {
             private val idOrNameBuilder: Argument.Builder = Argument.Builder()

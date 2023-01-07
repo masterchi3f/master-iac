@@ -37,10 +37,10 @@ class Argument private constructor(
         fun value(string: String) = apply { preventDupValue(); _value = TfString(string) }
         fun value(list: TfList) = apply { preventDupValue(); _value = list }
         fun value(map: TfMap) = apply { preventDupValue(); _value = map }
-        fun value(inputVariable: InputVariable) = apply { preventDupValue(); _value = TfRef<Expression>(inputVariable.reference) }
-        fun value(resource: Resource, attribute: String? = null) = apply { preventDupValue(); _value = TfRef<Expression>(resource.reference(attribute)) }
-        fun value(dataSource: DataSource, attribute: String? = null) = apply { preventDupValue(); _value = TfRef<Expression>(dataSource.reference(attribute)) }
-        fun value(subModule: SubModule, outputVariable: OutputVariable) = apply { preventDupValue(); _value = TfRef<Expression>(subModule.output(outputVariable)) }
+        fun value(inputVariable: InputVariable<out Expression>) = apply { preventDupValue(); _value = inputVariable.reference }
+        fun <S: Expression>value(resource: Resource, attribute: String? = null) = apply { preventDupValue(); _value = attribute?.let { resource.reference<S>(attribute) } ?: resource.reference() }
+        fun <S: Expression>value(dataSource: DataSource, attribute: String? = null) = apply { preventDupValue(); _value = attribute?.let { dataSource.reference<S>(attribute) } ?: dataSource.reference() }
+        fun value(subModule: SubModule, outputVariable: OutputVariable<out Expression>) = apply { preventDupValue(); _value = subModule.output(outputVariable) }
         /**
          * @param alternate: If true the argument is used in a submodule which has multiple provider from same type.
          * The dot (.) is switched with a dash (-).

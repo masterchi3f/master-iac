@@ -35,16 +35,16 @@ object HCloudPrimaryIp {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val type get() = TfRef<TfString>(reference(TYPE))
-        val datacenter get() = TfRef<TfString>(reference(DATACENTER))
-        val name get() = TfRef<TfString>(reference(NAME))
-        val autoDelete get() = TfRef<TfBool>(reference(AUTO_DELETE))
-        val labels get() = TfRef<TfMap>(reference(LABELS))
-        val ipAddress get() = TfRef<TfString>(reference(IP_ADDRESS))
-        val assigneeId get() = TfRef<TfNumber>(reference(ASSIGNEE_ID))
-        val assigneeType get() = TfRef<TfString>(reference(ASSIGNEE_TYPE))
-        val deleteProtection get() = TfRef<TfBool>(reference(DELETE_PROTECTION))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val type get() = TfRef<TfString>(referenceString(TYPE))
+        val datacenter get() = TfRef<TfString>(referenceString(DATACENTER))
+        val name get() = TfRef<TfString>(referenceString(NAME))
+        val autoDelete get() = TfRef<TfBool>(referenceString(AUTO_DELETE))
+        val labels get() = TfRef<TfMap>(referenceString(LABELS))
+        val ipAddress get() = TfRef<TfString>(referenceString(IP_ADDRESS))
+        val assigneeId get() = TfRef<TfNumber>(referenceString(ASSIGNEE_ID))
+        val assigneeType get() = TfRef<TfString>(referenceString(ASSIGNEE_TYPE))
+        val deleteProtection get() = TfRef<TfBool>(referenceString(DELETE_PROTECTION))
 
         class Builder: GBuilder<Builder>() {
             private val typeBuilder: Argument.Builder = Argument.Builder().name(TYPE)
@@ -80,16 +80,16 @@ object HCloudPrimaryIp {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val type get() = TfRef<TfString>(reference(TYPE))
-        val datacenter get() = TfRef<TfString>(reference(DATACENTER))
-        val name get() = TfRef<TfString>(reference(NAME))
-        val autoDelete get() = TfRef<TfBool>(reference(AUTO_DELETE))
-        val labels get() = TfRef<TfMap>(reference(LABELS))
-        val ipAddress get() = TfRef<TfString>(reference(IP_ADDRESS))
-        val assigneeId get() = TfRef<TfNumber>(reference(ASSIGNEE_ID))
-        val assigneeType get() = TfRef<TfString>(reference(ASSIGNEE_TYPE))
-        val deleteProtection get() = TfRef<TfBool>(reference(DELETE_PROTECTION))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val type get() = TfRef<TfString>(referenceString(TYPE))
+        val datacenter get() = TfRef<TfString>(referenceString(DATACENTER))
+        val name get() = TfRef<TfString>(referenceString(NAME))
+        val autoDelete get() = TfRef<TfBool>(referenceString(AUTO_DELETE))
+        val labels get() = TfRef<TfMap>(referenceString(LABELS))
+        val ipAddress get() = TfRef<TfString>(referenceString(IP_ADDRESS))
+        val assigneeId get() = TfRef<TfNumber>(referenceString(ASSIGNEE_ID))
+        val assigneeType get() = TfRef<TfString>(referenceString(ASSIGNEE_TYPE))
+        val deleteProtection get() = TfRef<TfBool>(referenceString(DELETE_PROTECTION))
 
         class Builder: GBuilder<Builder>() {
             private val idOrNameOrIpAddressBuilder: Argument.Builder = Argument.Builder()

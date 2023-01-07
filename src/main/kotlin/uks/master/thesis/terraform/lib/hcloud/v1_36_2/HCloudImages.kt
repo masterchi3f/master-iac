@@ -22,7 +22,7 @@ object HCloudImages {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val images get() = TfRef<TfList>(reference(IMAGES))
+        val images get() = TfRef<TfList>(referenceString(IMAGES))
 
         class Builder: GBuilder<Builder>() {
             private val withSelectorBuilder: Argument.Builder = Argument.Builder().name(WITH_SELECTOR)

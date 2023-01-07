@@ -30,16 +30,16 @@ object HCloudFloatingIp {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val type get() = TfRef<TfString>(reference(TYPE))
-        val name get() = TfRef<TfString>(reference(NAME))
-        val serverId get() = TfRef<TfNumber>(reference(SERVER_ID))
-        val homeLocation get() = TfRef<TfString>(reference(HOME_LOCATION))
-        val description get() = TfRef<TfString>(reference(DESCRIPTION))
-        val ipAddress get() = TfRef<TfString>(reference(IP_ADDRESS))
-        val ipNetwork get() = TfRef<TfString>(reference(IP_NETWORK))
-        val labels get() = TfRef<TfMap>(reference(LABELS))
-        val deleteProtection get() = TfRef<TfBool>(reference(DELETE_PROTECTION))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val type get() = TfRef<TfString>(referenceString(TYPE))
+        val name get() = TfRef<TfString>(referenceString(NAME))
+        val serverId get() = TfRef<TfNumber>(referenceString(SERVER_ID))
+        val homeLocation get() = TfRef<TfString>(referenceString(HOME_LOCATION))
+        val description get() = TfRef<TfString>(referenceString(DESCRIPTION))
+        val ipAddress get() = TfRef<TfString>(referenceString(IP_ADDRESS))
+        val ipNetwork get() = TfRef<TfString>(referenceString(IP_NETWORK))
+        val labels get() = TfRef<TfMap>(referenceString(LABELS))
+        val deleteProtection get() = TfRef<TfBool>(referenceString(DELETE_PROTECTION))
 
         class Builder: GBuilder<Builder>() {
             private val typeBuilder: Argument.Builder = Argument.Builder().name(TYPE)
@@ -74,16 +74,16 @@ object HCloudFloatingIp {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val type get() = TfRef<TfString>(reference(TYPE))
-        val name get() = TfRef<TfString>(reference(NAME))
-        val serverId get() = TfRef<TfNumber>(reference(SERVER_ID))
-        val homeLocation get() = TfRef<TfString>(reference(HOME_LOCATION))
-        val description get() = TfRef<TfString>(reference(DESCRIPTION))
-        val ipAddress get() = TfRef<TfString>(reference(IP_ADDRESS))
-        val ipNetwork get() = TfRef<TfString>(reference(IP_NETWORK))
-        val labels get() = TfRef<TfMap>(reference(LABELS))
-        val deleteProtection get() = TfRef<TfBool>(reference(DELETE_PROTECTION))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val type get() = TfRef<TfString>(referenceString(TYPE))
+        val name get() = TfRef<TfString>(referenceString(NAME))
+        val serverId get() = TfRef<TfNumber>(referenceString(SERVER_ID))
+        val homeLocation get() = TfRef<TfString>(referenceString(HOME_LOCATION))
+        val description get() = TfRef<TfString>(referenceString(DESCRIPTION))
+        val ipAddress get() = TfRef<TfString>(referenceString(IP_ADDRESS))
+        val ipNetwork get() = TfRef<TfString>(referenceString(IP_NETWORK))
+        val labels get() = TfRef<TfMap>(referenceString(LABELS))
+        val deleteProtection get() = TfRef<TfBool>(referenceString(DELETE_PROTECTION))
 
         class Builder: GBuilder<Builder>() {
             private val idBuilder: Argument.Builder = Argument.Builder().name(ID)

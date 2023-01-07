@@ -10,7 +10,7 @@ object HCloudServerTypes {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val serverTypes get() = TfRef<TfList>(reference(SERVER_TYPES))
+        val serverTypes get() = TfRef<TfList>(referenceString(SERVER_TYPES))
 
         class Builder: GBuilder<Builder>() {
             init { dataSource(HCLOUD_SERVER_TYPES) }

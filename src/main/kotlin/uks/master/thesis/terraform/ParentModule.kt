@@ -3,6 +3,7 @@ package uks.master.thesis.terraform
 import mu.KLogger
 import mu.KotlinLogging
 import uks.master.thesis.terraform.syntax.Child
+import uks.master.thesis.terraform.syntax.Expression
 import uks.master.thesis.terraform.syntax.elements.OneLineComment
 import uks.master.thesis.terraform.syntax.elements.OneLineSymbol
 import uks.master.thesis.terraform.syntax.elements.blocks.InputVariable
@@ -48,8 +49,8 @@ abstract class ParentModule<T> {
         } ?: throw IllegalStateException("Terraform configuration in $name not set!")
         for (child in children) {
             when (child) {
-                is OutputVariable -> outputs += child.toString() + System.lineSeparator()
-                is InputVariable -> variables += child.toString() + System.lineSeparator()
+                is OutputVariable<out Expression> -> outputs += child.toString() + System.lineSeparator()
+                is InputVariable<out Expression> -> variables += child.toString() + System.lineSeparator()
                 else -> main += child.toString() + System.lineSeparator()
             }
         }

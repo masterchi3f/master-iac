@@ -15,10 +15,10 @@ object HCloudNetworkRoute {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val networkId get() = TfRef<TfNumber>(reference(NETWORK_ID))
-        val destination get() = TfRef<TfString>(reference(DESTINATION))
-        val gateway get() = TfRef<TfString>(reference(GATEWAY))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val networkId get() = TfRef<TfNumber>(referenceString(NETWORK_ID))
+        val destination get() = TfRef<TfString>(referenceString(DESTINATION))
+        val gateway get() = TfRef<TfString>(referenceString(GATEWAY))
 
         class Builder: GBuilder<Builder>() {
             private val networkIdBuilder: Argument.Builder = Argument.Builder().name(NETWORK_ID)

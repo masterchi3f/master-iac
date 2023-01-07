@@ -18,11 +18,11 @@ object HCloudServerNetwork {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val serverId get() = TfRef<TfNumber>(reference(SERVER_ID))
-        val networkId get() = TfRef<TfNumber>(reference(NETWORK_ID))
-        val ip get() = TfRef<TfString>(reference(IP))
-        val aliasIps get() = TfRef<TfList>(reference(ALIAS_IPS))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val serverId get() = TfRef<TfNumber>(referenceString(SERVER_ID))
+        val networkId get() = TfRef<TfNumber>(referenceString(NETWORK_ID))
+        val ip get() = TfRef<TfString>(referenceString(IP))
+        val aliasIps get() = TfRef<TfList>(referenceString(ALIAS_IPS))
 
         class Builder: GBuilder<Builder>() {
             private val serverIdBuilder: Argument.Builder = Argument.Builder().name(SERVER_ID)

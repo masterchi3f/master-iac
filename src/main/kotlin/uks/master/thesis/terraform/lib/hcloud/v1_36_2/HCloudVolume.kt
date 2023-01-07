@@ -38,14 +38,14 @@ object HCloudVolume {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val name get() = TfRef<TfString>(reference(NAME))
-        val size get() = TfRef<TfNumber>(reference(SIZE))
-        val location get() = TfRef<TfString>(reference(LOCATION))
-        val serverId get() = TfRef<TfNumber>(reference(SERVER_ID))
-        val labels get() = TfRef<TfMap>(reference(LABELS))
-        val linuxDevice get() = TfRef<TfString>(reference(LINUX_DEVICE))
-        val deleteProtection get() = TfRef<TfBool>(reference(DELETE_PROTECTION))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val name get() = TfRef<TfString>(referenceString(NAME))
+        val size get() = TfRef<TfNumber>(referenceString(SIZE))
+        val location get() = TfRef<TfString>(referenceString(LOCATION))
+        val serverId get() = TfRef<TfNumber>(referenceString(SERVER_ID))
+        val labels get() = TfRef<TfMap>(referenceString(LABELS))
+        val linuxDevice get() = TfRef<TfString>(referenceString(LINUX_DEVICE))
+        val deleteProtection get() = TfRef<TfBool>(referenceString(DELETE_PROTECTION))
 
         class Builder: GBuilder<Builder>() {
             private val nameBuilder: Argument.Builder = Argument.Builder().name(NAME)
@@ -80,14 +80,14 @@ object HCloudVolume {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val name get() = TfRef<TfString>(reference(NAME))
-        val size get() = TfRef<TfNumber>(reference(SIZE))
-        val location get() = TfRef<TfString>(reference(LOCATION))
-        val serverId get() = TfRef<TfNumber>(reference(SERVER_ID))
-        val labels get() = TfRef<TfMap>(reference(LABELS))
-        val linuxDevice get() = TfRef<TfString>(reference(LINUX_DEVICE))
-        val deleteProtection get() = TfRef<TfBool>(reference(DELETE_PROTECTION))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val name get() = TfRef<TfString>(referenceString(NAME))
+        val size get() = TfRef<TfNumber>(referenceString(SIZE))
+        val location get() = TfRef<TfString>(referenceString(LOCATION))
+        val serverId get() = TfRef<TfNumber>(referenceString(SERVER_ID))
+        val labels get() = TfRef<TfMap>(referenceString(LABELS))
+        val linuxDevice get() = TfRef<TfString>(referenceString(LINUX_DEVICE))
+        val deleteProtection get() = TfRef<TfBool>(referenceString(DELETE_PROTECTION))
 
         class Builder: GBuilder<Builder>() {
             private val idOrNameBuilder: Argument.Builder = Argument.Builder()

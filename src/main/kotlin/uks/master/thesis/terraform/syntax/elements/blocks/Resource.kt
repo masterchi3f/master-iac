@@ -4,6 +4,7 @@ import uks.master.thesis.terraform.SubModule
 import uks.master.thesis.terraform.syntax.Child
 import uks.master.thesis.terraform.syntax.DependsOn
 import uks.master.thesis.terraform.syntax.Element
+import uks.master.thesis.terraform.syntax.Expression
 import uks.master.thesis.terraform.syntax.Identifier
 import uks.master.thesis.terraform.syntax.Import
 import uks.master.thesis.terraform.syntax.elements.Argument
@@ -38,8 +39,8 @@ open class Resource protected constructor(
         fun addElement(multiLineComment: MultiLineComment): T = apply { blockBuilder.addElement(multiLineComment) } as T
         fun provider(provider: Provider, alternate: Boolean = false): T =
             apply { blockBuilder.addElement(providerBuilder.value(provider, alternate).build()) } as T
-        fun addDependency(resource: Resource): T = apply { dependencies = dependencies + TfRef(resource.reference()) } as T
-        fun addDependency(inputVariable: InputVariable): T = apply { dependencies = dependencies + TfRef(inputVariable.reference) } as T
+        fun addDependency(resource: Resource): T = apply { dependencies = dependencies + TfRef(resource.referenceString()) } as T
+        fun addDependency(inputVariable: InputVariable<Raw>): T = apply { dependencies = dependencies + inputVariable.reference } as T
         fun addDependency(subModule: SubModule): T = apply { dependencies = dependencies + TfRef(subModule.name) } as T
         open fun build() = Resource(buildBlock(), buildSelf())
         protected fun buildBlock(): Block {
@@ -60,7 +61,9 @@ open class Resource protected constructor(
 
     class Builder: GBuilder<Builder>()
 
-    fun reference(attribute: String? = null): String = attribute?.let { "$self.$it" } ?: self
+    fun referenceString(attribute: String? = null): String = attribute?.let { "$self.$it" } ?: self
+    fun reference(): TfRef<Raw> = TfRef(self)
+    fun <S: Expression>reference(attribute: String): TfRef<S> = TfRef("$self.$attribute")
 
     fun import(id: String): Import = Import(self, id)
 

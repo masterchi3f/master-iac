@@ -7,9 +7,6 @@ import uks.master.thesis.terraform.RootModule
 import uks.master.thesis.terraform.lib.hcloud.v1_36_2.HCloud
 import uks.master.thesis.terraform.lib.hcloud.v1_36_2.HCloudServer
 import uks.master.thesis.terraform.lib.hcloud.v1_36_2.HCloudSshKey
-import uks.master.thesis.terraform.syntax.elements.Argument
-import uks.master.thesis.terraform.syntax.elements.Block
-import uks.master.thesis.terraform.syntax.elements.blocks.Resource
 import uks.master.thesis.terraform.syntax.elements.blocks.Terraform
 import uks.master.thesis.terraform.syntax.expressions.TfFile
 import uks.master.thesis.terraform.syntax.expressions.TfList

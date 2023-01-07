@@ -18,10 +18,10 @@ object HCloudLoadBalancerNetwork {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val networkId get() = TfRef<TfNumber>(reference(NETWORK_ID))
-        val loadBalancerId get() = TfRef<TfNumber>(reference(LOAD_BALANCER_ID))
-        val ip get() = TfRef<TfString>(reference(IP))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val networkId get() = TfRef<TfNumber>(referenceString(NETWORK_ID))
+        val loadBalancerId get() = TfRef<TfNumber>(referenceString(LOAD_BALANCER_ID))
+        val ip get() = TfRef<TfString>(referenceString(IP))
 
         class Builder: GBuilder<Builder>() {
             private val loadBalancerIdBuilder: Argument.Builder = Argument.Builder().name(LOAD_BALANCER_ID)

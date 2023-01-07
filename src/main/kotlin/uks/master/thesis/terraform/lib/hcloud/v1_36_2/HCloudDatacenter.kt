@@ -19,12 +19,12 @@ object HCloudDatacenter {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val name get() = TfRef<TfString>(reference(NAME))
-        val description get() = TfRef<TfString>(reference(DESCRIPTION))
-        val location get() = TfRef<TfMap>(reference(LOCATION))
-        val supportedServerTypeIds get() = TfRef<TfList>(reference(SUPPORTED_SERVER_TYPE_IDS))
-        val availableServerTypeIds get() = TfRef<TfList>(reference(AVAILABLE_SERVER_TYPE_IDS))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val name get() = TfRef<TfString>(referenceString(NAME))
+        val description get() = TfRef<TfString>(referenceString(DESCRIPTION))
+        val location get() = TfRef<TfMap>(referenceString(LOCATION))
+        val supportedServerTypeIds get() = TfRef<TfList>(referenceString(SUPPORTED_SERVER_TYPE_IDS))
+        val availableServerTypeIds get() = TfRef<TfList>(referenceString(AVAILABLE_SERVER_TYPE_IDS))
 
         class Builder: GBuilder<Builder>() {
             private val idOrNameBuilder: Argument.Builder = Argument.Builder()

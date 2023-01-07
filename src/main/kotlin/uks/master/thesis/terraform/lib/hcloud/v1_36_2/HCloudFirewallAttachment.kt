@@ -15,10 +15,10 @@ object HCloudFirewallAttachment {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val firewallId get() = TfRef<TfNumber>(reference(FIREWALL_ID))
-        val serverIds get() = TfRef<TfList>(reference(SERVER_IDS))
-        val labelSelectors get() = TfRef<TfList>(reference(LABEL_SELECTORS))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val firewallId get() = TfRef<TfNumber>(referenceString(FIREWALL_ID))
+        val serverIds get() = TfRef<TfList>(referenceString(SERVER_IDS))
+        val labelSelectors get() = TfRef<TfList>(referenceString(LABEL_SELECTORS))
 
         class Builder: GBuilder<Builder>() {
             private val firewallIdBuilder: Argument.Builder = Argument.Builder().name(FIREWALL_ID)

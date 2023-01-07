@@ -13,10 +13,10 @@ object HCloudLocations {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val locationIds get() = TfRef<TfList>(reference(LOCATION_IDS))
-        val names get() = TfRef<TfList>(reference(NAMES))
-        val descriptions get() = TfRef<TfList>(reference(DESCRIPTIONS))
-        val locations get() = TfRef<TfList>(reference(LOCATIONS))
+        val locationIds get() = TfRef<TfList>(referenceString(LOCATION_IDS))
+        val names get() = TfRef<TfList>(referenceString(NAMES))
+        val descriptions get() = TfRef<TfList>(referenceString(DESCRIPTIONS))
+        val locations get() = TfRef<TfList>(referenceString(LOCATIONS))
 
         class Builder: GBuilder<Builder>() {
             init { dataSource(HCLOUD_LOCATIONS) }

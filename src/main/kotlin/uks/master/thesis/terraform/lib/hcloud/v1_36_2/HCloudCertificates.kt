@@ -13,7 +13,7 @@ object HCloudCertificates {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val certificates get() = TfRef<TfList>(reference(CERTIFICATES))
+        val certificates get() = TfRef<TfList>(referenceString(CERTIFICATES))
 
         class Builder: GBuilder<Builder>() {
             private val withSelectorBuilder: Argument.Builder = Argument.Builder().name(WITH_SELECTOR)

@@ -32,16 +32,16 @@ object HCloudImage {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val name get() = TfRef<TfString>(reference(NAME))
-        val type get() = TfRef<TfString>(reference(TYPE))
-        val status get() = TfRef<TfString>(reference(STATUS))
-        val description get() = TfRef<TfString>(reference(DESCRIPTION))
-        val created get() = TfRef<TfString>(reference(CREATED))
-        val osFlavor get() = TfRef<TfString>(reference(OS_FLAVOR))
-        val osVersion get() = TfRef<TfString>(reference(OS_VERSION))
-        val rapidDeploy get() = TfRef<TfBool>(reference(RAPID_DEPLOY))
-        val deprecated get() = TfRef<TfString>(reference(DEPRECATED))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val name get() = TfRef<TfString>(referenceString(NAME))
+        val type get() = TfRef<TfString>(referenceString(TYPE))
+        val status get() = TfRef<TfString>(referenceString(STATUS))
+        val description get() = TfRef<TfString>(referenceString(DESCRIPTION))
+        val created get() = TfRef<TfString>(referenceString(CREATED))
+        val osFlavor get() = TfRef<TfString>(referenceString(OS_FLAVOR))
+        val osVersion get() = TfRef<TfString>(referenceString(OS_VERSION))
+        val rapidDeploy get() = TfRef<TfBool>(referenceString(RAPID_DEPLOY))
+        val deprecated get() = TfRef<TfString>(referenceString(DEPRECATED))
 
         class Builder: GBuilder<Builder>() {
             private val idOrNameBuilder: Argument.Builder = Argument.Builder()

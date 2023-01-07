@@ -15,7 +15,7 @@ object HCloudPlacementGroups {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val placementGroups get() = TfRef<TfList>(reference(PLACEMENT_GROUPS))
+        val placementGroups get() = TfRef<TfList>(referenceString(PLACEMENT_GROUPS))
 
         class Builder: GBuilder<Builder>() {
             private val withSelectorBuilder: Argument.Builder = Argument.Builder().name(WITH_SELECTOR)

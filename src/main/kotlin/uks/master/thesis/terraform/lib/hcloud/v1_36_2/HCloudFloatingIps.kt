@@ -13,7 +13,7 @@ object HCloudFloatingIps {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val floatingIps get() = TfRef<TfList>(reference(FLOATING_IPS))
+        val floatingIps get() = TfRef<TfList>(referenceString(FLOATING_IPS))
 
         class Builder: GBuilder<Builder>() {
             private val withSelectorBuilder: Argument.Builder = Argument.Builder().name(WITH_SELECTOR)

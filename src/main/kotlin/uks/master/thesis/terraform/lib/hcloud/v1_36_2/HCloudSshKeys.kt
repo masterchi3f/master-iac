@@ -13,7 +13,7 @@ object HCloudSshKeys {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val sshKeys get() = TfRef<TfList>(reference(SSH_KEYS))
+        val sshKeys get() = TfRef<TfList>(referenceString(SSH_KEYS))
 
         class Builder: GBuilder<Builder>() {
             private val withSelectorBuilder: Argument.Builder = Argument.Builder().name(WITH_SELECTOR)

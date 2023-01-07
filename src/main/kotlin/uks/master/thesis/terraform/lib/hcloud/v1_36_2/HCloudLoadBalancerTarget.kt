@@ -25,11 +25,11 @@ object HCloudLoadBalancerTarget {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val type get() = TfRef<TfString>(reference(TYPE))
-        val serverId get() = TfRef<TfNumber>(reference(SERVER_ID))
-        val labelSelector get() = TfRef<TfString>(reference(LABEL_SELECTOR))
-        val ip get() = TfRef<TfString>(reference(IP))
-        val usePrivateIp get() = TfRef<TfBool>(reference(USE_PRIVATE_IP))
+        val type get() = TfRef<TfString>(referenceString(TYPE))
+        val serverId get() = TfRef<TfNumber>(referenceString(SERVER_ID))
+        val labelSelector get() = TfRef<TfString>(referenceString(LABEL_SELECTOR))
+        val ip get() = TfRef<TfString>(referenceString(IP))
+        val usePrivateIp get() = TfRef<TfBool>(referenceString(USE_PRIVATE_IP))
 
         class Builder: GBuilder<Builder>() {
             private val typeBuilder: Argument.Builder = Argument.Builder().name(TYPE)
@@ -43,12 +43,12 @@ object HCloudLoadBalancerTarget {
             fun type(type: Type) = apply { _type = type; typeBuilder.value(type.toString()) }
             fun loadBalancerId(loadBalancerId: Int) = apply { loadBalancerIdBuilder.value(loadBalancerId.toDouble()) }
             fun loadBalancerId(ref: TfRef<TfNumber>) = apply { loadBalancerIdBuilder.raw(ref.toString()) }
-            fun serverId(serverId: Int) = apply { valueBuilder.value(serverId.toDouble()) }
-            fun serverId(ref: TfRef<TfNumber>) = apply { valueBuilder.raw(ref.toString()) }
-            fun labelSelector(labelSelector: String) = apply { valueBuilder.value(labelSelector) }
-            fun labelSelector(ref: TfRef<TfString>) = apply { valueBuilder.raw(ref.toString()) }
-            fun ip(ip: String) = apply { valueBuilder.value(ip) }
-            fun ip(ref: TfRef<TfString>) = apply { valueBuilder.raw(ref.toString()) }
+            fun serverId(serverId: Int) = apply { valueBuilder.name(SERVER_ID).value(serverId.toDouble()) }
+            fun serverId(ref: TfRef<TfNumber>) = apply { valueBuilder.name(SERVER_ID).raw(ref.toString()) }
+            fun labelSelector(labelSelector: String) = apply { valueBuilder.name(LABEL_SELECTOR).value(labelSelector) }
+            fun labelSelector(ref: TfRef<TfString>) = apply { valueBuilder.name(LABEL_SELECTOR).raw(ref.toString()) }
+            fun ip(ip: String) = apply { valueBuilder.name(IP).value(ip) }
+            fun ip(ref: TfRef<TfString>) = apply { valueBuilder.name(IP).raw(ref.toString()) }
             fun usePrivateIp(usePrivateIp: Boolean) = apply { usePrivateIpIsSet = true; usePrivateIpBuilder.value(usePrivateIp) }
             fun usePrivateIp(ref: TfRef<TfBool>) = apply { usePrivateIpIsSet = true; usePrivateIpBuilder.raw(ref.toString()) }
             override fun build(): Resource {

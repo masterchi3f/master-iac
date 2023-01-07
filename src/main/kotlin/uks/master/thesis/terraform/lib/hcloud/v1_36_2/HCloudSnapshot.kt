@@ -16,10 +16,10 @@ object HCloudSnapshot {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val serverId get() = TfRef<TfNumber>(reference(SERVER_ID))
-        val description get() = TfRef<TfString>(reference(DESCRIPTION))
-        val labels get() = TfRef<TfMap>(reference(LABELS))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val serverId get() = TfRef<TfNumber>(referenceString(SERVER_ID))
+        val description get() = TfRef<TfString>(referenceString(DESCRIPTION))
+        val labels get() = TfRef<TfMap>(referenceString(LABELS))
 
         class Builder: GBuilder<Builder>() {
             private val serverIdBuilder: Argument.Builder = Argument.Builder().name(SERVER_ID)

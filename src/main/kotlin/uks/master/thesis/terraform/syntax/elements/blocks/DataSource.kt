@@ -2,11 +2,14 @@ package uks.master.thesis.terraform.syntax.elements.blocks
 
 import uks.master.thesis.terraform.syntax.Child
 import uks.master.thesis.terraform.syntax.Element
+import uks.master.thesis.terraform.syntax.Expression
 import uks.master.thesis.terraform.syntax.Identifier
 import uks.master.thesis.terraform.syntax.elements.Argument
 import uks.master.thesis.terraform.syntax.elements.Block
 import uks.master.thesis.terraform.syntax.elements.MultiLineComment
 import uks.master.thesis.terraform.syntax.elements.OneLineSymbol
+import uks.master.thesis.terraform.syntax.expressions.Raw
+import uks.master.thesis.terraform.syntax.expressions.TfRef
 
 open class DataSource protected constructor(
     private val block: Block,
@@ -47,7 +50,9 @@ open class DataSource protected constructor(
 
     class Builder: GBuilder<Builder>()
 
-    fun reference(attribute: String? = null): String = attribute?.let { "$self.$it" } ?: self
+    fun referenceString(attribute: String? = null): String = attribute?.let { "$self.$it" } ?: self
+    fun reference(): TfRef<Raw> = TfRef(self)
+    fun <S: Expression>reference(attribute: String): TfRef<S> = TfRef("$self.$attribute")
 
     override fun toString(): String = block.toString()
 }

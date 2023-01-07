@@ -1,8 +1,10 @@
 package uks.master.thesis.terraform
 
 import uks.master.thesis.terraform.syntax.Child
+import uks.master.thesis.terraform.syntax.Expression
 import uks.master.thesis.terraform.syntax.elements.blocks.OutputVariable
 import uks.master.thesis.terraform.syntax.elements.blocks.TfModule
+import uks.master.thesis.terraform.syntax.expressions.TfRef
 
 class SubModule(tfModule: TfModule): ParentModule<SubModule>(), Child {
     private var tfModule: TfModule
@@ -18,7 +20,7 @@ class SubModule(tfModule: TfModule): ParentModule<SubModule>(), Child {
         }
     }
 
-    fun output(outputVariable: OutputVariable): String = "${tfModule.self}.${outputVariable.name}"
+    fun <S: Expression>output(outputVariable: OutputVariable<S>): TfRef<S> = TfRef("${tfModule.self}.${outputVariable.name}")
 
     override fun toString(): String = tfModule.toString()
 }

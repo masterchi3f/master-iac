@@ -19,11 +19,11 @@ object HCloudNetwork {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val name get() = TfRef<TfString>(reference(NAME))
-        val ipRange get() = TfRef<TfString>(reference(IP_RANGE))
-        val labels get() = TfRef<TfMap>(reference(LABELS))
-        val deleteProtection get() = TfRef<TfBool>(reference(DELETE_PROTECTION))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val name get() = TfRef<TfString>(referenceString(NAME))
+        val ipRange get() = TfRef<TfString>(referenceString(IP_RANGE))
+        val labels get() = TfRef<TfMap>(referenceString(LABELS))
+        val deleteProtection get() = TfRef<TfBool>(referenceString(DELETE_PROTECTION))
 
         class Builder: GBuilder<Builder>() {
             private val nameBuilder: Argument.Builder = Argument.Builder().name(NAME)
@@ -50,10 +50,10 @@ object HCloudNetwork {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val id get() = TfRef<TfNumber>(reference(ID))
-        val name get() = TfRef<TfString>(reference(NAME))
-        val ipRange get() = TfRef<TfString>(reference(IP_RANGE))
-        val deleteProtection get() = TfRef<TfBool>(reference(DELETE_PROTECTION))
+        val id get() = TfRef<TfNumber>(referenceString(ID))
+        val name get() = TfRef<TfString>(referenceString(NAME))
+        val ipRange get() = TfRef<TfString>(referenceString(IP_RANGE))
+        val deleteProtection get() = TfRef<TfBool>(referenceString(DELETE_PROTECTION))
 
         class Builder: GBuilder<Builder>() {
             private val idOrNameBuilder: Argument.Builder = Argument.Builder()
