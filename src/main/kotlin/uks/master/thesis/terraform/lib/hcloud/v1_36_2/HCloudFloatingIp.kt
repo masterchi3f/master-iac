@@ -5,7 +5,7 @@ import uks.master.thesis.terraform.syntax.elements.Block
 import uks.master.thesis.terraform.syntax.expressions.TfBool
 import uks.master.thesis.terraform.syntax.expressions.TfMap
 import uks.master.thesis.terraform.syntax.expressions.TfNumber
-import uks.master.thesis.terraform.syntax.expressions.TfRef
+import uks.master.thesis.terraform.syntax.expressions.Reference
 import uks.master.thesis.terraform.syntax.expressions.TfString
 
 object HCloudFloatingIp {
@@ -30,16 +30,16 @@ object HCloudFloatingIp {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val id get() = TfRef<TfNumber>(referenceString(ID))
-        val type get() = TfRef<TfString>(referenceString(TYPE))
-        val name get() = TfRef<TfString>(referenceString(NAME))
-        val serverId get() = TfRef<TfNumber>(referenceString(SERVER_ID))
-        val homeLocation get() = TfRef<TfString>(referenceString(HOME_LOCATION))
-        val description get() = TfRef<TfString>(referenceString(DESCRIPTION))
-        val ipAddress get() = TfRef<TfString>(referenceString(IP_ADDRESS))
-        val ipNetwork get() = TfRef<TfString>(referenceString(IP_NETWORK))
-        val labels get() = TfRef<TfMap>(referenceString(LABELS))
-        val deleteProtection get() = TfRef<TfBool>(referenceString(DELETE_PROTECTION))
+        val id get() = Reference<TfNumber>(referenceString(ID))
+        val type get() = Reference<TfString>(referenceString(TYPE))
+        val name get() = Reference<TfString>(referenceString(NAME))
+        val serverId get() = Reference<TfNumber>(referenceString(SERVER_ID))
+        val homeLocation get() = Reference<TfString>(referenceString(HOME_LOCATION))
+        val description get() = Reference<TfString>(referenceString(DESCRIPTION))
+        val ipAddress get() = Reference<TfString>(referenceString(IP_ADDRESS))
+        val ipNetwork get() = Reference<TfString>(referenceString(IP_NETWORK))
+        val labels get() = Reference<TfMap>(referenceString(LABELS))
+        val deleteProtection get() = Reference<TfBool>(referenceString(DELETE_PROTECTION))
 
         class Builder: GBuilder<Builder>() {
             private val typeBuilder: Argument.Builder = Argument.Builder().name(TYPE)
@@ -52,19 +52,19 @@ object HCloudFloatingIp {
             init { resourceType(HCLOUD_FLOATING_IP) }
 
             fun type(type: Type) = apply { typeBuilder.value(type.toString()) }
-            fun type(ref: TfRef<TfString>) = apply { typeBuilder.raw(ref.toString()) }
+            fun type(ref: Reference<TfString>) = apply { typeBuilder.raw(ref.toString()) }
             fun name(name: String) = apply { addElement(nameBuilder.value(name).build()) }
-            fun name(ref: TfRef<TfString>) = apply { addElement(nameBuilder.raw(ref.toString()).build()) }
+            fun name(ref: Reference<TfString>) = apply { addElement(nameBuilder.raw(ref.toString()).build()) }
             fun serverId(serverId: Int) = apply { addElement(serverIdBuilder.value(serverId.toDouble()).build()) }
-            fun serverId(ref: TfRef<TfNumber>) = apply { addElement(serverIdBuilder.raw(ref.toString()).build()) }
+            fun serverId(ref: Reference<TfNumber>) = apply { addElement(serverIdBuilder.raw(ref.toString()).build()) }
             fun homeLocation(homeLocation: String) = apply { addElement(homeLocationBuilder.value(homeLocation).build()) }
-            fun homeLocation(ref: TfRef<TfString>) = apply { addElement(homeLocationBuilder.raw(ref.toString()).build()) }
+            fun homeLocation(ref: Reference<TfString>) = apply { addElement(homeLocationBuilder.raw(ref.toString()).build()) }
             fun description(description: String) = apply { addElement(descriptionBuilder.value(description).build()) }
-            fun description(ref: TfRef<TfString>) = apply { addElement(descriptionBuilder.raw(ref.toString()).build()) }
+            fun description(ref: Reference<TfString>) = apply { addElement(descriptionBuilder.raw(ref.toString()).build()) }
             fun labels(labels: TfMap) = apply { addElement(labelsBuilder.value(labels).build()) }
-            fun labels(ref: TfRef<TfMap>) = apply { addElement(labelsBuilder.raw(ref.toString()).build()) }
+            fun labels(ref: Reference<TfMap>) = apply { addElement(labelsBuilder.raw(ref.toString()).build()) }
             fun deleteProtection(deleteProtection: Boolean) = apply { addElement(deleteProtectionBuilder.value(deleteProtection).build()) }
-            fun deleteProtection(ref: TfRef<TfBool>) = apply { addElement(deleteProtectionBuilder.raw(ref.toString()).build()) }
+            fun deleteProtection(ref: Reference<TfBool>) = apply { addElement(deleteProtectionBuilder.raw(ref.toString()).build()) }
             override fun build(): Resource {
                 addElement(typeBuilder.build())
                 return Resource(buildBlock(), buildSelf())
@@ -74,16 +74,16 @@ object HCloudFloatingIp {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val id get() = TfRef<TfNumber>(referenceString(ID))
-        val type get() = TfRef<TfString>(referenceString(TYPE))
-        val name get() = TfRef<TfString>(referenceString(NAME))
-        val serverId get() = TfRef<TfNumber>(referenceString(SERVER_ID))
-        val homeLocation get() = TfRef<TfString>(referenceString(HOME_LOCATION))
-        val description get() = TfRef<TfString>(referenceString(DESCRIPTION))
-        val ipAddress get() = TfRef<TfString>(referenceString(IP_ADDRESS))
-        val ipNetwork get() = TfRef<TfString>(referenceString(IP_NETWORK))
-        val labels get() = TfRef<TfMap>(referenceString(LABELS))
-        val deleteProtection get() = TfRef<TfBool>(referenceString(DELETE_PROTECTION))
+        val id get() = Reference<TfNumber>(referenceString(ID))
+        val type get() = Reference<TfString>(referenceString(TYPE))
+        val name get() = Reference<TfString>(referenceString(NAME))
+        val serverId get() = Reference<TfNumber>(referenceString(SERVER_ID))
+        val homeLocation get() = Reference<TfString>(referenceString(HOME_LOCATION))
+        val description get() = Reference<TfString>(referenceString(DESCRIPTION))
+        val ipAddress get() = Reference<TfString>(referenceString(IP_ADDRESS))
+        val ipNetwork get() = Reference<TfString>(referenceString(IP_NETWORK))
+        val labels get() = Reference<TfMap>(referenceString(LABELS))
+        val deleteProtection get() = Reference<TfBool>(referenceString(DELETE_PROTECTION))
 
         class Builder: GBuilder<Builder>() {
             private val idBuilder: Argument.Builder = Argument.Builder().name(ID)
@@ -93,13 +93,13 @@ object HCloudFloatingIp {
             init { dataSource(HCLOUD_FLOATING_IP) }
 
             fun id(id: Int) = apply { addElement(idBuilder.value(id.toDouble()).build()) }
-            fun id(ref: TfRef<TfNumber>) = apply { addElement(idBuilder.raw(ref.toString()).build()) }
+            fun id(ref: Reference<TfNumber>) = apply { addElement(idBuilder.raw(ref.toString()).build()) }
             fun name(name: String) = apply { addElement(nameBuilder.value(name).build()) }
-            fun name(ref: TfRef<TfString>) = apply { addElement(nameBuilder.raw(ref.toString()).build()) }
+            fun name(ref: Reference<TfString>) = apply { addElement(nameBuilder.raw(ref.toString()).build()) }
             fun ipAddress(ipAddress: String) = apply { addElement(ipAddressBuilder.value(ipAddress).build()) }
-            fun ipAddress(ref: TfRef<TfString>) = apply { addElement(ipAddressBuilder.raw(ref.toString()).build()) }
+            fun ipAddress(ref: Reference<TfString>) = apply { addElement(ipAddressBuilder.raw(ref.toString()).build()) }
             fun withSelector(selector: String) = apply { addElement(withSelectorBuilder.value(selector).build()) }
-            fun withSelector(ref: TfRef<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
+            fun withSelector(ref: Reference<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
             override fun build(): DataSource = DataSource(buildBlock(), buildSelf())
         }
     }

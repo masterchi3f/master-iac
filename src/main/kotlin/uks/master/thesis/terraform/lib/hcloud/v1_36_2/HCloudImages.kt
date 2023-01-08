@@ -4,7 +4,7 @@ import uks.master.thesis.terraform.syntax.elements.Argument
 import uks.master.thesis.terraform.syntax.elements.Block
 import uks.master.thesis.terraform.syntax.expressions.TfBool
 import uks.master.thesis.terraform.syntax.expressions.TfList
-import uks.master.thesis.terraform.syntax.expressions.TfRef
+import uks.master.thesis.terraform.syntax.expressions.Reference
 import uks.master.thesis.terraform.syntax.expressions.TfString
 
 object HCloudImages {
@@ -22,7 +22,7 @@ object HCloudImages {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val images get() = TfRef<TfList>(referenceString(IMAGES))
+        val images get() = Reference<TfList>(referenceString(IMAGES))
 
         class Builder: GBuilder<Builder>() {
             private val withSelectorBuilder: Argument.Builder = Argument.Builder().name(WITH_SELECTOR)
@@ -31,9 +31,9 @@ object HCloudImages {
             init { dataSource(HCLOUD_IMAGES) }
 
             fun withSelector(selector: String) = apply { addElement(withSelectorBuilder.value(selector).build()) }
-            fun withSelector(ref: TfRef<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
+            fun withSelector(ref: Reference<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
             fun mostRecent(mostRecent: Boolean) = apply { addElement(mostRecentBuilder.value(mostRecent).build()) }
-            fun mostRecent(ref: TfRef<TfBool>) = apply { addElement(mostRecentBuilder.raw(ref.toString()).build()) }
+            fun mostRecent(ref: Reference<TfBool>) = apply { addElement(mostRecentBuilder.raw(ref.toString()).build()) }
             fun withStatus(withStatus: List<Status>) = apply {
                 val set: Set<Status> = withStatus.toSet()
                 val tfListBuilder: TfList.Builder = TfList.Builder()

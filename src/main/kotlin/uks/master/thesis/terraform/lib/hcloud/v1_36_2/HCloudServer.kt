@@ -7,7 +7,7 @@ import uks.master.thesis.terraform.syntax.expressions.TfBool
 import uks.master.thesis.terraform.syntax.expressions.TfList
 import uks.master.thesis.terraform.syntax.expressions.TfMap
 import uks.master.thesis.terraform.syntax.expressions.TfNumber
-import uks.master.thesis.terraform.syntax.expressions.TfRef
+import uks.master.thesis.terraform.syntax.expressions.Reference
 import uks.master.thesis.terraform.syntax.expressions.TfString
 import uks.master.thesis.terraform.utils.Utils
 
@@ -94,11 +94,11 @@ object HCloudServer {
             private val aliasIpsBuilder: Argument.Builder = Argument.Builder().name(ALIAS_IPS)
 
             fun networkId(networkId: Int) = apply { networkIdBuilder.value(networkId.toDouble()) }
-            fun networkId(ref: TfRef<TfNumber>) = apply { networkIdBuilder.raw(ref.toString()) }
+            fun networkId(ref: Reference<TfNumber>) = apply { networkIdBuilder.raw(ref.toString()) }
             fun ip(ip: String) = apply { blockBuilder.addElement(ipBuilder.value(ip).build()) }
-            fun ip(ref: TfRef<TfString>) = apply { blockBuilder.addElement(ipBuilder.raw(ref.toString()).build()) }
+            fun ip(ref: Reference<TfString>) = apply { blockBuilder.addElement(ipBuilder.raw(ref.toString()).build()) }
             fun aliasIps(aliasIps: TfList) = apply { blockBuilder.addElement(aliasIpsBuilder.value(aliasIps).build()) }
-            fun aliasIps(ref: TfRef<TfList>) = apply { blockBuilder.addElement(aliasIpsBuilder.raw(ref.toString()).build()) }
+            fun aliasIps(ref: Reference<TfList>) = apply { blockBuilder.addElement(aliasIpsBuilder.raw(ref.toString()).build()) }
             fun build() = Network(blockBuilder.addElement(networkIdBuilder.build()).build())
         }
 
@@ -107,30 +107,30 @@ object HCloudServer {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val id get() = TfRef<TfNumber>(referenceString(ID))
-        val name get() = TfRef<TfString>(referenceString(NAME))
-        val serverType get() = TfRef<TfString>(referenceString(SERVER_TYPE))
-        val image get() = TfRef<TfString>(referenceString(IMAGE))
-        val location get() = TfRef<TfString>(referenceString(LOCATION))
-        val datacenter get() = TfRef<TfString>(referenceString(DATACENTER))
-        val backupWindow get() = TfRef<TfString>(referenceString(BACKUP_WINDOW))
-        val backups get() = TfRef<TfBool>(referenceString(BACKUPS))
-        val iso get() = TfRef<TfString>(referenceString(ISO))
-        val ipv4Address get() = TfRef<TfString>(referenceString(IPV4_ADDRESS))
-        val ipv6Address get() = TfRef<TfString>(referenceString(IPV6_ADDRESS))
-        val ipv6Network get() = TfRef<TfString>(referenceString(IPV6_NETWORK))
-        val status get() = TfRef<TfString>(referenceString(STATUS))
-        val labels get() = TfRef<TfMap>(referenceString(LABELS))
-        val firewallIds get() = TfRef<TfList>(referenceString(FIREWALL_IDS))
-        val placementGroupId get() = TfRef<TfNumber>(referenceString(PLACEMENT_GROUP_ID))
-        val deleteProtection get() = TfRef<TfBool>(referenceString(DELETE_PROTECTION))
-        val rebuildProtection get() = TfRef<TfBool>(referenceString(REBUILD_PROTECTION))
-        val network get() = TfRef<TfMap>(referenceString(NETWORK))
-        val networks get() = TfRef<TfList>(referenceString(Network.reference()))
-        val networksNetworkIds get() = TfRef<TfList>(referenceString(Network.networkId()))
-        val networksIps get() = TfRef<TfList>(referenceString(Network.ip()))
-        val networksAliasIpsList get() = TfRef<TfList>(referenceString(Network.aliasIps()))
-        val networksMacAddressList get() = TfRef<TfList>(referenceString(Network.macAddress()))
+        val id get() = Reference<TfNumber>(referenceString(ID))
+        val name get() = Reference<TfString>(referenceString(NAME))
+        val serverType get() = Reference<TfString>(referenceString(SERVER_TYPE))
+        val image get() = Reference<TfString>(referenceString(IMAGE))
+        val location get() = Reference<TfString>(referenceString(LOCATION))
+        val datacenter get() = Reference<TfString>(referenceString(DATACENTER))
+        val backupWindow get() = Reference<TfString>(referenceString(BACKUP_WINDOW))
+        val backups get() = Reference<TfBool>(referenceString(BACKUPS))
+        val iso get() = Reference<TfString>(referenceString(ISO))
+        val ipv4Address get() = Reference<TfString>(referenceString(IPV4_ADDRESS))
+        val ipv6Address get() = Reference<TfString>(referenceString(IPV6_ADDRESS))
+        val ipv6Network get() = Reference<TfString>(referenceString(IPV6_NETWORK))
+        val status get() = Reference<TfString>(referenceString(STATUS))
+        val labels get() = Reference<TfMap>(referenceString(LABELS))
+        val firewallIds get() = Reference<TfList>(referenceString(FIREWALL_IDS))
+        val placementGroupId get() = Reference<TfNumber>(referenceString(PLACEMENT_GROUP_ID))
+        val deleteProtection get() = Reference<TfBool>(referenceString(DELETE_PROTECTION))
+        val rebuildProtection get() = Reference<TfBool>(referenceString(REBUILD_PROTECTION))
+        val network get() = Reference<TfMap>(referenceString(NETWORK))
+        val networks get() = Reference<TfList>(referenceString(Network.reference()))
+        val networksNetworkIds get() = Reference<TfList>(referenceString(Network.networkId()))
+        val networksIps get() = Reference<TfList>(referenceString(Network.ip()))
+        val networksAliasIpsList get() = Reference<TfList>(referenceString(Network.aliasIps()))
+        val networksMacAddressList get() = Reference<TfList>(referenceString(Network.macAddress()))
 
         class Builder: GBuilder<Builder>() {
             private val nameBuilder: Argument.Builder = Argument.Builder().name(NAME)
@@ -156,18 +156,18 @@ object HCloudServer {
             init { resourceType(HCLOUD_SERVER) }
 
             fun name(name: String) = apply { nameBuilder.value(name) }
-            fun name(ref: TfRef<TfString>) = apply { nameBuilder.raw(ref.toString()) }
+            fun name(ref: Reference<TfString>) = apply { nameBuilder.raw(ref.toString()) }
             fun serverType(serverType: String) = apply { serverTypeBuilder.value(serverType) }
-            fun serverType(ref: TfRef<TfString>) = apply { serverTypeBuilder.raw(ref.toString()) }
+            fun serverType(ref: Reference<TfString>) = apply { serverTypeBuilder.raw(ref.toString()) }
             fun image(image: String) = apply { imageBuilder.value(image) }
-            fun image(ref: TfRef<TfString>) = apply { imageBuilder.raw(ref.toString()) }
+            fun image(ref: Reference<TfString>) = apply { imageBuilder.raw(ref.toString()) }
             fun location(location: Location) = apply { addElement(locationBuilder.value(location.toString()).build()) }
             fun datacenter(datacenter: String) = apply { addElement(datacenterBuilder.value(datacenter).build()) }
-            fun datacenter(ref: TfRef<TfString>) = apply { addElement(datacenterBuilder.raw(ref.toString()).build()) }
+            fun datacenter(ref: Reference<TfString>) = apply { addElement(datacenterBuilder.raw(ref.toString()).build()) }
             fun userData(userData: String) = apply { addElement(userDataBuilder.value(userData).build()) }
-            fun userData(ref: TfRef<TfString>) = apply { addElement(userDataBuilder.raw(ref.toString()).build()) }
+            fun userData(ref: Reference<TfString>) = apply { addElement(userDataBuilder.raw(ref.toString()).build()) }
             fun sshKeys(sshKeys: TfList) = apply { addElement(sshKeysBuilder.value(sshKeys).build()) }
-            fun sshKeys(ref: TfRef<TfList>) = apply { addElement(sshKeysBuilder.raw(ref.toString()).build()) }
+            fun sshKeys(ref: Reference<TfList>) = apply { addElement(sshKeysBuilder.raw(ref.toString()).build()) }
             fun publicNet(ipv4Enabled: Boolean, ipv6Enabled: Boolean) = apply {
                 preventDupPublicNet()
                 addElement(Block.Builder().type(PUBLIC_NET).addElement(
@@ -176,7 +176,7 @@ object HCloudServer {
                     Argument.Builder().name(IPV6_ENABLED).value(ipv6Enabled).build()
                 ).build())
             }
-            fun publicNet(ipv4Ref: TfRef<TfBool>, ipv6Ref: TfRef<TfBool>) = apply {
+            fun publicNet(ipv4Ref: Reference<TfBool>, ipv6Ref: Reference<TfBool>) = apply {
                 preventDupPublicNet()
                 addElement(Block.Builder().type(PUBLIC_NET).addElement(
                     Argument.Builder().name(IPV4_ENABLED).raw(ipv4Ref.toString()).build()
@@ -185,27 +185,27 @@ object HCloudServer {
                 ).build())
             }
             fun keepDisk(keepDisk: Boolean) = apply { addElement(keepDiskBuilder.value(keepDisk).build()) }
-            fun keepDisk(ref: TfRef<TfBool>) = apply { addElement(keepDiskBuilder.raw(ref.toString()).build()) }
+            fun keepDisk(ref: Reference<TfBool>) = apply { addElement(keepDiskBuilder.raw(ref.toString()).build()) }
             fun iso(iso: String) = apply { addElement(isoBuilder.value(iso).build()) }
-            fun iso(ref: TfRef<TfString>) = apply { addElement(isoBuilder.raw(ref.toString()).build()) }
+            fun iso(ref: Reference<TfString>) = apply { addElement(isoBuilder.raw(ref.toString()).build()) }
             fun rescue(rescue: Rescue) = apply { addElement(rescueBuilder.value(rescue.toString()).build()) }
             fun labels(labels: TfMap) = apply { addElement(labelsBuilder.value(labels).build()) }
-            fun labels(ref: TfRef<TfMap>) = apply { addElement(labelsBuilder.raw(ref.toString()).build()) }
+            fun labels(ref: Reference<TfMap>) = apply { addElement(labelsBuilder.raw(ref.toString()).build()) }
             fun backups(backups: Boolean) = apply { addElement(backupsBuilder.value(backups).build()) }
-            fun backups(ref: TfRef<TfBool>) = apply { addElement(backupsBuilder.raw(ref.toString()).build()) }
+            fun backups(ref: Reference<TfBool>) = apply { addElement(backupsBuilder.raw(ref.toString()).build()) }
             fun firewallIds(firewallIds: TfList) = apply { addElement(firewallIdsBuilder.value(firewallIds).build()) }
-            fun firewallIds(ref: TfRef<TfList>) = apply { addElement(firewallIdsBuilder.raw(ref.toString()).build()) }
+            fun firewallIds(ref: Reference<TfList>) = apply { addElement(firewallIdsBuilder.raw(ref.toString()).build()) }
             fun ignoreRemoteFirewallIds(ignoreRemoteFirewallIds: Boolean) = apply { addElement(ignoreRemoteFirewallIdsBuilder.value(ignoreRemoteFirewallIds).build()) }
-            fun ignoreRemoteFirewallIds(ref: TfRef<TfBool>) = apply { addElement(ignoreRemoteFirewallIdsBuilder.raw(ref.toString()).build()) }
+            fun ignoreRemoteFirewallIds(ref: Reference<TfBool>) = apply { addElement(ignoreRemoteFirewallIdsBuilder.raw(ref.toString()).build()) }
             fun network(network: Network) = apply { addElement(network.block) }
             fun placementGroupId(placementGroupId: Int) = apply { addElement(placementGroupIdBuilder.value(placementGroupId.toDouble()).build()) }
-            fun placementGroupId(ref: TfRef<TfNumber>) = apply { addElement(placementGroupIdBuilder.raw(ref.toString()).build()) }
+            fun placementGroupId(ref: Reference<TfNumber>) = apply { addElement(placementGroupIdBuilder.raw(ref.toString()).build()) }
             fun deleteProtection(deleteProtection: Boolean) = apply { addElement(deleteProtectionBuilder.value(deleteProtection).build()) }
-            fun deleteProtection(ref: TfRef<TfBool>) = apply { addElement(deleteProtectionBuilder.raw(ref.toString()).build()) }
+            fun deleteProtection(ref: Reference<TfBool>) = apply { addElement(deleteProtectionBuilder.raw(ref.toString()).build()) }
             fun rebuildProtection(rebuildProtection: Boolean) = apply { addElement(rebuildProtectionBuilder.value(rebuildProtection).build()) }
-            fun rebuildProtection(ref: TfRef<TfBool>) = apply { addElement(rebuildProtectionBuilder.raw(ref.toString()).build()) }
+            fun rebuildProtection(ref: Reference<TfBool>) = apply { addElement(rebuildProtectionBuilder.raw(ref.toString()).build()) }
             fun allowDeprecatedImages(allowDeprecatedImages: Boolean) = apply { addElement(allowDeprecatedImagesBuilder.value(allowDeprecatedImages).build()) }
-            fun allowDeprecatedImages(ref: TfRef<TfBool>) = apply { addElement(allowDeprecatedImagesBuilder.raw(ref.toString()).build()) }
+            fun allowDeprecatedImages(ref: Reference<TfBool>) = apply { addElement(allowDeprecatedImagesBuilder.raw(ref.toString()).build()) }
             override fun build(): Resource {
                 addElement(nameBuilder.build())
                 addElement(serverTypeBuilder.build())
@@ -218,33 +218,33 @@ object HCloudServer {
             }
         }
 
-        fun network(index: Int) = TfRef<Raw>(referenceString(Network.reference(index)))
-        fun networkNetworkId(index: Int) = TfRef<TfNumber>(referenceString(Network.networkId(index)))
-        fun networkIp(index: Int) = TfRef<TfString>(referenceString(Network.ip(index)))
-        fun networkAliasIps(index: Int) = TfRef<TfList>(referenceString(Network.aliasIps(index)))
-        fun networkMacAddress(index: Int) = TfRef<TfString>(referenceString(Network.macAddress(index)))
+        fun network(index: Int) = Reference<Raw>(referenceString(Network.reference(index)))
+        fun networkNetworkId(index: Int) = Reference<TfNumber>(referenceString(Network.networkId(index)))
+        fun networkIp(index: Int) = Reference<TfString>(referenceString(Network.ip(index)))
+        fun networkAliasIps(index: Int) = Reference<TfList>(referenceString(Network.aliasIps(index)))
+        fun networkMacAddress(index: Int) = Reference<TfString>(referenceString(Network.macAddress(index)))
     }
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val id get() = TfRef<TfNumber>(referenceString(ID))
-        val name get() = TfRef<TfString>(referenceString(NAME))
-        val serverType get() = TfRef<TfString>(referenceString(SERVER_TYPE))
-        val image get() = TfRef<TfString>(referenceString(IMAGE))
-        val location get() = TfRef<TfString>(referenceString(LOCATION))
-        val datacenter get() = TfRef<TfString>(referenceString(DATACENTER))
-        val backupWindow get() = TfRef<TfString>(referenceString(BACKUP_WINDOW))
-        val backups get() = TfRef<TfBool>(referenceString(BACKUPS))
-        val iso get() = TfRef<TfString>(referenceString(ISO))
-        val ipv4Address get() = TfRef<TfString>(referenceString(IPV4_ADDRESS))
-        val ipv6Address get() = TfRef<TfString>(referenceString(IPV6_ADDRESS))
-        val ipv6Network get() = TfRef<TfString>(referenceString(IPV6_NETWORK))
-        val status get() = TfRef<TfString>(referenceString(STATUS))
-        val labels get() = TfRef<TfMap>(referenceString(LABELS))
-        val firewallIds get() = TfRef<TfList>(referenceString(FIREWALL_IDS))
-        val placementGroupId get() = TfRef<TfNumber>(referenceString(PLACEMENT_GROUP_ID))
-        val deleteProtection get() = TfRef<TfBool>(referenceString(DELETE_PROTECTION))
-        val rebuildProtection get() = TfRef<TfBool>(referenceString(REBUILD_PROTECTION))
+        val id get() = Reference<TfNumber>(referenceString(ID))
+        val name get() = Reference<TfString>(referenceString(NAME))
+        val serverType get() = Reference<TfString>(referenceString(SERVER_TYPE))
+        val image get() = Reference<TfString>(referenceString(IMAGE))
+        val location get() = Reference<TfString>(referenceString(LOCATION))
+        val datacenter get() = Reference<TfString>(referenceString(DATACENTER))
+        val backupWindow get() = Reference<TfString>(referenceString(BACKUP_WINDOW))
+        val backups get() = Reference<TfBool>(referenceString(BACKUPS))
+        val iso get() = Reference<TfString>(referenceString(ISO))
+        val ipv4Address get() = Reference<TfString>(referenceString(IPV4_ADDRESS))
+        val ipv6Address get() = Reference<TfString>(referenceString(IPV6_ADDRESS))
+        val ipv6Network get() = Reference<TfString>(referenceString(IPV6_NETWORK))
+        val status get() = Reference<TfString>(referenceString(STATUS))
+        val labels get() = Reference<TfMap>(referenceString(LABELS))
+        val firewallIds get() = Reference<TfList>(referenceString(FIREWALL_IDS))
+        val placementGroupId get() = Reference<TfNumber>(referenceString(PLACEMENT_GROUP_ID))
+        val deleteProtection get() = Reference<TfBool>(referenceString(DELETE_PROTECTION))
+        val rebuildProtection get() = Reference<TfBool>(referenceString(REBUILD_PROTECTION))
 
         class Builder: GBuilder<Builder>() {
             private val idOrNameBuilder: Argument.Builder = Argument.Builder()
@@ -253,11 +253,11 @@ object HCloudServer {
             init { dataSource(HCLOUD_SERVER) }
 
             fun id(id: Int) = apply { idOrNameBuilder.name(ID).value(id.toDouble()) }
-            fun id(ref: TfRef<TfNumber>) = apply { idOrNameBuilder.name(ID).raw(ref.toString()) }
+            fun id(ref: Reference<TfNumber>) = apply { idOrNameBuilder.name(ID).raw(ref.toString()) }
             fun name(name: String) = apply { idOrNameBuilder.name(NAME).value(name) }
-            fun name(ref: TfRef<TfString>) = apply { idOrNameBuilder.name(NAME).raw(ref.toString()) }
+            fun name(ref: Reference<TfString>) = apply { idOrNameBuilder.name(NAME).raw(ref.toString()) }
             fun withSelector(selector: String) = apply { addElement(withSelectorBuilder.value(selector).build()) }
-            fun withSelector(ref: TfRef<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
+            fun withSelector(ref: Reference<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
             fun withStatus(withStatus: List<Status>) = apply {
                 val set: Set<Status> = withStatus.toSet()
                 val tfListBuilder: TfList.Builder = TfList.Builder()

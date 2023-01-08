@@ -12,7 +12,7 @@ import uks.master.thesis.terraform.syntax.expressions.TfFile
 import uks.master.thesis.terraform.syntax.expressions.TfList
 import uks.master.thesis.terraform.syntax.expressions.TfMap
 import uks.master.thesis.terraform.syntax.expressions.TfNumber
-import uks.master.thesis.terraform.syntax.expressions.TfRef
+import uks.master.thesis.terraform.syntax.expressions.Reference
 import uks.master.thesis.terraform.syntax.expressions.TfString
 
 class InputVariable<T : Expression> private constructor(
@@ -26,7 +26,7 @@ class InputVariable<T : Expression> private constructor(
         const val SENSITIVE: String = "sensitive"
     }
 
-    val reference get() = TfRef<T>("$VAR.$self")
+    val reference get() = Reference<T>("$VAR.$self")
     val name get() = self
 
     class Builder {
@@ -65,7 +65,7 @@ class InputVariable<T : Expression> private constructor(
         private fun checkList(list: TfList) {
             list.expressions.forEach {
                 when (it) {
-                    is TfRef<out Expression>, is TfFile -> throw IllegalArgumentException("Only primitive types are allowed in default values")
+                    is Reference<out Expression>, is TfFile -> throw IllegalArgumentException("Only primitive types are allowed in default values")
                     is TfList -> checkList(it)
                     is TfMap -> checkMap(it)
                 }
@@ -75,7 +75,7 @@ class InputVariable<T : Expression> private constructor(
         private fun checkMap(map: TfMap) {
             map.entries.forEach {
                 when (val value = it.value) {
-                    is TfRef<out Expression>, is TfFile -> throw IllegalArgumentException("Only primitive types are allowed in default values")
+                    is Reference<out Expression>, is TfFile -> throw IllegalArgumentException("Only primitive types are allowed in default values")
                     is TfList -> checkList(value)
                     is TfMap -> checkMap(value)
                 }

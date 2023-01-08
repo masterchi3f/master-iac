@@ -6,7 +6,7 @@ import uks.master.thesis.terraform.syntax.expressions.Raw
 import uks.master.thesis.terraform.syntax.expressions.TfBool
 import uks.master.thesis.terraform.syntax.expressions.TfList
 import uks.master.thesis.terraform.syntax.expressions.TfNumber
-import uks.master.thesis.terraform.syntax.expressions.TfRef
+import uks.master.thesis.terraform.syntax.expressions.Reference
 import uks.master.thesis.terraform.syntax.expressions.TfString
 import uks.master.thesis.terraform.utils.Utils
 
@@ -52,15 +52,15 @@ object HCloudLoadBalancerService {
 
             fun protocol(protocol: Protocol) = apply { preventDupProtocol(); _protocol = protocol }
             fun stickySessions(stickySessions: Boolean) = apply { blockBuilder.addElement(stickySessionsBuilder.value(stickySessions).build()) }
-            fun stickySessions(ref: TfRef<TfBool>) = apply { blockBuilder.addElement(stickySessionsBuilder.raw(ref.toString()).build()) }
+            fun stickySessions(ref: Reference<TfBool>) = apply { blockBuilder.addElement(stickySessionsBuilder.raw(ref.toString()).build()) }
             fun cookieName(cookieName: String) = apply { blockBuilder.addElement(cookieNameBuilder.value(cookieName).build()) }
-            fun cookieName(ref: TfRef<TfString>) = apply { blockBuilder.addElement(cookieNameBuilder.raw(ref.toString()).build()) }
+            fun cookieName(ref: Reference<TfString>) = apply { blockBuilder.addElement(cookieNameBuilder.raw(ref.toString()).build()) }
             fun cookieLifetime(cookieLifetime: Int) = apply { blockBuilder.addElement(cookieLifetimeBuilder.value(cookieLifetime.toDouble()).build()) }
-            fun cookieLifetime(ref: TfRef<TfNumber>) = apply { blockBuilder.addElement(cookieLifetimeBuilder.raw(ref.toString()).build()) }
+            fun cookieLifetime(ref: Reference<TfNumber>) = apply { blockBuilder.addElement(cookieLifetimeBuilder.raw(ref.toString()).build()) }
             fun certificates(certificates: TfList) = apply { blockBuilder.addElement(certificatesBuilder.value(certificates).build()) }
-            fun certificates(ref: TfRef<TfList>) = apply { blockBuilder.addElement(certificatesBuilder.raw(ref.toString()).build()) }
+            fun certificates(ref: Reference<TfList>) = apply { blockBuilder.addElement(certificatesBuilder.raw(ref.toString()).build()) }
             fun redirectHttp(redirectHttp: Boolean) = apply { isRedirectHttpSet = true; redirectHttpBuilder.value(redirectHttp) }
-            fun redirectHttp(ref: TfRef<TfBool>) = apply { isRedirectHttpSet = true; redirectHttpBuilder.raw(ref.toString()) }
+            fun redirectHttp(ref: Reference<TfBool>) = apply { isRedirectHttpSet = true; redirectHttpBuilder.raw(ref.toString()) }
             fun build(): Http {
                 if (isRedirectHttpSet) {
                     if (_protocol?.equals(Protocol.HTTPS) == false) {
@@ -141,15 +141,15 @@ object HCloudLoadBalancerService {
                 private val statusCodesBuilder: Argument.Builder = Argument.Builder().name(STATUS_CODES)
 
                 fun domain(domain: String) = apply { blockBuilder.addElement(domainBuilder.value(domain).build()) }
-                fun domain(ref: TfRef<TfString>) = apply { blockBuilder.addElement(domainBuilder.raw(ref.toString()).build()) }
+                fun domain(ref: Reference<TfString>) = apply { blockBuilder.addElement(domainBuilder.raw(ref.toString()).build()) }
                 fun path(path: String) = apply { blockBuilder.addElement(pathBuilder.value(path).build()) }
-                fun path(ref: TfRef<TfString>) = apply { blockBuilder.addElement(pathBuilder.raw(ref.toString()).build()) }
+                fun path(ref: Reference<TfString>) = apply { blockBuilder.addElement(pathBuilder.raw(ref.toString()).build()) }
                 fun response(response: String) = apply { blockBuilder.addElement(responseBuilder.value(response).build()) }
-                fun response(ref: TfRef<TfString>) = apply { blockBuilder.addElement(responseBuilder.raw(ref.toString()).build()) }
+                fun response(ref: Reference<TfString>) = apply { blockBuilder.addElement(responseBuilder.raw(ref.toString()).build()) }
                 fun tls(tls: Boolean) = apply { blockBuilder.addElement(tlsBuilder.value(tls).build()) }
-                fun tls(ref: TfRef<TfBool>) = apply { blockBuilder.addElement(tlsBuilder.raw(ref.toString()).build()) }
+                fun tls(ref: Reference<TfBool>) = apply { blockBuilder.addElement(tlsBuilder.raw(ref.toString()).build()) }
                 fun statusCodes(statusCodes: TfList) = apply { blockBuilder.addElement(statusCodesBuilder.value(statusCodes).build()) }
-                fun statusCodes(ref: TfRef<TfList>) = apply { blockBuilder.addElement(statusCodesBuilder.raw(ref.toString()).build()) }
+                fun statusCodes(ref: Reference<TfList>) = apply { blockBuilder.addElement(statusCodesBuilder.raw(ref.toString()).build()) }
                 fun build() = Http(blockBuilder.build())
             }
 
@@ -168,14 +168,14 @@ object HCloudLoadBalancerService {
 
             fun protocol(protocol: Protocol) = apply { preventDupProtocol(); _protocol = protocol }
             fun port(port: Int) = apply { portBuilder.value(port.toDouble()) }
-            fun port(ref: TfRef<TfNumber>) = apply { portBuilder.raw(ref.toString()) }
+            fun port(ref: Reference<TfNumber>) = apply { portBuilder.raw(ref.toString()) }
             fun interval(interval: Int) = apply { intervalBuilder.value(interval.toDouble()) }
-            fun interval(ref: TfRef<TfNumber>) = apply { intervalBuilder.raw(ref.toString()) }
+            fun interval(ref: Reference<TfNumber>) = apply { intervalBuilder.raw(ref.toString()) }
             fun timeout(timeout: Int) = apply { timeoutBuilder.value(timeout.toDouble()) }
-            fun timeout(ref: TfRef<TfNumber>) = apply { timeoutBuilder.raw(ref.toString()) }
+            fun timeout(ref: Reference<TfNumber>) = apply { timeoutBuilder.raw(ref.toString()) }
             fun http(http: Http) = apply { httpList = httpList + http }
             fun retries(retries: Int) = apply { blockBuilder.addElement(retriesBuilder.value(retries.toDouble()).build()) }
-            fun retries(ref: TfRef<TfNumber>) = apply { blockBuilder.addElement(retriesBuilder.raw(ref.toString()).build()) }
+            fun retries(ref: Reference<TfNumber>) = apply { blockBuilder.addElement(retriesBuilder.raw(ref.toString()).build()) }
             fun build(): HealthCheck {
                 blockBuilder.addElement(protocolBuilder.value(_protocol.toString()).build())
                 blockBuilder.addElement(intervalBuilder.build())
@@ -197,26 +197,26 @@ object HCloudLoadBalancerService {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val protocol get() = TfRef<TfString>(referenceString(PROTOCOL))
-        val listenPort get() = TfRef<TfNumber>(referenceString(LISTEN_PORT))
-        val destinationPort get() = TfRef<TfNumber>(referenceString(DESTINATION_PORT))
-        val proxyprotocol get() = TfRef<TfBool>(referenceString(PROXYPROTOCL))
-        val httpList get() = TfRef<TfList>(referenceString(Http.reference()))
-        val httpListCookieNames get() = TfRef<TfList>(referenceString(Http.cookieName()))
-        val httpListCookieLifetime get() = TfRef<TfList>(referenceString(Http.cookieLifetime()))
-        val httpListCertificates get() = TfRef<TfList>(referenceString(Http.certificates()))
-        val healthChecks get() = TfRef<TfList>(referenceString(HealthCheck.reference()))
-        val healthChecksProtocols get() = TfRef<TfList>(referenceString(HealthCheck.protocol()))
-        val healthChecksPorts get() = TfRef<TfList>(referenceString(HealthCheck.port()))
-        val healthChecksIntervals get() = TfRef<TfList>(referenceString(HealthCheck.interval()))
-        val healthChecksTimeouts get() = TfRef<TfList>(referenceString(HealthCheck.timeout()))
-        val healthChecksRetriesList get() = TfRef<TfList>(referenceString(HealthCheck.retries()))
-        val healthChecksHttpLists get() = TfRef<TfList>(referenceString(HealthCheck.httpList()))
-        val healthChecksHttpListsDomains get() = TfRef<TfList>(referenceString(HealthCheck.httpListDomains()))
-        val healthChecksHttpListsPaths get() = TfRef<TfList>(referenceString(HealthCheck.httpListPaths()))
-        val healthChecksHttpListsResponses get() = TfRef<TfList>(referenceString(HealthCheck.httpListResponses()))
-        val healthChecksHttpListsTlsLists get() = TfRef<TfList>(referenceString(HealthCheck.httpListTlsList()))
-        val healthChecksHttpListsStatusCodesLists get() = TfRef<TfList>(referenceString(HealthCheck.httpListStatusCodesList()))
+        val protocol get() = Reference<TfString>(referenceString(PROTOCOL))
+        val listenPort get() = Reference<TfNumber>(referenceString(LISTEN_PORT))
+        val destinationPort get() = Reference<TfNumber>(referenceString(DESTINATION_PORT))
+        val proxyprotocol get() = Reference<TfBool>(referenceString(PROXYPROTOCL))
+        val httpList get() = Reference<TfList>(referenceString(Http.reference()))
+        val httpListCookieNames get() = Reference<TfList>(referenceString(Http.cookieName()))
+        val httpListCookieLifetime get() = Reference<TfList>(referenceString(Http.cookieLifetime()))
+        val httpListCertificates get() = Reference<TfList>(referenceString(Http.certificates()))
+        val healthChecks get() = Reference<TfList>(referenceString(HealthCheck.reference()))
+        val healthChecksProtocols get() = Reference<TfList>(referenceString(HealthCheck.protocol()))
+        val healthChecksPorts get() = Reference<TfList>(referenceString(HealthCheck.port()))
+        val healthChecksIntervals get() = Reference<TfList>(referenceString(HealthCheck.interval()))
+        val healthChecksTimeouts get() = Reference<TfList>(referenceString(HealthCheck.timeout()))
+        val healthChecksRetriesList get() = Reference<TfList>(referenceString(HealthCheck.retries()))
+        val healthChecksHttpLists get() = Reference<TfList>(referenceString(HealthCheck.httpList()))
+        val healthChecksHttpListsDomains get() = Reference<TfList>(referenceString(HealthCheck.httpListDomains()))
+        val healthChecksHttpListsPaths get() = Reference<TfList>(referenceString(HealthCheck.httpListPaths()))
+        val healthChecksHttpListsResponses get() = Reference<TfList>(referenceString(HealthCheck.httpListResponses()))
+        val healthChecksHttpListsTlsLists get() = Reference<TfList>(referenceString(HealthCheck.httpListTlsList()))
+        val healthChecksHttpListsStatusCodesLists get() = Reference<TfList>(referenceString(HealthCheck.httpListStatusCodesList()))
 
         class Builder: GBuilder<Builder>() {
             private val loadBalancerIdBuilder: Argument.Builder = Argument.Builder().name(LOAD_BALANCER_ID)
@@ -230,14 +230,14 @@ object HCloudLoadBalancerService {
             init { resourceType(HCLOUD_LOAD_BALANCER_SERVICE) }
 
             fun loadBalancerId(loadBalancerId: Int) = apply { loadBalancerIdBuilder.value(loadBalancerId.toDouble()) }
-            fun loadBalancerId(ref: TfRef<TfNumber>) = apply { loadBalancerIdBuilder.raw(ref.toString()) }
+            fun loadBalancerId(ref: Reference<TfNumber>) = apply { loadBalancerIdBuilder.raw(ref.toString()) }
             fun protocol(protocol: Protocol) = apply { _protocol = protocol; protocolBuilder.value(protocol.toString()) }
             fun listenPort(listenPort: Int) = apply { listenPortBuilder.value(listenPort.toDouble()) }
-            fun listenPort(ref: TfRef<TfNumber>) = apply { listenPortBuilder.raw(ref.toString()) }
+            fun listenPort(ref: Reference<TfNumber>) = apply { listenPortBuilder.raw(ref.toString()) }
             fun destinationPort(destinationPort: Int) = apply { destinationPortBuilder.value(destinationPort.toDouble()) }
-            fun destinationPort(ref: TfRef<TfNumber>) = apply { destinationPortBuilder.raw(ref.toString()) }
+            fun destinationPort(ref: Reference<TfNumber>) = apply { destinationPortBuilder.raw(ref.toString()) }
             fun proxyprotocol(proxyprotocol: Boolean) = apply { addElement(proxyprotocolBuilder.value(proxyprotocol).build()) }
-            fun proxyprotocol(ref: TfRef<TfBool>) = apply { addElement(proxyprotocolBuilder.raw(ref.toString()).build()) }
+            fun proxyprotocol(ref: Reference<TfBool>) = apply { addElement(proxyprotocolBuilder.raw(ref.toString()).build()) }
             fun http(http: Http) = apply { httpList = httpList + http }
             fun healthCheck(healthCheck: HealthCheck) = apply { healthCheckList = healthCheckList + healthCheck }
             override fun build(): Resource {
@@ -259,33 +259,33 @@ object HCloudLoadBalancerService {
             }
         }
 
-        fun http(index: Int) = TfRef<Raw>(referenceString(Http.reference(index)))
-        fun httpCookieName(index: Int) = TfRef<TfString>(referenceString(Http.cookieName(index)))
-        fun httpCookieLifetime(index: Int) = TfRef<TfNumber>(referenceString(Http.cookieLifetime(index)))
-        fun httpCertificate(index: Int) = TfRef<TfList>(referenceString(Http.certificates(index)))
-        fun healthCheck(index: Int) = TfRef<Raw>(referenceString(HealthCheck.reference(index)))
-        fun healthCheckProtocol(index: Int) = TfRef<TfString>(referenceString(HealthCheck.protocol(index)))
-        fun healthCheckPort(index: Int) = TfRef<TfNumber>(referenceString(HealthCheck.port(index)))
-        fun healthCheckInterval(index: Int) = TfRef<TfNumber>(referenceString(HealthCheck.interval(index)))
-        fun healthCheckTimeout(index: Int) = TfRef<TfNumber>(referenceString(HealthCheck.timeout(index)))
-        fun healthCheckRetries(index: Int) = TfRef<TfNumber>(referenceString(HealthCheck.retries(index)))
-        fun healthCheckHttpList(index: Int) = TfRef<TfList>(referenceString(HealthCheck.httpList(index)))
-        fun healthCheckHttpListDomains(index: Int) = TfRef<TfList>(referenceString(HealthCheck.httpListDomains(index)))
-        fun healthCheckHttpListPaths(index: Int) = TfRef<TfList>(referenceString(HealthCheck.httpListPaths(index)))
-        fun healthCheckHttpListResponses(index: Int) = TfRef<TfList>(referenceString(HealthCheck.httpListResponses(index)))
-        fun healthCheckHttpListTlsList(index: Int) = TfRef<TfList>(referenceString(HealthCheck.httpListTlsList(index)))
-        fun healthCheckHttpListStatusCodesList(index: Int) = TfRef<TfList>(referenceString(HealthCheck.httpListStatusCodesList(index)))
-        fun healthChecksHttp(httpIndex: Int) = TfRef<TfList>(referenceString(HealthCheck.http(null, httpIndex)))
-        fun healthChecksHttpDomain(httpIndex: Int) = TfRef<TfList>(referenceString(HealthCheck.httpListDomain(null, httpIndex)))
-        fun healthChecksHttpPath(httpIndex: Int) = TfRef<TfList>(referenceString(HealthCheck.httpListPath(null, httpIndex)))
-        fun healthChecksHttpResponse(httpIndex: Int) = TfRef<TfList>(referenceString(HealthCheck.httpListResponse(null, httpIndex)))
-        fun healthChecksHttpTls(httpIndex: Int) = TfRef<TfList>(referenceString(HealthCheck.httpListTls(null, httpIndex)))
-        fun healthChecksHttpStatusCodes(httpIndex: Int) = TfRef<TfList>(referenceString(HealthCheck.httpListStatusCodes(null, httpIndex)))
-        fun healthCheckHttp(index: Int, httpIndex: Int) = TfRef<TfList>(referenceString(HealthCheck.http(index, httpIndex)))
-        fun healthCheckHttpDomain(index: Int, httpIndex: Int) = TfRef<TfList>(referenceString(HealthCheck.httpListDomain(index, httpIndex)))
-        fun healthCheckHttpPath(index: Int, httpIndex: Int) = TfRef<TfList>(referenceString(HealthCheck.httpListPath(index, httpIndex)))
-        fun healthCheckHttpResponse(index: Int, httpIndex: Int) = TfRef<TfList>(referenceString(HealthCheck.httpListResponse(index, httpIndex)))
-        fun healthCheckHttpTls(index: Int, httpIndex: Int) = TfRef<TfList>(referenceString(HealthCheck.httpListTls(index, httpIndex)))
-        fun healthCheckHttpStatusCodes(index: Int, httpIndex: Int) = TfRef<TfList>(referenceString(HealthCheck.httpListStatusCodes(index, httpIndex)))
+        fun http(index: Int) = Reference<Raw>(referenceString(Http.reference(index)))
+        fun httpCookieName(index: Int) = Reference<TfString>(referenceString(Http.cookieName(index)))
+        fun httpCookieLifetime(index: Int) = Reference<TfNumber>(referenceString(Http.cookieLifetime(index)))
+        fun httpCertificate(index: Int) = Reference<TfList>(referenceString(Http.certificates(index)))
+        fun healthCheck(index: Int) = Reference<Raw>(referenceString(HealthCheck.reference(index)))
+        fun healthCheckProtocol(index: Int) = Reference<TfString>(referenceString(HealthCheck.protocol(index)))
+        fun healthCheckPort(index: Int) = Reference<TfNumber>(referenceString(HealthCheck.port(index)))
+        fun healthCheckInterval(index: Int) = Reference<TfNumber>(referenceString(HealthCheck.interval(index)))
+        fun healthCheckTimeout(index: Int) = Reference<TfNumber>(referenceString(HealthCheck.timeout(index)))
+        fun healthCheckRetries(index: Int) = Reference<TfNumber>(referenceString(HealthCheck.retries(index)))
+        fun healthCheckHttpList(index: Int) = Reference<TfList>(referenceString(HealthCheck.httpList(index)))
+        fun healthCheckHttpListDomains(index: Int) = Reference<TfList>(referenceString(HealthCheck.httpListDomains(index)))
+        fun healthCheckHttpListPaths(index: Int) = Reference<TfList>(referenceString(HealthCheck.httpListPaths(index)))
+        fun healthCheckHttpListResponses(index: Int) = Reference<TfList>(referenceString(HealthCheck.httpListResponses(index)))
+        fun healthCheckHttpListTlsList(index: Int) = Reference<TfList>(referenceString(HealthCheck.httpListTlsList(index)))
+        fun healthCheckHttpListStatusCodesList(index: Int) = Reference<TfList>(referenceString(HealthCheck.httpListStatusCodesList(index)))
+        fun healthChecksHttp(httpIndex: Int) = Reference<TfList>(referenceString(HealthCheck.http(null, httpIndex)))
+        fun healthChecksHttpDomain(httpIndex: Int) = Reference<TfList>(referenceString(HealthCheck.httpListDomain(null, httpIndex)))
+        fun healthChecksHttpPath(httpIndex: Int) = Reference<TfList>(referenceString(HealthCheck.httpListPath(null, httpIndex)))
+        fun healthChecksHttpResponse(httpIndex: Int) = Reference<TfList>(referenceString(HealthCheck.httpListResponse(null, httpIndex)))
+        fun healthChecksHttpTls(httpIndex: Int) = Reference<TfList>(referenceString(HealthCheck.httpListTls(null, httpIndex)))
+        fun healthChecksHttpStatusCodes(httpIndex: Int) = Reference<TfList>(referenceString(HealthCheck.httpListStatusCodes(null, httpIndex)))
+        fun healthCheckHttp(index: Int, httpIndex: Int) = Reference<TfList>(referenceString(HealthCheck.http(index, httpIndex)))
+        fun healthCheckHttpDomain(index: Int, httpIndex: Int) = Reference<TfList>(referenceString(HealthCheck.httpListDomain(index, httpIndex)))
+        fun healthCheckHttpPath(index: Int, httpIndex: Int) = Reference<TfList>(referenceString(HealthCheck.httpListPath(index, httpIndex)))
+        fun healthCheckHttpResponse(index: Int, httpIndex: Int) = Reference<TfList>(referenceString(HealthCheck.httpListResponse(index, httpIndex)))
+        fun healthCheckHttpTls(index: Int, httpIndex: Int) = Reference<TfList>(referenceString(HealthCheck.httpListTls(index, httpIndex)))
+        fun healthCheckHttpStatusCodes(index: Int, httpIndex: Int) = Reference<TfList>(referenceString(HealthCheck.httpListStatusCodes(index, httpIndex)))
     }
 }

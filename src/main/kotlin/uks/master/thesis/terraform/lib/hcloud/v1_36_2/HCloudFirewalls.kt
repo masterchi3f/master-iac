@@ -4,7 +4,7 @@ import uks.master.thesis.terraform.syntax.elements.Argument
 import uks.master.thesis.terraform.syntax.elements.Block
 import uks.master.thesis.terraform.syntax.expressions.TfBool
 import uks.master.thesis.terraform.syntax.expressions.TfList
-import uks.master.thesis.terraform.syntax.expressions.TfRef
+import uks.master.thesis.terraform.syntax.expressions.Reference
 import uks.master.thesis.terraform.syntax.expressions.TfString
 
 object HCloudFirewalls {
@@ -15,7 +15,7 @@ object HCloudFirewalls {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val firewalls get() = TfRef<TfList>(referenceString(FIREWALLS))
+        val firewalls get() = Reference<TfList>(referenceString(FIREWALLS))
 
         class Builder: GBuilder<Builder>() {
             private val withSelectorBuilder: Argument.Builder = Argument.Builder().name(WITH_SELECTOR)
@@ -23,9 +23,9 @@ object HCloudFirewalls {
             init { dataSource(HCLOUD_FIREWALLS) }
 
             fun withSelector(selector: String) = apply { addElement(withSelectorBuilder.value(selector).build()) }
-            fun withSelector(ref: TfRef<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
+            fun withSelector(ref: Reference<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
             fun mostRecent(mostRecent: Boolean) = apply { addElement(mostRecentBuilder.value(mostRecent).build()) }
-            fun mostRecent(ref: TfRef<TfBool>) = apply { addElement(mostRecentBuilder.raw(ref.toString()).build()) }
+            fun mostRecent(ref: Reference<TfBool>) = apply { addElement(mostRecentBuilder.raw(ref.toString()).build()) }
             override fun build() = DataSource(buildBlock(), buildSelf())
         }
     }

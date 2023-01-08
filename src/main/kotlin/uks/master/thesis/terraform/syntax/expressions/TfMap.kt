@@ -14,7 +14,7 @@ class TfMap private constructor(
         fun put(key: String, string: String) = apply { _entries = _entries + Pair(Identifier(key), TfString(string)) }
         fun put(key: String, list: TfList) = apply { _entries = _entries + Pair(Identifier(key), list) }
         fun put(key: String, map: TfMap) = apply { _entries = _entries + Pair(Identifier(key), map) }
-        fun put(key: String, ref: TfRef<out Expression>) = apply { _entries = _entries + Pair(Identifier(key), ref) }
+        fun put(key: String, ref: Reference<out Expression>) = apply { _entries = _entries + Pair(Identifier(key), ref) }
         fun put(key: String, file: TfFile) = apply { _entries = _entries + Pair(Identifier(key), file) }
         fun build() = TfMap(_entries)
     }

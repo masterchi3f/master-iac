@@ -5,7 +5,7 @@ import uks.master.thesis.terraform.syntax.elements.Block
 import uks.master.thesis.terraform.syntax.expressions.TfFile
 import uks.master.thesis.terraform.syntax.expressions.TfMap
 import uks.master.thesis.terraform.syntax.expressions.TfNumber
-import uks.master.thesis.terraform.syntax.expressions.TfRef
+import uks.master.thesis.terraform.syntax.expressions.Reference
 import uks.master.thesis.terraform.syntax.expressions.TfString
 
 object HCloudSshKey {
@@ -19,11 +19,11 @@ object HCloudSshKey {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val id get() = TfRef<TfNumber>(referenceString(ID))
-        val name get() = TfRef<TfString>(referenceString(NAME))
-        val publicKey get() = TfRef<TfString>(referenceString(PUBLIC_KEY))
-        val fingerprint get() = TfRef<TfString>(referenceString(FINGERPRINT))
-        val labels get() = TfRef<TfMap>(referenceString(LABELS))
+        val id get() = Reference<TfNumber>(referenceString(ID))
+        val name get() = Reference<TfString>(referenceString(NAME))
+        val publicKey get() = Reference<TfString>(referenceString(PUBLIC_KEY))
+        val fingerprint get() = Reference<TfString>(referenceString(FINGERPRINT))
+        val labels get() = Reference<TfMap>(referenceString(LABELS))
 
         class Builder: GBuilder<Builder>() {
             private val nameBuilder: Argument.Builder = Argument.Builder().name(NAME)
@@ -32,12 +32,12 @@ object HCloudSshKey {
             init { resourceType(HCLOUD_SSH_KEY) }
 
             fun name(name: String) = apply { nameBuilder.value(name) }
-            fun name(ref: TfRef<TfString>) = apply { nameBuilder.raw(ref.toString()) }
+            fun name(ref: Reference<TfString>) = apply { nameBuilder.raw(ref.toString()) }
             fun publicKey(publicKey: String) = apply { publicKeyBuilder.value(publicKey) }
-            fun publicKey(ref: TfRef<TfString>) = apply { publicKeyBuilder.raw(ref.toString()) }
+            fun publicKey(ref: Reference<TfString>) = apply { publicKeyBuilder.raw(ref.toString()) }
             fun publicKey(file: TfFile) = apply { publicKeyBuilder.raw(file.toString()) }
             fun labels(labels: TfMap) = apply { addElement(labelsBuilder.value(labels).build()) }
-            fun labels(ref: TfRef<TfMap>) = apply { addElement(labelsBuilder.raw(ref.toString()).build()) }
+            fun labels(ref: Reference<TfMap>) = apply { addElement(labelsBuilder.raw(ref.toString()).build()) }
             override fun build(): Resource {
                 addElement(nameBuilder.build())
                 addElement(publicKeyBuilder.build())
@@ -48,10 +48,10 @@ object HCloudSshKey {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val id get() = TfRef<TfNumber>(referenceString(ID))
-        val name get() = TfRef<TfString>(referenceString(NAME))
-        val publicKey get() = TfRef<TfString>(referenceString(PUBLIC_KEY))
-        val fingerprint get() = TfRef<TfString>(referenceString(FINGERPRINT))
+        val id get() = Reference<TfNumber>(referenceString(ID))
+        val name get() = Reference<TfString>(referenceString(NAME))
+        val publicKey get() = Reference<TfString>(referenceString(PUBLIC_KEY))
+        val fingerprint get() = Reference<TfString>(referenceString(FINGERPRINT))
 
         class Builder: GBuilder<Builder>() {
             private val idBuilder: Argument.Builder = Argument.Builder().name(ID)
@@ -61,13 +61,13 @@ object HCloudSshKey {
             init { dataSource(HCLOUD_SSH_KEY) }
 
             fun id(id: Int) = apply { addElement(idBuilder.value(id.toDouble()).build()) }
-            fun id(ref: TfRef<TfNumber>) = apply { addElement(idBuilder.raw(ref.toString()).build()) }
+            fun id(ref: Reference<TfNumber>) = apply { addElement(idBuilder.raw(ref.toString()).build()) }
             fun name(name: String) = apply { addElement(nameBuilder.value(name).build()) }
-            fun name(ref: TfRef<TfString>) = apply { addElement(nameBuilder.raw(ref.toString()).build()) }
+            fun name(ref: Reference<TfString>) = apply { addElement(nameBuilder.raw(ref.toString()).build()) }
             fun fingerprint(fingerprint: String) = apply { addElement(fingerprintBuilder.value(fingerprint).build()) }
-            fun fingerprint(ref: TfRef<TfString>) = apply { addElement(fingerprintBuilder.raw(ref.toString()).build()) }
+            fun fingerprint(ref: Reference<TfString>) = apply { addElement(fingerprintBuilder.raw(ref.toString()).build()) }
             fun withSelector(selector: String) = apply { addElement(withSelectorBuilder.value(selector).build()) }
-            fun withSelector(ref: TfRef<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
+            fun withSelector(ref: Reference<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
             override fun build(): DataSource = DataSource(buildBlock(), buildSelf())
         }
     }

@@ -15,7 +15,7 @@ import uks.master.thesis.terraform.syntax.expressions.TfList
 import uks.master.thesis.terraform.syntax.expressions.TfMap
 import uks.master.thesis.terraform.syntax.expressions.TfNull
 import uks.master.thesis.terraform.syntax.expressions.TfNumber
-import uks.master.thesis.terraform.syntax.expressions.TfRef
+import uks.master.thesis.terraform.syntax.expressions.Reference
 import uks.master.thesis.terraform.syntax.expressions.TfString
 
 class Argument private constructor(
@@ -51,7 +51,7 @@ class Argument private constructor(
             preventDupValue(); provider.alias?.let {
             // Not sure if alternate with - works because it is done with . in the docs:
             // https://developer.hashicorp.com/terraform/language/modules/develop/providers
-                _value = TfRef<Expression>("${provider.name}${if (alternate) "-" else "."}$it")
+                _value = Reference<Expression>("${provider.name}${if (alternate) "-" else "."}$it")
             } ?: throw IllegalArgumentException("alias from ${provider.name} was null!")
         }
         fun raw(raw: String) = apply { preventDupValue(); _value = Raw(raw) }

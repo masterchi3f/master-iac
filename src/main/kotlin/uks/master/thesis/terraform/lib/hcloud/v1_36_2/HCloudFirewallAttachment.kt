@@ -4,7 +4,7 @@ import uks.master.thesis.terraform.syntax.elements.Argument
 import uks.master.thesis.terraform.syntax.elements.Block
 import uks.master.thesis.terraform.syntax.expressions.TfList
 import uks.master.thesis.terraform.syntax.expressions.TfNumber
-import uks.master.thesis.terraform.syntax.expressions.TfRef
+import uks.master.thesis.terraform.syntax.expressions.Reference
 
 object HCloudFirewallAttachment {
     private const val HCLOUD_FIREWALL_ATTACHMENT: String = "hcloud_firewall_attachment"
@@ -15,10 +15,10 @@ object HCloudFirewallAttachment {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val id get() = TfRef<TfNumber>(referenceString(ID))
-        val firewallId get() = TfRef<TfNumber>(referenceString(FIREWALL_ID))
-        val serverIds get() = TfRef<TfList>(referenceString(SERVER_IDS))
-        val labelSelectors get() = TfRef<TfList>(referenceString(LABEL_SELECTORS))
+        val id get() = Reference<TfNumber>(referenceString(ID))
+        val firewallId get() = Reference<TfNumber>(referenceString(FIREWALL_ID))
+        val serverIds get() = Reference<TfList>(referenceString(SERVER_IDS))
+        val labelSelectors get() = Reference<TfList>(referenceString(LABEL_SELECTORS))
 
         class Builder: GBuilder<Builder>() {
             private val firewallIdBuilder: Argument.Builder = Argument.Builder().name(FIREWALL_ID)
@@ -27,11 +27,11 @@ object HCloudFirewallAttachment {
             init { resourceType(HCLOUD_FIREWALL_ATTACHMENT) }
 
             fun firewallId(id: Int) = apply { firewallIdBuilder.value(id.toDouble()) }
-            fun firewallId(ref: TfRef<TfNumber>) = apply { firewallIdBuilder.raw(ref.toString()) }
+            fun firewallId(ref: Reference<TfNumber>) = apply { firewallIdBuilder.raw(ref.toString()) }
             fun serverIds(ids: TfList) = apply { addElement(serverIdsBuilder.value(ids).build()) }
-            fun serverIds(ref: TfRef<TfList>) = apply { addElement(serverIdsBuilder.raw(ref.toString()).build()) }
+            fun serverIds(ref: Reference<TfList>) = apply { addElement(serverIdsBuilder.raw(ref.toString()).build()) }
             fun labelsSelectors(labelSelectors: TfList) = apply { addElement(labelSelectorsBuilder.value(labelSelectors).build()) }
-            fun labelsSelectors(ref: TfRef<TfList>) = apply { addElement(labelSelectorsBuilder.raw(ref.toString()).build()) }
+            fun labelsSelectors(ref: Reference<TfList>) = apply { addElement(labelSelectorsBuilder.raw(ref.toString()).build()) }
             override fun build(): Resource {
                 addElement(firewallIdBuilder.build())
                 return Resource(buildBlock(), buildSelf())

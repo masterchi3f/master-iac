@@ -10,7 +10,7 @@ import uks.master.thesis.terraform.syntax.elements.Argument
 import uks.master.thesis.terraform.syntax.elements.Block
 import uks.master.thesis.terraform.syntax.expressions.Raw
 import uks.master.thesis.terraform.syntax.expressions.TfMap
-import uks.master.thesis.terraform.syntax.expressions.TfRef
+import uks.master.thesis.terraform.syntax.expressions.Reference
 import uks.master.thesis.terraform.utils.Utils.convertToIdentifier
 
 class TfModule private constructor(
@@ -29,7 +29,7 @@ class TfModule private constructor(
     abstract class Builder<T>: DependsOn() {
         private var subModuleNames: List<String> = mutableListOf()
         private var providerBuilder: TfMap.Builder? = null
-        private var dependencies: List<TfRef<Raw>> = mutableListOf()
+        private var dependencies: List<Reference<Raw>> = mutableListOf()
         protected lateinit var _name: Identifier
         protected val blockBuilder: Block.Builder = Block.Builder()
         protected val sourceBuilder: Argument.Builder = Argument.Builder().name(SOURCE)
@@ -37,9 +37,9 @@ class TfModule private constructor(
         open fun name(name: String): T = apply { preventDupName(); _name =
             Identifier(name)
         } as T
-        open fun addDependency(resource: Resource): T = apply { dependencies = dependencies + TfRef(resource.referenceString()) } as T
+        open fun addDependency(resource: Resource): T = apply { dependencies = dependencies + Reference(resource.referenceString()) } as T
         open fun addDependency(inputVariable: InputVariable<Raw>): T = apply { dependencies = dependencies + inputVariable.reference } as T
-        open fun addDependency(subModule: SubModule): T = apply { dependencies = dependencies + TfRef(subModule.name) } as T
+        open fun addDependency(subModule: SubModule): T = apply { dependencies = dependencies + Reference(subModule.name) } as T
         open fun addInputVariable(inputVariable: InputVariable<out Expression>): T =
             apply { blockBuilder.addElement(Argument.Builder().name(inputVariable.name).value(inputVariable).build()) } as T
         open fun <S: Expression>addInputVariable(resource: Resource, attribute: String? = null): T =
@@ -48,12 +48,12 @@ class TfModule private constructor(
                     .name(convertToIdentifier(resource.referenceString(attribute)))
                     .value<S>(resource, attribute).build())
             } as T
-        open fun <S: Expression>addInputVariable(resource: Resource, tfRef: TfRef<S>): T =
+        open fun <S: Expression>addInputVariable(resource: Resource, reference: Reference<S>): T =
             apply {
-                if (tfRef.toString().replace(Regex("[^.]+"), "").length == 1) {
-                    throw IllegalArgumentException("Wrong method when using $tfRef! To add a resource reference use the resource as parameter.")
+                if (reference.toString().replace(Regex("[^.]+"), "").length == 1) {
+                    throw IllegalArgumentException("Wrong method when using $reference! To add a resource reference use the resource as parameter.")
                 }
-                val attribute: String = tfRef.toString().removePrefix("${resource.referenceString()}.")
+                val attribute: String = reference.toString().removePrefix("${resource.referenceString()}.")
                 addInputVariable<S>(resource, attribute)
             } as T
         open fun <S: Expression>addInputVariable(dataSource: DataSource, attribute: String? = null): T =
@@ -62,12 +62,12 @@ class TfModule private constructor(
                     .name(convertToIdentifier(dataSource.referenceString(attribute)))
                     .value<S>(dataSource, attribute).build())
             } as T
-        open fun <S: Expression>addInputVariable(dataSource: DataSource, tfRef: TfRef<S>): T =
+        open fun <S: Expression>addInputVariable(dataSource: DataSource, reference: Reference<S>): T =
             apply {
-                if (tfRef.toString().replace(Regex("[^.]+"), "").length == 2) {
-                    throw IllegalArgumentException("Wrong method when using $tfRef! To add a datasource reference use the datasource as parameter.")
+                if (reference.toString().replace(Regex("[^.]+"), "").length == 2) {
+                    throw IllegalArgumentException("Wrong method when using $reference! To add a datasource reference use the datasource as parameter.")
                 }
-                val attribute: String = tfRef.toString().removePrefix("${dataSource.referenceString()}.")
+                val attribute: String = reference.toString().removePrefix("${dataSource.referenceString()}.")
                 addInputVariable<S>(dataSource, attribute)
             } as T
         open fun addInputVariable(subModule: SubModule, outputVariable: OutputVariable<out Expression>): T =
@@ -95,7 +95,7 @@ class TfModule private constructor(
                     // https://developer.hashicorp.com/terraform/language/modules/develop/providers
                     providerBuilder?.put(
                         "${provider.name}${if (alternate) "-$it" else ""}",
-                        TfRef("${provider.name}.$it")
+                        Reference("${provider.name}.$it")
                     )
                 } ?: throw IllegalArgumentException("alias from ${provider.name} was null!")
             } as T

@@ -7,7 +7,7 @@ import uks.master.thesis.terraform.syntax.expressions.TfBool
 import uks.master.thesis.terraform.syntax.expressions.TfList
 import uks.master.thesis.terraform.syntax.expressions.TfMap
 import uks.master.thesis.terraform.syntax.expressions.TfNumber
-import uks.master.thesis.terraform.syntax.expressions.TfRef
+import uks.master.thesis.terraform.syntax.expressions.Reference
 import uks.master.thesis.terraform.syntax.expressions.TfString
 import uks.master.thesis.terraform.utils.Utils.splatExp
 
@@ -68,11 +68,11 @@ object HCloudFirewall {
             }
             fun protocol(protocol: Protocol) = apply { preventDupProtocol(); _protocol = protocol }
             fun port(port: String) = apply { portBuilder.value(port) }
-            fun port(ref: TfRef<TfString>) = apply { portBuilder.raw(ref.toString()) }
+            fun port(ref: Reference<TfString>) = apply { portBuilder.raw(ref.toString()) }
             fun ips(ips: TfList) = apply { ipsBuilder.value(ips) }
-            fun ips(ref: TfRef<TfList>) = apply { ipsBuilder.raw(ref.toString()) }
+            fun ips(ref: Reference<TfList>) = apply { ipsBuilder.raw(ref.toString()) }
             fun description(description: String) = apply { blockBuilder.addElement(descriptionBuilder.value(description).build()) }
-            fun description(ref: TfRef<TfString>) = apply { blockBuilder.addElement(descriptionBuilder.raw(ref.toString()).build()) }
+            fun description(ref: Reference<TfString>) = apply { blockBuilder.addElement(descriptionBuilder.raw(ref.toString()).build()) }
             fun build(): Rule {
                 blockBuilder.addElement(directionBuilder.build())
                 blockBuilder.addElement(protocolBuilder.value(_protocol.toString()).build())
@@ -107,9 +107,9 @@ object HCloudFirewall {
             private val argumentBuilder: Argument.Builder = Argument.Builder()
 
             fun labelSelector(labelSelector: String) = apply { blockBuilder.addElement(argumentBuilder.name(LABEL_SELECTOR).value(labelSelector).build()) }
-            fun labelSelector(ref: TfRef<TfString>) = apply { blockBuilder.addElement(argumentBuilder.name(LABEL_SELECTOR).raw(ref.toString()).build()) }
+            fun labelSelector(ref: Reference<TfString>) = apply { blockBuilder.addElement(argumentBuilder.name(LABEL_SELECTOR).raw(ref.toString()).build()) }
             fun server(server: Int) = apply { blockBuilder.addElement(argumentBuilder.name(SERVER).value(server.toDouble()).build()) }
-            fun server(ref: TfRef<TfNumber>) = apply { blockBuilder.addElement(argumentBuilder.name(SERVER).raw(ref.toString()).build()) }
+            fun server(ref: Reference<TfNumber>) = apply { blockBuilder.addElement(argumentBuilder.name(SERVER).raw(ref.toString()).build()) }
             fun build() = ApplyTo(blockBuilder.build())
         }
 
@@ -118,19 +118,19 @@ object HCloudFirewall {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val id get() = TfRef<TfNumber>(referenceString(ID))
-        val name get() = TfRef<TfString>(referenceString(NAME))
-        val labels get() = TfRef<TfMap>(referenceString(LABELS))
-        val rules get() = TfRef<TfList>(referenceString(Rule.reference()))
-        val rulesDirections get() = TfRef<TfList>(referenceString(Rule.direction()))
-        val rulesProtocols get() = TfRef<TfList>(referenceString(Rule.protocol()))
-        val rulesPorts get() = TfRef<TfList>(referenceString(Rule.port()))
-        val rulesSourceIpLists get() = TfRef<TfList>(referenceString(Rule.sourceIps()))
-        val rulesDirectionIpLists get() = TfRef<TfList>(referenceString(Rule.directionIps()))
-        val rulesDescriptions get() = TfRef<TfList>(referenceString(Rule.description()))
-        val applyTo get() = TfRef<Raw>(referenceString(ApplyTo.reference(0)))
-        val applyToLabelSelector get() = TfRef<TfString>(referenceString(ApplyTo.labelSelector(0)))
-        val applyToServer get() = TfRef<TfNumber>(referenceString(ApplyTo.server(0)))
+        val id get() = Reference<TfNumber>(referenceString(ID))
+        val name get() = Reference<TfString>(referenceString(NAME))
+        val labels get() = Reference<TfMap>(referenceString(LABELS))
+        val rules get() = Reference<TfList>(referenceString(Rule.reference()))
+        val rulesDirections get() = Reference<TfList>(referenceString(Rule.direction()))
+        val rulesProtocols get() = Reference<TfList>(referenceString(Rule.protocol()))
+        val rulesPorts get() = Reference<TfList>(referenceString(Rule.port()))
+        val rulesSourceIpLists get() = Reference<TfList>(referenceString(Rule.sourceIps()))
+        val rulesDirectionIpLists get() = Reference<TfList>(referenceString(Rule.directionIps()))
+        val rulesDescriptions get() = Reference<TfList>(referenceString(Rule.description()))
+        val applyTo get() = Reference<Raw>(referenceString(ApplyTo.reference(0)))
+        val applyToLabelSelector get() = Reference<TfString>(referenceString(ApplyTo.labelSelector(0)))
+        val applyToServer get() = Reference<TfNumber>(referenceString(ApplyTo.server(0)))
 
         class Builder: GBuilder<Builder>() {
             private val nameBuilder: Argument.Builder = Argument.Builder().name(NAME)
@@ -139,9 +139,9 @@ object HCloudFirewall {
             init { resourceType(HCLOUD_FIREWALL) }
 
             fun name(name: String) = apply { addElement(nameBuilder.value(name).build()) }
-            fun name(ref: TfRef<TfString>) = apply { addElement(nameBuilder.raw(ref.toString()).build()) }
+            fun name(ref: Reference<TfString>) = apply { addElement(nameBuilder.raw(ref.toString()).build()) }
             fun labels(labels: TfMap) = apply { addElement(labelsBuilder.value(labels).build()) }
-            fun labels(ref: TfRef<TfMap>) = apply { addElement(labelsBuilder.raw(ref.toString()).build()) }
+            fun labels(ref: Reference<TfMap>) = apply { addElement(labelsBuilder.raw(ref.toString()).build()) }
             fun applyTo(applyTo: ApplyTo) = apply { preventDupApplyTo(); addElement(applyTo.block) }
             fun rule(rule: Rule) = apply { addElement(rule.block) }
             override fun build() = Resource(buildBlock(), buildSelf())
@@ -151,30 +151,30 @@ object HCloudFirewall {
             }
         }
 
-        fun rule(index: Int) = TfRef<Raw>(referenceString(Rule.reference(index)))
-        fun ruleDirection(index: Int) = TfRef<TfString>(referenceString(Rule.direction(index)))
-        fun ruleProtocol(index: Int) = TfRef<TfString>(referenceString(Rule.protocol(index)))
-        fun rulePort(index: Int) = TfRef<TfString>(referenceString(Rule.port(index)))
-        fun ruleSourceIps(index: Int) = TfRef<TfList>(referenceString(Rule.sourceIps(index)))
-        fun ruleDirectionIps(index: Int) = TfRef<TfList>(referenceString(Rule.directionIps(index)))
-        fun ruleDescription(index: Int) = TfRef<TfString>(referenceString(Rule.description(index)))
+        fun rule(index: Int) = Reference<Raw>(referenceString(Rule.reference(index)))
+        fun ruleDirection(index: Int) = Reference<TfString>(referenceString(Rule.direction(index)))
+        fun ruleProtocol(index: Int) = Reference<TfString>(referenceString(Rule.protocol(index)))
+        fun rulePort(index: Int) = Reference<TfString>(referenceString(Rule.port(index)))
+        fun ruleSourceIps(index: Int) = Reference<TfList>(referenceString(Rule.sourceIps(index)))
+        fun ruleDirectionIps(index: Int) = Reference<TfList>(referenceString(Rule.directionIps(index)))
+        fun ruleDescription(index: Int) = Reference<TfString>(referenceString(Rule.description(index)))
     }
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val id get() = TfRef<TfNumber>(referenceString(ID))
-        val name get() = TfRef<TfString>(referenceString(NAME))
-        val labels get() = TfRef<TfMap>(referenceString(LABELS))
-        val rules get() = TfRef<TfList>(referenceString(Rule.reference()))
-        val ruleDirections get() = TfRef<TfList>(referenceString(Rule.direction()))
-        val ruleProtocols get() = TfRef<TfList>(referenceString(Rule.protocol()))
-        val rulePorts get() = TfRef<TfList>(referenceString(Rule.port()))
-        val ruleSourceIpLists get() = TfRef<TfList>(referenceString(Rule.sourceIps()))
-        val ruleDirectionIpLists get() = TfRef<TfList>(referenceString(Rule.directionIps()))
-        val ruleDescriptions get() = TfRef<TfList>(referenceString(Rule.description()))
-        val applyTo get() = TfRef<Raw>(referenceString(ApplyTo.reference(0)))
-        val applyToLabelSelector get() = TfRef<TfString>(referenceString(ApplyTo.labelSelector(0)))
-        val applyToServer get() = TfRef<TfNumber>(referenceString(ApplyTo.server(0)))
+        val id get() = Reference<TfNumber>(referenceString(ID))
+        val name get() = Reference<TfString>(referenceString(NAME))
+        val labels get() = Reference<TfMap>(referenceString(LABELS))
+        val rules get() = Reference<TfList>(referenceString(Rule.reference()))
+        val ruleDirections get() = Reference<TfList>(referenceString(Rule.direction()))
+        val ruleProtocols get() = Reference<TfList>(referenceString(Rule.protocol()))
+        val rulePorts get() = Reference<TfList>(referenceString(Rule.port()))
+        val ruleSourceIpLists get() = Reference<TfList>(referenceString(Rule.sourceIps()))
+        val ruleDirectionIpLists get() = Reference<TfList>(referenceString(Rule.directionIps()))
+        val ruleDescriptions get() = Reference<TfList>(referenceString(Rule.description()))
+        val applyTo get() = Reference<Raw>(referenceString(ApplyTo.reference(0)))
+        val applyToLabelSelector get() = Reference<TfString>(referenceString(ApplyTo.labelSelector(0)))
+        val applyToServer get() = Reference<TfNumber>(referenceString(ApplyTo.server(0)))
 
         class Builder: GBuilder<Builder>() {
             private val idOrNameBuilder: Argument.Builder = Argument.Builder()
@@ -183,25 +183,25 @@ object HCloudFirewall {
             init { dataSource(HCLOUD_FIREWALL) }
 
             fun id(id: Int) = apply { idOrNameBuilder.name(ID).value(id.toDouble()) }
-            fun id(ref: TfRef<TfNumber>) = apply { idOrNameBuilder.name(ID).raw(ref.toString()) }
+            fun id(ref: Reference<TfNumber>) = apply { idOrNameBuilder.name(ID).raw(ref.toString()) }
             fun name(name: String) = apply { idOrNameBuilder.name(NAME).value(name) }
-            fun name(ref: TfRef<TfString>) = apply { idOrNameBuilder.name(NAME).raw(ref.toString()) }
+            fun name(ref: Reference<TfString>) = apply { idOrNameBuilder.name(NAME).raw(ref.toString()) }
             fun withSelector(selector: String) = apply { addElement(withSelectorBuilder.value(selector).build()) }
-            fun withSelector(ref: TfRef<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
+            fun withSelector(ref: Reference<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
             fun mostRecent(mostRecent: Boolean) = apply { addElement(mostRecentBuilder.value(mostRecent).build()) }
-            fun mostRecent(ref: TfRef<TfBool>) = apply { addElement(mostRecentBuilder.raw(ref.toString()).build()) }
+            fun mostRecent(ref: Reference<TfBool>) = apply { addElement(mostRecentBuilder.raw(ref.toString()).build()) }
             override fun build(): DataSource {
                 addElement(idOrNameBuilder.build())
                 return DataSource(buildBlock(), buildSelf())
             }
         }
 
-        fun rule(index: Int) = TfRef<Raw>(referenceString(Rule.reference(index)))
-        fun ruleDirection(index: Int) = TfRef<TfString>(referenceString(Rule.direction(index)))
-        fun ruleProtocol(index: Int) = TfRef<TfString>(referenceString(Rule.protocol(index)))
-        fun rulePort(index: Int) = TfRef<TfString>(referenceString(Rule.port(index)))
-        fun ruleSourceIps(index: Int) = TfRef<TfList>(referenceString(Rule.sourceIps(index)))
-        fun ruleDirectionIps(index: Int) = TfRef<TfList>(referenceString(Rule.directionIps(index)))
-        fun ruleDescription(index: Int) = TfRef<TfString>(referenceString(Rule.description(index)))
+        fun rule(index: Int) = Reference<Raw>(referenceString(Rule.reference(index)))
+        fun ruleDirection(index: Int) = Reference<TfString>(referenceString(Rule.direction(index)))
+        fun ruleProtocol(index: Int) = Reference<TfString>(referenceString(Rule.protocol(index)))
+        fun rulePort(index: Int) = Reference<TfString>(referenceString(Rule.port(index)))
+        fun ruleSourceIps(index: Int) = Reference<TfList>(referenceString(Rule.sourceIps(index)))
+        fun ruleDirectionIps(index: Int) = Reference<TfList>(referenceString(Rule.directionIps(index)))
+        fun ruleDescription(index: Int) = Reference<TfString>(referenceString(Rule.description(index)))
     }
 }

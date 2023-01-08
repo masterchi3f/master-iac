@@ -2,7 +2,7 @@ package uks.master.thesis.terraform.lib.hcloud.v1_36_2
 
 import uks.master.thesis.terraform.syntax.elements.Block
 import uks.master.thesis.terraform.syntax.expressions.TfList
-import uks.master.thesis.terraform.syntax.expressions.TfRef
+import uks.master.thesis.terraform.syntax.expressions.Reference
 
 object HCloudDatacenters {
     private const val HCLOUD_DATACENTERS: String = "hcloud_datacenters"
@@ -13,10 +13,10 @@ object HCloudDatacenters {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val datacenterIds get() = TfRef<TfList>(referenceString(DATACENTER_IDS))
-        val names get() = TfRef<TfList>(referenceString(NAMES))
-        val descriptions get() = TfRef<TfList>(referenceString(DESCRIPTIONS))
-        val datacenters get() = TfRef<TfList>(referenceString(DATACENTERS))
+        val datacenterIds get() = Reference<TfList>(referenceString(DATACENTER_IDS))
+        val names get() = Reference<TfList>(referenceString(NAMES))
+        val descriptions get() = Reference<TfList>(referenceString(DESCRIPTIONS))
+        val datacenters get() = Reference<TfList>(referenceString(DATACENTERS))
 
         class Builder: GBuilder<Builder>() {
             init { dataSource(HCLOUD_DATACENTERS) }

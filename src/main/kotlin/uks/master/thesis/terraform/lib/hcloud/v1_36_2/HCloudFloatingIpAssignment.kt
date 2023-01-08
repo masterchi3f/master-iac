@@ -3,7 +3,7 @@ package uks.master.thesis.terraform.lib.hcloud.v1_36_2
 import uks.master.thesis.terraform.syntax.elements.Argument
 import uks.master.thesis.terraform.syntax.elements.Block
 import uks.master.thesis.terraform.syntax.expressions.TfNumber
-import uks.master.thesis.terraform.syntax.expressions.TfRef
+import uks.master.thesis.terraform.syntax.expressions.Reference
 
 object HCloudFloatingIpAssignment {
     private const val HCLOUD_FLOATING_IP_ASSIGNMENT: String = "hcloud_floating_ip_assignment"
@@ -13,9 +13,9 @@ object HCloudFloatingIpAssignment {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val id get() = TfRef<TfNumber>(referenceString(ID))
-        val floatingIpId get() = TfRef<TfNumber>(referenceString(FLOATING_IP_ID))
-        val serverId get() = TfRef<TfNumber>(referenceString(SERVER_ID))
+        val id get() = Reference<TfNumber>(referenceString(ID))
+        val floatingIpId get() = Reference<TfNumber>(referenceString(FLOATING_IP_ID))
+        val serverId get() = Reference<TfNumber>(referenceString(SERVER_ID))
 
         class Builder: GBuilder<Builder>() {
             private val floatingIpIdBuilder: Argument.Builder = Argument.Builder().name(FLOATING_IP_ID)
@@ -23,9 +23,9 @@ object HCloudFloatingIpAssignment {
             init { resourceType(HCLOUD_FLOATING_IP_ASSIGNMENT) }
 
             fun floatingIpId(floatingIpId: Int) = apply { floatingIpIdBuilder.value(floatingIpId.toDouble()) }
-            fun floatingIpId(ref: TfRef<TfNumber>) = apply { floatingIpIdBuilder.raw(ref.toString()) }
+            fun floatingIpId(ref: Reference<TfNumber>) = apply { floatingIpIdBuilder.raw(ref.toString()) }
             fun serverId(serverId: Int) = apply { serverIdBuilder.value(serverId.toDouble()) }
-            fun serverId(ref: TfRef<TfNumber>) = apply { serverIdBuilder.raw(ref.toString()) }
+            fun serverId(ref: Reference<TfNumber>) = apply { serverIdBuilder.raw(ref.toString()) }
             override fun build(): Resource {
                 addElement(floatingIpIdBuilder.build())
                 addElement(serverIdBuilder.build())

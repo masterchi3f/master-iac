@@ -6,7 +6,7 @@ import uks.master.thesis.terraform.syntax.elements.Argument
 import uks.master.thesis.terraform.syntax.elements.blocks.InputVariable
 import uks.master.thesis.terraform.syntax.elements.blocks.Provider
 import uks.master.thesis.terraform.syntax.elements.blocks.RequiredProviders
-import uks.master.thesis.terraform.syntax.expressions.TfRef
+import uks.master.thesis.terraform.syntax.expressions.Reference
 import uks.master.thesis.terraform.syntax.expressions.TfString
 
 object HCloud {
@@ -37,9 +37,9 @@ object HCloud {
         }
 
     fun endpoint(endpoint: String) = apply { providerBuilder.addConfig(endpointBuilder.value(endpoint).build()) }
-    fun endpoint(ref: TfRef<TfString>) = apply { providerBuilder.addConfig(endpointBuilder.raw(ref.toString()).build()) }
+    fun endpoint(ref: Reference<TfString>) = apply { providerBuilder.addConfig(endpointBuilder.raw(ref.toString()).build()) }
     fun pollInterval(pollInterval: String) = apply { providerBuilder.addConfig(pollIntervalBuilder.value(pollInterval).build()) }
-    fun pollInterval(ref: TfRef<TfString>) = apply { providerBuilder.addConfig(pollIntervalBuilder.raw(ref.toString()).build()) }
+    fun pollInterval(ref: Reference<TfString>) = apply { providerBuilder.addConfig(pollIntervalBuilder.raw(ref.toString()).build()) }
 
     fun addProviderToRootModule() = apply {
         provider?.let {

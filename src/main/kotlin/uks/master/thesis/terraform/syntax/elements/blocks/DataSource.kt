@@ -9,7 +9,7 @@ import uks.master.thesis.terraform.syntax.elements.Block
 import uks.master.thesis.terraform.syntax.elements.MultiLineComment
 import uks.master.thesis.terraform.syntax.elements.OneLineSymbol
 import uks.master.thesis.terraform.syntax.expressions.Raw
-import uks.master.thesis.terraform.syntax.expressions.TfRef
+import uks.master.thesis.terraform.syntax.expressions.Reference
 
 open class DataSource protected constructor(
     private val block: Block,
@@ -51,8 +51,8 @@ open class DataSource protected constructor(
     class Builder: GBuilder<Builder>()
 
     fun referenceString(attribute: String? = null): String = attribute?.let { "$self.$it" } ?: self
-    fun reference(): TfRef<Raw> = TfRef(self)
-    fun <S: Expression>reference(attribute: String): TfRef<S> = TfRef("$self.$attribute")
+    fun reference(): Reference<Raw> = Reference(self)
+    fun <S: Expression>reference(attribute: String): Reference<S> = Reference("$self.$attribute")
 
     override fun toString(): String = block.toString()
 }

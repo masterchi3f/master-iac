@@ -5,7 +5,7 @@ import uks.master.thesis.terraform.syntax.elements.Block
 import uks.master.thesis.terraform.syntax.expressions.TfList
 import uks.master.thesis.terraform.syntax.expressions.TfMap
 import uks.master.thesis.terraform.syntax.expressions.TfNumber
-import uks.master.thesis.terraform.syntax.expressions.TfRef
+import uks.master.thesis.terraform.syntax.expressions.Reference
 import uks.master.thesis.terraform.syntax.expressions.TfString
 
 object HCloudCertificate {
@@ -30,15 +30,15 @@ object HCloudCertificate {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val id get() = TfRef<TfNumber>(referenceString(ID))
-        val name get() = TfRef<TfString>(referenceString(NAME))
-        val certificate get() = TfRef<TfString>(referenceString(CERTIFICATE))
-        val labels get() = TfRef<TfMap>(referenceString(LABELS))
-        val domainNames get() = TfRef<TfList>(referenceString(DOMAIN_NAMES))
-        val fingerprint get() = TfRef<TfString>(referenceString(FINGERPRINT))
-        val created get() = TfRef<TfString>(referenceString(CREATED))
-        val notValidBefore get() = TfRef<TfString>(referenceString(NOT_VALID_BEFORE))
-        val notValidAfter get() = TfRef<TfString>(referenceString(NOT_VALID_AFTER))
+        val id get() = Reference<TfNumber>(referenceString(ID))
+        val name get() = Reference<TfString>(referenceString(NAME))
+        val certificate get() = Reference<TfString>(referenceString(CERTIFICATE))
+        val labels get() = Reference<TfMap>(referenceString(LABELS))
+        val domainNames get() = Reference<TfList>(referenceString(DOMAIN_NAMES))
+        val fingerprint get() = Reference<TfString>(referenceString(FINGERPRINT))
+        val created get() = Reference<TfString>(referenceString(CREATED))
+        val notValidBefore get() = Reference<TfString>(referenceString(NOT_VALID_BEFORE))
+        val notValidAfter get() = Reference<TfString>(referenceString(NOT_VALID_AFTER))
 
         class Builder: GBuilder<Builder>() {
             private val idOrNameBuilder: Argument.Builder = Argument.Builder()
@@ -46,11 +46,11 @@ object HCloudCertificate {
             init { dataSource(HCLOUD_CERTIFICATE) }
 
             fun id(id: Int) = apply { idOrNameBuilder.name(ID).value(id.toDouble()) }
-            fun id(ref: TfRef<TfNumber>) = apply { idOrNameBuilder.name(ID).raw(ref.toString()) }
+            fun id(ref: Reference<TfNumber>) = apply { idOrNameBuilder.name(ID).raw(ref.toString()) }
             fun name(name: String) = apply { idOrNameBuilder.name(NAME).value(name) }
-            fun name(ref: TfRef<TfString>) = apply { idOrNameBuilder.name(NAME).raw(ref.toString()) }
+            fun name(ref: Reference<TfString>) = apply { idOrNameBuilder.name(NAME).raw(ref.toString()) }
             fun withSelector(selector: String) = apply { addElement(withSelectorBuilder.value(selector).build()) }
-            fun withSelector(ref: TfRef<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
+            fun withSelector(ref: Reference<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
             override fun build(): DataSource {
                 addElement(idOrNameBuilder.build())
                 return DataSource(buildBlock(), buildSelf())

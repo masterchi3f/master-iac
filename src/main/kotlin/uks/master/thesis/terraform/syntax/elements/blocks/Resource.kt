@@ -12,7 +12,7 @@ import uks.master.thesis.terraform.syntax.elements.Block
 import uks.master.thesis.terraform.syntax.elements.MultiLineComment
 import uks.master.thesis.terraform.syntax.elements.OneLineSymbol
 import uks.master.thesis.terraform.syntax.expressions.Raw
-import uks.master.thesis.terraform.syntax.expressions.TfRef
+import uks.master.thesis.terraform.syntax.expressions.Reference
 
 open class Resource protected constructor(
     private val block: Block,
@@ -27,7 +27,7 @@ open class Resource protected constructor(
     open class GBuilder<T>: DependsOn() {
         private val blockBuilder: Block.Builder = Block.Builder()
         private val providerBuilder: Argument.Builder = Argument.Builder().name(PROVIDER)
-        private var dependencies: List<TfRef<Raw>> = mutableListOf()
+        private var dependencies: List<Reference<Raw>> = mutableListOf()
         private lateinit var _type: Identifier
         private lateinit var _name: Identifier
 
@@ -39,9 +39,9 @@ open class Resource protected constructor(
         fun addElement(multiLineComment: MultiLineComment): T = apply { blockBuilder.addElement(multiLineComment) } as T
         fun provider(provider: Provider, alternate: Boolean = false): T =
             apply { blockBuilder.addElement(providerBuilder.value(provider, alternate).build()) } as T
-        fun addDependency(resource: Resource): T = apply { dependencies = dependencies + TfRef(resource.referenceString()) } as T
+        fun addDependency(resource: Resource): T = apply { dependencies = dependencies + Reference(resource.referenceString()) } as T
         fun addDependency(inputVariable: InputVariable<Raw>): T = apply { dependencies = dependencies + inputVariable.reference } as T
-        fun addDependency(subModule: SubModule): T = apply { dependencies = dependencies + TfRef(subModule.name) } as T
+        fun addDependency(subModule: SubModule): T = apply { dependencies = dependencies + Reference(subModule.name) } as T
         open fun build() = Resource(buildBlock(), buildSelf())
         protected fun buildBlock(): Block {
             blockBuilder.type(RESOURCE).addLabel(_type.toString()).addLabel(_name.toString())
@@ -62,8 +62,8 @@ open class Resource protected constructor(
     class Builder: GBuilder<Builder>()
 
     fun referenceString(attribute: String? = null): String = attribute?.let { "$self.$it" } ?: self
-    fun reference(): TfRef<Raw> = TfRef(self)
-    fun <S: Expression>reference(attribute: String): TfRef<S> = TfRef("$self.$attribute")
+    fun reference(): Reference<Raw> = Reference(self)
+    fun <S: Expression>reference(attribute: String): Reference<S> = Reference("$self.$attribute")
 
     fun import(id: String): Import = Import(self, id)
 

@@ -3,7 +3,7 @@ package uks.master.thesis.terraform.lib.hcloud.v1_36_2
 import uks.master.thesis.terraform.syntax.elements.Argument
 import uks.master.thesis.terraform.syntax.elements.Block
 import uks.master.thesis.terraform.syntax.expressions.TfNumber
-import uks.master.thesis.terraform.syntax.expressions.TfRef
+import uks.master.thesis.terraform.syntax.expressions.Reference
 import uks.master.thesis.terraform.syntax.expressions.TfString
 
 object HCloudNetworkSubnet {
@@ -24,12 +24,12 @@ object HCloudNetworkSubnet {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val id get() = TfRef<TfNumber>(referenceString(ID))
-        val networkId get() = TfRef<TfNumber>(referenceString(NETWORK_ID))
-        val type get() = TfRef<TfString>(referenceString(TYPE))
-        val ipRange get() = TfRef<TfString>(referenceString(IP_RANGE))
-        val networkZone get() = TfRef<TfString>(referenceString(NETWORK_ZONE))
-        val vswitchId get() = TfRef<TfNumber>(referenceString(VSWITCH_ID))
+        val id get() = Reference<TfNumber>(referenceString(ID))
+        val networkId get() = Reference<TfNumber>(referenceString(NETWORK_ID))
+        val type get() = Reference<TfString>(referenceString(TYPE))
+        val ipRange get() = Reference<TfString>(referenceString(IP_RANGE))
+        val networkZone get() = Reference<TfString>(referenceString(NETWORK_ZONE))
+        val vswitchId get() = Reference<TfNumber>(referenceString(VSWITCH_ID))
 
         class Builder: GBuilder<Builder>() {
             private val networkIdBuilder: Argument.Builder = Argument.Builder().name(NETWORK_ID)
@@ -42,14 +42,14 @@ object HCloudNetworkSubnet {
             init { resourceType(HCLOUD_NETWORK_SUBNET) }
 
             fun networkId(networkId: Int) = apply { networkIdBuilder.value(networkId.toDouble()) }
-            fun networkId(ref: TfRef<TfNumber>) = apply { networkIdBuilder.raw(ref.toString()) }
+            fun networkId(ref: Reference<TfNumber>) = apply { networkIdBuilder.raw(ref.toString()) }
             fun type(type: Type) = apply { _type = type; typeBuilder.value(type.toString()) }
             fun ipRange(ipRange: String) = apply { ipRangeBuilder.value(ipRange) }
-            fun ipRange(ref: TfRef<TfString>) = apply { ipRangeBuilder.raw(ref.toString()) }
+            fun ipRange(ref: Reference<TfString>) = apply { ipRangeBuilder.raw(ref.toString()) }
             fun networkZone(networkZone: String) = apply { networkZoneBuilder.value(networkZone) }
-            fun networkZone(ref: TfRef<TfString>) = apply { networkZoneBuilder.raw(ref.toString()) }
+            fun networkZone(ref: Reference<TfString>) = apply { networkZoneBuilder.raw(ref.toString()) }
             fun vswitchId(vswitchId: Int) = apply { hasVswitchId = true; vswitchIdBuilder.value(vswitchId.toDouble()) }
-            fun vswitchId(ref: TfRef<TfNumber>) = apply { hasVswitchId = true; vswitchIdBuilder.raw(ref.toString()) }
+            fun vswitchId(ref: Reference<TfNumber>) = apply { hasVswitchId = true; vswitchIdBuilder.raw(ref.toString()) }
             override fun build(): Resource {
                 addElement(networkIdBuilder.build())
                 addElement(typeBuilder.build())

@@ -5,7 +5,7 @@ import uks.master.thesis.terraform.syntax.elements.Argument
 import uks.master.thesis.terraform.syntax.elements.Block
 import uks.master.thesis.terraform.syntax.expressions.TfList
 import uks.master.thesis.terraform.syntax.expressions.TfMap
-import uks.master.thesis.terraform.syntax.expressions.TfRef
+import uks.master.thesis.terraform.syntax.expressions.Reference
 
 class RequiredProviders private constructor(
     val block: Block
@@ -39,7 +39,7 @@ class RequiredProviders private constructor(
                 al.forEach { prov: Map.Entry<Provider, Boolean> ->
                     // Not sure if alternate with - works because it is done with . in the docs:
                     // https://developer.hashicorp.com/terraform/language/modules/develop/providers
-                    prov.key.alias?.let { listBuilder.add(TfRef("${prov.key.name}${if (prov.value) "-" else "."}$it")) }
+                    prov.key.alias?.let { listBuilder.add(Reference("${prov.key.name}${if (prov.value) "-" else "."}$it")) }
                         ?: throw IllegalArgumentException("alias from ${prov.key.name} was null!")
                 }
                 mapBuilder.put(CONFIGURATION_ALIASES, listBuilder.build())

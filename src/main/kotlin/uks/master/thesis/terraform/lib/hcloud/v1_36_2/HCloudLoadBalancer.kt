@@ -7,7 +7,7 @@ import uks.master.thesis.terraform.syntax.expressions.TfBool
 import uks.master.thesis.terraform.syntax.expressions.TfList
 import uks.master.thesis.terraform.syntax.expressions.TfMap
 import uks.master.thesis.terraform.syntax.expressions.TfNumber
-import uks.master.thesis.terraform.syntax.expressions.TfRef
+import uks.master.thesis.terraform.syntax.expressions.Reference
 import uks.master.thesis.terraform.syntax.expressions.TfString
 import uks.master.thesis.terraform.utils.Utils
 
@@ -48,7 +48,7 @@ object HCloudLoadBalancer {
             private val typeBuilder: Argument.Builder = Argument.Builder().name(TYPE)
 
             fun type(type: Type) = apply { blockBuilder.addElement(typeBuilder.value(type.toString()).build()) }
-            fun type(ref: TfRef<TfString>) = apply { blockBuilder.addElement(typeBuilder.raw(ref.toString()).build()) }
+            fun type(ref: Reference<TfString>) = apply { blockBuilder.addElement(typeBuilder.raw(ref.toString()).build()) }
             fun build() = Algorithm(blockBuilder.build())
         }
 
@@ -57,19 +57,19 @@ object HCloudLoadBalancer {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val id get() = TfRef<TfNumber>(referenceString(ID))
-        val loadBalancerType get() = TfRef<TfString>(referenceString(LOAD_BALANCER_TYPE))
-        val name get() = TfRef<TfString>(referenceString(NAME))
-        val location get() = TfRef<TfString>(referenceString(LOCATION))
-        val ipv4 get() = TfRef<TfString>(referenceString(IPV4))
-        val ipv6 get() = TfRef<TfString>(referenceString(IPV6))
-        val algorithm get() = TfRef<Raw>(referenceString(Algorithm.reference(0)))
-        val algorithmType get() = TfRef<Raw>(referenceString(Algorithm.type(0)))
-        val services get() = TfRef<TfList>(referenceString(SERVICE))
-        val labels get() = TfRef<TfMap>(referenceString(LABELS))
-        val deleteProtection get() = TfRef<TfBool>(referenceString(DELETE_PROTECTION))
-        val networkId get() = TfRef<TfNumber>(referenceString(NETWORK_ID))
-        val networkIp get() = TfRef<TfString>(referenceString(NETWORK_IP))
+        val id get() = Reference<TfNumber>(referenceString(ID))
+        val loadBalancerType get() = Reference<TfString>(referenceString(LOAD_BALANCER_TYPE))
+        val name get() = Reference<TfString>(referenceString(NAME))
+        val location get() = Reference<TfString>(referenceString(LOCATION))
+        val ipv4 get() = Reference<TfString>(referenceString(IPV4))
+        val ipv6 get() = Reference<TfString>(referenceString(IPV6))
+        val algorithm get() = Reference<Raw>(referenceString(Algorithm.reference(0)))
+        val algorithmType get() = Reference<Raw>(referenceString(Algorithm.type(0)))
+        val services get() = Reference<TfList>(referenceString(SERVICE))
+        val labels get() = Reference<TfMap>(referenceString(LABELS))
+        val deleteProtection get() = Reference<TfBool>(referenceString(DELETE_PROTECTION))
+        val networkId get() = Reference<TfNumber>(referenceString(NETWORK_ID))
+        val networkIp get() = Reference<TfString>(referenceString(NETWORK_IP))
 
         class Builder: GBuilder<Builder>() {
             private val nameBuilder: Argument.Builder = Argument.Builder().name(NAME)
@@ -83,18 +83,18 @@ object HCloudLoadBalancer {
             init { resourceType(HCLOUD_LOAD_BALANCER) }
 
             fun name(name: String) = apply { nameBuilder.value(name) }
-            fun name(ref: TfRef<TfString>) = apply { nameBuilder.raw(ref.toString()) }
+            fun name(ref: Reference<TfString>) = apply { nameBuilder.raw(ref.toString()) }
             fun loadBalancerType(loadBalancerType: String) = apply { loadBalancerTypeBuilder.value(loadBalancerType) }
-            fun loadBalancerType(ref: TfRef<TfString>) = apply { loadBalancerTypeBuilder.raw(ref.toString()) }
+            fun loadBalancerType(ref: Reference<TfString>) = apply { loadBalancerTypeBuilder.raw(ref.toString()) }
             fun location(location: String) = apply { locationOrNetworkZoneSet = true; addElement(locationBuilder.value(location).build()) }
-            fun location(ref: TfRef<TfString>) = apply { locationOrNetworkZoneSet = true; addElement(locationBuilder.raw(ref.toString()).build()) }
+            fun location(ref: Reference<TfString>) = apply { locationOrNetworkZoneSet = true; addElement(locationBuilder.raw(ref.toString()).build()) }
             fun networkZone(networkZone: String) = apply { locationOrNetworkZoneSet = true; addElement(networkZoneBuilder.value(networkZone).build()) }
-            fun networkZone(ref: TfRef<TfString>) = apply { locationOrNetworkZoneSet = true; addElement(networkZoneBuilder.raw(ref.toString()).build()) }
+            fun networkZone(ref: Reference<TfString>) = apply { locationOrNetworkZoneSet = true; addElement(networkZoneBuilder.raw(ref.toString()).build()) }
             fun algorithm(algorithm: Algorithm) = apply { preventDupAlgorithm(); addElement(algorithm.block) }
             fun labels(labels: TfMap) = apply { addElement(labelsBuilder.value(labels).build()) }
-            fun labels(ref: TfRef<TfMap>) = apply { addElement(labelsBuilder.raw(ref.toString()).build()) }
+            fun labels(ref: Reference<TfMap>) = apply { addElement(labelsBuilder.raw(ref.toString()).build()) }
             fun deleteProtection(deleteProtection: Boolean) = apply { addElement(deleteProtectionBuilder.value(deleteProtection).build()) }
-            fun deleteProtection(ref: TfRef<TfBool>) = apply { addElement(deleteProtectionBuilder.raw(ref.toString()).build()) }
+            fun deleteProtection(ref: Reference<TfBool>) = apply { addElement(deleteProtectionBuilder.raw(ref.toString()).build()) }
             override fun build(): Resource {
                 if (!locationOrNetworkZoneSet) {
                     throw IllegalArgumentException("Either location or networkZone must be set!")
@@ -112,20 +112,20 @@ object HCloudLoadBalancer {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val id get() = TfRef<TfNumber>(referenceString(ID))
-        val loadBalancerType get() = TfRef<TfString>(referenceString(LOAD_BALANCER_TYPE))
-        val name get() = TfRef<TfString>(referenceString(NAME))
-        val location get() = TfRef<TfString>(referenceString(LOCATION))
-        val ipv4 get() = TfRef<TfString>(referenceString(IPV4))
-        val ipv6 get() = TfRef<TfString>(referenceString(IPV6))
-        val algorithm get() = TfRef<Raw>(referenceString(Algorithm.reference(0)))
-        val algorithmType get() = TfRef<Raw>(referenceString(Algorithm.type(0)))
-        val targets get() = TfRef<TfList>(referenceString(TARGET))
-        val services get() = TfRef<TfList>(referenceString(SERVICE))
-        val labels get() = TfRef<TfMap>(referenceString(LABELS))
-        val deleteProtection get() = TfRef<TfBool>(referenceString(DELETE_PROTECTION))
-        val networkId get() = TfRef<TfNumber>(referenceString(NETWORK_ID))
-        val networkIp get() = TfRef<TfString>(referenceString(NETWORK_IP))
+        val id get() = Reference<TfNumber>(referenceString(ID))
+        val loadBalancerType get() = Reference<TfString>(referenceString(LOAD_BALANCER_TYPE))
+        val name get() = Reference<TfString>(referenceString(NAME))
+        val location get() = Reference<TfString>(referenceString(LOCATION))
+        val ipv4 get() = Reference<TfString>(referenceString(IPV4))
+        val ipv6 get() = Reference<TfString>(referenceString(IPV6))
+        val algorithm get() = Reference<Raw>(referenceString(Algorithm.reference(0)))
+        val algorithmType get() = Reference<Raw>(referenceString(Algorithm.type(0)))
+        val targets get() = Reference<TfList>(referenceString(TARGET))
+        val services get() = Reference<TfList>(referenceString(SERVICE))
+        val labels get() = Reference<TfMap>(referenceString(LABELS))
+        val deleteProtection get() = Reference<TfBool>(referenceString(DELETE_PROTECTION))
+        val networkId get() = Reference<TfNumber>(referenceString(NETWORK_ID))
+        val networkIp get() = Reference<TfString>(referenceString(NETWORK_IP))
 
         class Builder: GBuilder<Builder>() {
             private val idOrNameBuilder: Argument.Builder = Argument.Builder()
@@ -133,11 +133,11 @@ object HCloudLoadBalancer {
             init { dataSource(HCLOUD_LOAD_BALANCER) }
 
             fun id(id: Int) = apply { idOrNameBuilder.name(ID).value(id.toDouble()) }
-            fun id(ref: TfRef<TfNumber>) = apply { idOrNameBuilder.name(ID).raw(ref.toString()) }
+            fun id(ref: Reference<TfNumber>) = apply { idOrNameBuilder.name(ID).raw(ref.toString()) }
             fun name(name: String) = apply { idOrNameBuilder.name(NAME).value(name) }
-            fun name(ref: TfRef<TfString>) = apply { idOrNameBuilder.name(NAME).raw(ref.toString()) }
+            fun name(ref: Reference<TfString>) = apply { idOrNameBuilder.name(NAME).raw(ref.toString()) }
             fun withSelector(selector: String) = apply { addElement(withSelectorBuilder.value(selector).build()) }
-            fun withSelector(ref: TfRef<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
+            fun withSelector(ref: Reference<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
             override fun build(): DataSource {
                 addElement(idOrNameBuilder.build())
                 return DataSource(buildBlock(), buildSelf())

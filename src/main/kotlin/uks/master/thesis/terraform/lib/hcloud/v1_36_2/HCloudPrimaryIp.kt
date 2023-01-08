@@ -5,7 +5,7 @@ import uks.master.thesis.terraform.syntax.elements.Block
 import uks.master.thesis.terraform.syntax.expressions.TfBool
 import uks.master.thesis.terraform.syntax.expressions.TfMap
 import uks.master.thesis.terraform.syntax.expressions.TfNumber
-import uks.master.thesis.terraform.syntax.expressions.TfRef
+import uks.master.thesis.terraform.syntax.expressions.Reference
 import uks.master.thesis.terraform.syntax.expressions.TfString
 
 object HCloudPrimaryIp {
@@ -35,16 +35,16 @@ object HCloudPrimaryIp {
 
     class Resource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.Resource(block, self) {
-        val id get() = TfRef<TfNumber>(referenceString(ID))
-        val type get() = TfRef<TfString>(referenceString(TYPE))
-        val datacenter get() = TfRef<TfString>(referenceString(DATACENTER))
-        val name get() = TfRef<TfString>(referenceString(NAME))
-        val autoDelete get() = TfRef<TfBool>(referenceString(AUTO_DELETE))
-        val labels get() = TfRef<TfMap>(referenceString(LABELS))
-        val ipAddress get() = TfRef<TfString>(referenceString(IP_ADDRESS))
-        val assigneeId get() = TfRef<TfNumber>(referenceString(ASSIGNEE_ID))
-        val assigneeType get() = TfRef<TfString>(referenceString(ASSIGNEE_TYPE))
-        val deleteProtection get() = TfRef<TfBool>(referenceString(DELETE_PROTECTION))
+        val id get() = Reference<TfNumber>(referenceString(ID))
+        val type get() = Reference<TfString>(referenceString(TYPE))
+        val datacenter get() = Reference<TfString>(referenceString(DATACENTER))
+        val name get() = Reference<TfString>(referenceString(NAME))
+        val autoDelete get() = Reference<TfBool>(referenceString(AUTO_DELETE))
+        val labels get() = Reference<TfMap>(referenceString(LABELS))
+        val ipAddress get() = Reference<TfString>(referenceString(IP_ADDRESS))
+        val assigneeId get() = Reference<TfNumber>(referenceString(ASSIGNEE_ID))
+        val assigneeType get() = Reference<TfString>(referenceString(ASSIGNEE_TYPE))
+        val deleteProtection get() = Reference<TfBool>(referenceString(DELETE_PROTECTION))
 
         class Builder: GBuilder<Builder>() {
             private val typeBuilder: Argument.Builder = Argument.Builder().name(TYPE)
@@ -58,16 +58,16 @@ object HCloudPrimaryIp {
 
             fun type(type: Type) = apply { typeBuilder.value(type.toString()) }
             fun name(name: String) = apply { nameBuilder.value(name) }
-            fun name(ref: TfRef<TfString>) = apply { nameBuilder.raw(ref.toString()) }
+            fun name(ref: Reference<TfString>) = apply { nameBuilder.raw(ref.toString()) }
             fun autoDelete(autoDelete: Boolean) = apply { autoDeleteBuilder.value(autoDelete) }
-            fun autoDelete(ref: TfRef<TfBool>) = apply { autoDeleteBuilder.raw(ref.toString()) }
+            fun autoDelete(ref: Reference<TfBool>) = apply { autoDeleteBuilder.raw(ref.toString()) }
             fun assigneeType(assigneeType: AssigneeType) = apply { assigneeTypeBuilder.value(assigneeType.toString()) }
             fun datacenter(datacenter: String) = apply { addElement(datacenterBuilder.value(datacenter).build()) }
-            fun datacenter(ref: TfRef<TfString>) = apply { addElement(datacenterBuilder.raw(ref.toString()).build()) }
+            fun datacenter(ref: Reference<TfString>) = apply { addElement(datacenterBuilder.raw(ref.toString()).build()) }
             fun labels(labels: TfMap) = apply { addElement(labelsBuilder.value(labels).build()) }
-            fun labels(ref: TfRef<TfMap>) = apply { addElement(labelsBuilder.raw(ref.toString()).build()) }
+            fun labels(ref: Reference<TfMap>) = apply { addElement(labelsBuilder.raw(ref.toString()).build()) }
             fun deleteProtection(deleteProtection: Boolean) = apply { addElement(deleteProtectionBuilder.value(deleteProtection).build()) }
-            fun deleteProtection(ref: TfRef<TfBool>) = apply { addElement(deleteProtectionBuilder.raw(ref.toString()).build()) }
+            fun deleteProtection(ref: Reference<TfBool>) = apply { addElement(deleteProtectionBuilder.raw(ref.toString()).build()) }
             override fun build(): Resource {
                 addElement(typeBuilder.build())
                 addElement(nameBuilder.build())
@@ -80,16 +80,16 @@ object HCloudPrimaryIp {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val id get() = TfRef<TfNumber>(referenceString(ID))
-        val type get() = TfRef<TfString>(referenceString(TYPE))
-        val datacenter get() = TfRef<TfString>(referenceString(DATACENTER))
-        val name get() = TfRef<TfString>(referenceString(NAME))
-        val autoDelete get() = TfRef<TfBool>(referenceString(AUTO_DELETE))
-        val labels get() = TfRef<TfMap>(referenceString(LABELS))
-        val ipAddress get() = TfRef<TfString>(referenceString(IP_ADDRESS))
-        val assigneeId get() = TfRef<TfNumber>(referenceString(ASSIGNEE_ID))
-        val assigneeType get() = TfRef<TfString>(referenceString(ASSIGNEE_TYPE))
-        val deleteProtection get() = TfRef<TfBool>(referenceString(DELETE_PROTECTION))
+        val id get() = Reference<TfNumber>(referenceString(ID))
+        val type get() = Reference<TfString>(referenceString(TYPE))
+        val datacenter get() = Reference<TfString>(referenceString(DATACENTER))
+        val name get() = Reference<TfString>(referenceString(NAME))
+        val autoDelete get() = Reference<TfBool>(referenceString(AUTO_DELETE))
+        val labels get() = Reference<TfMap>(referenceString(LABELS))
+        val ipAddress get() = Reference<TfString>(referenceString(IP_ADDRESS))
+        val assigneeId get() = Reference<TfNumber>(referenceString(ASSIGNEE_ID))
+        val assigneeType get() = Reference<TfString>(referenceString(ASSIGNEE_TYPE))
+        val deleteProtection get() = Reference<TfBool>(referenceString(DELETE_PROTECTION))
 
         class Builder: GBuilder<Builder>() {
             private val idOrNameOrIpAddressBuilder: Argument.Builder = Argument.Builder()
@@ -97,13 +97,13 @@ object HCloudPrimaryIp {
             init { dataSource(HCLOUD_PRIMARY_IP) }
 
             fun id(id: Int) = apply { idOrNameOrIpAddressBuilder.name(ID).value(id.toDouble()) }
-            fun id(ref: TfRef<TfNumber>) = apply { idOrNameOrIpAddressBuilder.name(ID).raw(ref.toString()) }
+            fun id(ref: Reference<TfNumber>) = apply { idOrNameOrIpAddressBuilder.name(ID).raw(ref.toString()) }
             fun name(name: String) = apply { idOrNameOrIpAddressBuilder.name(NAME).value(name) }
-            fun name(ref: TfRef<TfString>) = apply { idOrNameOrIpAddressBuilder.name(NAME).raw(ref.toString()) }
+            fun name(ref: Reference<TfString>) = apply { idOrNameOrIpAddressBuilder.name(NAME).raw(ref.toString()) }
             fun ipAddress(ipAddress: String) = apply { idOrNameOrIpAddressBuilder.name(IP_ADDRESS).value(ipAddress) }
-            fun ipAddress(ref: TfRef<TfString>) = apply { idOrNameOrIpAddressBuilder.name(IP_ADDRESS).raw(ref.toString()) }
+            fun ipAddress(ref: Reference<TfString>) = apply { idOrNameOrIpAddressBuilder.name(IP_ADDRESS).raw(ref.toString()) }
             fun withSelector(selector: String) = apply { addElement(withSelectorBuilder.value(selector).build()) }
-            fun withSelector(ref: TfRef<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
+            fun withSelector(ref: Reference<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
             override fun build(): DataSource {
                 addElement(idOrNameOrIpAddressBuilder.build())
                 return DataSource(buildBlock(), buildSelf())

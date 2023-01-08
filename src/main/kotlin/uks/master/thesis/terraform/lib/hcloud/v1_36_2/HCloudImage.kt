@@ -5,7 +5,7 @@ import uks.master.thesis.terraform.syntax.elements.Block
 import uks.master.thesis.terraform.syntax.expressions.TfBool
 import uks.master.thesis.terraform.syntax.expressions.TfList
 import uks.master.thesis.terraform.syntax.expressions.TfNumber
-import uks.master.thesis.terraform.syntax.expressions.TfRef
+import uks.master.thesis.terraform.syntax.expressions.Reference
 import uks.master.thesis.terraform.syntax.expressions.TfString
 
 object HCloudImage {
@@ -32,16 +32,16 @@ object HCloudImage {
 
     class DataSource private constructor(block: Block, self: String):
         uks.master.thesis.terraform.syntax.elements.blocks.DataSource(block, self) {
-        val id get() = TfRef<TfNumber>(referenceString(ID))
-        val name get() = TfRef<TfString>(referenceString(NAME))
-        val type get() = TfRef<TfString>(referenceString(TYPE))
-        val status get() = TfRef<TfString>(referenceString(STATUS))
-        val description get() = TfRef<TfString>(referenceString(DESCRIPTION))
-        val created get() = TfRef<TfString>(referenceString(CREATED))
-        val osFlavor get() = TfRef<TfString>(referenceString(OS_FLAVOR))
-        val osVersion get() = TfRef<TfString>(referenceString(OS_VERSION))
-        val rapidDeploy get() = TfRef<TfBool>(referenceString(RAPID_DEPLOY))
-        val deprecated get() = TfRef<TfString>(referenceString(DEPRECATED))
+        val id get() = Reference<TfNumber>(referenceString(ID))
+        val name get() = Reference<TfString>(referenceString(NAME))
+        val type get() = Reference<TfString>(referenceString(TYPE))
+        val status get() = Reference<TfString>(referenceString(STATUS))
+        val description get() = Reference<TfString>(referenceString(DESCRIPTION))
+        val created get() = Reference<TfString>(referenceString(CREATED))
+        val osFlavor get() = Reference<TfString>(referenceString(OS_FLAVOR))
+        val osVersion get() = Reference<TfString>(referenceString(OS_VERSION))
+        val rapidDeploy get() = Reference<TfBool>(referenceString(RAPID_DEPLOY))
+        val deprecated get() = Reference<TfString>(referenceString(DEPRECATED))
 
         class Builder: GBuilder<Builder>() {
             private val idOrNameBuilder: Argument.Builder = Argument.Builder()
@@ -51,13 +51,13 @@ object HCloudImage {
             init { dataSource(HCLOUD_IMAGE) }
 
             fun id(id: Int) = apply { addElement(idOrNameBuilder.name(ID).value(id.toDouble()).build()) }
-            fun id(ref: TfRef<TfNumber>) = apply { addElement(idOrNameBuilder.name(ID).raw(ref.toString()).build()) }
+            fun id(ref: Reference<TfNumber>) = apply { addElement(idOrNameBuilder.name(ID).raw(ref.toString()).build()) }
             fun name(name: String) = apply { addElement(idOrNameBuilder.name(NAME).value(name).build()) }
-            fun name(ref: TfRef<TfString>) = apply { addElement(idOrNameBuilder.name(NAME).raw(ref.toString()).build()) }
+            fun name(ref: Reference<TfString>) = apply { addElement(idOrNameBuilder.name(NAME).raw(ref.toString()).build()) }
             fun withSelector(selector: String) = apply { addElement(withSelectorBuilder.value(selector).build()) }
-            fun withSelector(ref: TfRef<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
+            fun withSelector(ref: Reference<TfString>) = apply { addElement(withSelectorBuilder.raw(ref.toString()).build()) }
             fun mostRecent(mostRecent: Boolean) = apply { addElement(mostRecentBuilder.value(mostRecent).build()) }
-            fun mostRecent(ref: TfRef<TfBool>) = apply { addElement(mostRecentBuilder.raw(ref.toString()).build()) }
+            fun mostRecent(ref: Reference<TfBool>) = apply { addElement(mostRecentBuilder.raw(ref.toString()).build()) }
             fun withStatus(withStatus: List<Status>) = apply {
                 val set: Set<Status> = withStatus.toSet()
                 val tfListBuilder: TfList.Builder = TfList.Builder()
