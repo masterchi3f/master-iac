@@ -23,7 +23,7 @@ object HCloud {
     private val endpointBuilder: Argument.Builder = Argument.Builder().name(ENDPOINT)
     private val pollIntervalBuilder: Argument.Builder = Argument.Builder().name(POLL_INTERVAL)
     private val providerCopy: Provider = Provider.Builder().name(HCLOUD).build()
-    val token: InputVariable<TfString> = InputVariable.Builder<TfString>().name(HCLOUD_TOKEN).sensitive().build()
+    val token: InputVariable<TfString> = InputVariable.Builder().name(HCLOUD_TOKEN).sensitive().build(TfString::class.java)
     val requiredProviders: RequiredProviders = RequiredProviders.Builder().addProvider(providerCopy, SOURCE, VERSION).build()
     var provider: Provider? = null
         private set
