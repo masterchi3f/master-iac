@@ -8,6 +8,7 @@ import uks.master.thesis.terraform.syntax.elements.Argument
 import uks.master.thesis.terraform.syntax.elements.Block
 import uks.master.thesis.terraform.syntax.expressions.Raw
 import uks.master.thesis.terraform.syntax.expressions.TfBool
+import uks.master.thesis.terraform.syntax.expressions.TfFile
 import uks.master.thesis.terraform.syntax.expressions.TfList
 import uks.master.thesis.terraform.syntax.expressions.TfMap
 import uks.master.thesis.terraform.syntax.expressions.TfNumber
@@ -39,8 +40,8 @@ class InputVariable<T : Expression> private constructor(
         fun default(bool: Boolean) = apply { default = TfBool(bool); blockBuilder.addElement(defaultBuilder.value(bool).build()) }
         fun default(number: Double) = apply { default = TfNumber(number); blockBuilder.addElement(defaultBuilder.value(number).build()) }
         fun default(string: String) = apply { default = TfString(string); blockBuilder.addElement(defaultBuilder.value(string).build()) }
-        fun default(list: TfList) = apply { default = list; blockBuilder.addElement(defaultBuilder.value(list).build()) }
-        fun default(map: TfMap) = apply { default = map; blockBuilder.addElement(defaultBuilder.value(map).build()) }
+        fun default(list: TfList) = apply { default = list; checkList(list); blockBuilder.addElement(defaultBuilder.value(list).build()) }
+        fun default(map: TfMap) = apply { default = map; checkMap(map); blockBuilder.addElement(defaultBuilder.value(map).build()) }
         fun sensitive() = apply { blockBuilder.addElement(sensitiveBuilder.value(true).build()) }
         fun <S: Expression>build(type: Class<S>): InputVariable<S> {
             default?.let {
@@ -59,6 +60,26 @@ class InputVariable<T : Expression> private constructor(
             }
             throw IllegalArgumentException("${type.name} must be ${TfBool::class.simpleName}, ${TfNumber::class.simpleName}, " +
                 "${TfString::class.simpleName}, ${TfList::class.simpleName}, ${TfMap::class.simpleName} or ${Raw::class.simpleName}")
+        }
+
+        private fun checkList(list: TfList) {
+            list.expressions.forEach {
+                when (it) {
+                    is TfRef<out Expression>, is TfFile -> throw IllegalArgumentException("Only primitive types are allowed in default values")
+                    is TfList -> checkList(it)
+                    is TfMap -> checkMap(it)
+                }
+            }
+        }
+
+        private fun checkMap(map: TfMap) {
+            map.entries.forEach {
+                when (val value = it.value) {
+                    is TfRef<out Expression>, is TfFile -> throw IllegalArgumentException("Only primitive types are allowed in default values")
+                    is TfList -> checkList(value)
+                    is TfMap -> checkMap(value)
+                }
+            }
         }
 
         private fun preventDupName() {

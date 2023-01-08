@@ -4,7 +4,7 @@ import uks.master.thesis.terraform.syntax.Expression
 import uks.master.thesis.terraform.syntax.Identifier
 
 class TfMap private constructor(
-    private val entries: Map<Identifier, Expression>
+    val entries: Map<Identifier, Expression>
 ): Expression {
     class Builder {
         private var _entries: Map<Identifier, Expression> = mutableMapOf()

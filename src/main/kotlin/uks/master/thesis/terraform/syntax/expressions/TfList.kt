@@ -3,7 +3,7 @@ package uks.master.thesis.terraform.syntax.expressions
 import uks.master.thesis.terraform.syntax.Expression
 
 class TfList private constructor(
-    private val expressions: List<Expression>
+    val expressions: List<Expression>
 ): Expression {
     class Builder {
         private var _expressions: List<Expression> = mutableListOf()

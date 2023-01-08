@@ -5,7 +5,7 @@ import uks.master.thesis.terraform.syntax.Expression
 class TfString(
     string: String
 ): Expression {
-    private var string: String
+    var string: String
 
     init {
         if (!string.contains("\"")) {
