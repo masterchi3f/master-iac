@@ -247,13 +247,11 @@ object HCloudLoadBalancerService {
                     addElement(listenPortBuilder.build())
                     addElement(destinationPortBuilder.build())
                 }
-                if (_protocol == Protocol.HTTP || _protocol == Protocol.HTTPS) {
-                    httpList.forEach {
-                        addElement(it.block)
-                    }
-                    healthCheckList.forEach {
-                        addElement(it.block)
-                    }
+                httpList.forEach {
+                    addElement(it.block)
+                }
+                healthCheckList.forEach {
+                    addElement(it.block)
                 }
                 return Resource(buildBlock(), buildSelf())
             }
