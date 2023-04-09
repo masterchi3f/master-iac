@@ -63,11 +63,10 @@ object HCloudLoadBalancerService {
             fun redirectHttp(ref: Reference<TfBool>) = apply { isRedirectHttpSet = true; redirectHttpBuilder.raw(ref.toString()) }
             fun build(): Http {
                 if (isRedirectHttpSet) {
-                    if (_protocol?.equals(Protocol.HTTPS) == false) {
-                        throw IllegalArgumentException("HTTPS traffic may only be redirected to HTTPS when HTTPS protocol is set in parent element")
-                    } else {
-                        blockBuilder.addElement(redirectHttpBuilder.build())
+                    require(_protocol?.equals(Protocol.HTTPS) == true) {
+                        "HTTPS traffic may only be redirected to HTTPS when HTTPS protocol is set in parent element"
                     }
+                    blockBuilder.addElement(redirectHttpBuilder.build())
                 }
                 return Http(blockBuilder.build())
             }
@@ -188,7 +187,7 @@ object HCloudLoadBalancerService {
             }
 
             private fun preventDupProtocol() {
-                if (::_protocol.isInitialized) throw IllegalArgumentException("protocol was already set to $_protocol!")
+                require(!::_protocol.isInitialized) {"protocol was already set to $_protocol!"}
             }
         }
 

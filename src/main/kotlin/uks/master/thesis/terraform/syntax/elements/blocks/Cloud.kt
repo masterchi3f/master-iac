@@ -36,7 +36,7 @@ class Cloud private constructor(
         )
 
         private fun preventDupOrganization() {
-            if (::_organization.isInitialized) throw IllegalArgumentException("organization was already set to $_organization!")
+            require(!::_organization.isInitialized) {"organization was already set to $_organization!"}
         }
     }
 

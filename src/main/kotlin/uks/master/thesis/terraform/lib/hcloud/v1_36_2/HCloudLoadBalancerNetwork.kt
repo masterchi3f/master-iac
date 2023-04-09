@@ -43,9 +43,7 @@ object HCloudLoadBalancerNetwork {
             fun enablePublicInterface(enablePublicInterface: Boolean) = apply { addElement(enablePublicInterfaceBuilder.value(enablePublicInterface).build()) }
             fun enablePublicInterface(ref: Reference<TfBool>) = apply { addElement(enablePublicInterfaceBuilder.raw(ref.toString()).build()) }
             override fun build(): Resource {
-                if (!networkIdOrSubnetIdSet) {
-                    throw IllegalArgumentException("Either networkId or subnetId must be set!")
-                }
+                require(networkIdOrSubnetIdSet) {"Either networkId or subnetId must be set!"}
                 addElement(loadBalancerIdBuilder.build())
                 return Resource(buildBlock(), buildSelf())
             }

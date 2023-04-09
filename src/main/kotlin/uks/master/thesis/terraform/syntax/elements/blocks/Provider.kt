@@ -38,7 +38,7 @@ class Provider private constructor(
         }
 
         private fun preventDupName() {
-            if (::_name.isInitialized) throw IllegalArgumentException("name was already set to $_name!")
+            require(!::_name.isInitialized) {"name was already set to $_name!"}
         }
 
         private fun preventDupAlias() {

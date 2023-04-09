@@ -214,7 +214,8 @@ object HCloudServer {
             }
 
             private fun preventDupPublicNet() {
-                if (hasPublicNet) throw IllegalArgumentException("publicNet was already set") else hasPublicNet = true
+                require(!hasPublicNet) {"publicNet was already set"}
+                hasPublicNet = true
             }
         }
 

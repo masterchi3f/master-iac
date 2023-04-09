@@ -51,11 +51,11 @@ open class Resource protected constructor(
         protected fun buildSelf(): String = "$_type.$_name"
 
         private fun preventDupType() {
-            if (::_type.isInitialized) throw IllegalArgumentException("type was already set to $_type!")
+            require(!::_type.isInitialized) {"type was already set to $_type!"}
         }
 
         private fun preventDupName() {
-            if (::_name.isInitialized) throw IllegalArgumentException("name was already set to $_name!")
+            require(!::_name.isInitialized) {"name was already set to $_name!"}
         }
     }
 

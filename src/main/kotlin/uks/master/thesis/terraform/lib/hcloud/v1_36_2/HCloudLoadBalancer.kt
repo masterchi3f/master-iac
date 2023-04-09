@@ -96,16 +96,15 @@ object HCloudLoadBalancer {
             fun deleteProtection(deleteProtection: Boolean) = apply { addElement(deleteProtectionBuilder.value(deleteProtection).build()) }
             fun deleteProtection(ref: Reference<TfBool>) = apply { addElement(deleteProtectionBuilder.raw(ref.toString()).build()) }
             override fun build(): Resource {
-                if (!locationOrNetworkZoneSet) {
-                    throw IllegalArgumentException("Either location or networkZone must be set!")
-                }
+                require(locationOrNetworkZoneSet) {"Either location or networkZone must be set!"}
                 addElement(nameBuilder.build())
                 addElement(loadBalancerTypeBuilder.build())
                 return Resource(buildBlock(), buildSelf())
             }
 
             private fun preventDupAlgorithm() {
-                if (hasAlgorithm) throw IllegalArgumentException("algorithm was already built") else hasAlgorithm = true
+                require(!hasAlgorithm) {"algorithm was already built"}
+                hasAlgorithm = true
             }
         }
     }

@@ -59,11 +59,11 @@ class Argument private constructor(
         fun build() = Argument(_name, _value, _comment)
 
         private fun preventDupName() {
-            if (::_name.isInitialized) throw IllegalArgumentException("name was already set to $_name!")
+            require(!::_name.isInitialized) {"name was already set to $_name!"}
         }
 
         private fun preventDupValue() {
-            if (::_value.isInitialized) throw IllegalArgumentException("value was already set to $_value!")
+            require(!::_value.isInitialized) {"value was already set to $_value!"}
         }
 
         private fun preventDupComment() {

@@ -44,9 +44,7 @@ object HCloudServerNetwork {
             fun ip(ip: String) = apply { addElement(ipBuilder.value(ip).build()) }
             fun ip(ref: Reference<TfString>) = apply { addElement(ipBuilder.raw(ref.toString()).build()) }
             override fun build(): Resource {
-                if (!hasNetworkIdOrSubnetId) {
-                    throw IllegalArgumentException("networkId or subnetId must be set")
-                }
+                require(hasNetworkIdOrSubnetId) {"networkId or subnetId must be set"}
                 addElement(serverIdBuilder.build())
                 return Resource(buildBlock(), buildSelf())
             }

@@ -40,11 +40,11 @@ open class DataSource protected constructor(
         protected fun buildSelf(): String = "$DATA.$_source.$_name"
 
         private fun preventDupSource() {
-            if (::_source.isInitialized) throw IllegalArgumentException("source was already set to $_source!")
+            require(!::_source.isInitialized) {"source was already set to $_source!"}
         }
 
         private fun preventDupName() {
-            if (::_name.isInitialized) throw IllegalArgumentException("name was already set to $_name!")
+            require(!::_name.isInitialized) {"name was already set to $_name!"}
         }
     }
 

@@ -45,21 +45,20 @@ class InputVariable<T : Expression> private constructor(
         fun sensitive() = apply { blockBuilder.addElement(sensitiveBuilder.value(true).build()) }
         fun <S: Expression>build(type: Class<S>): InputVariable<S> {
             default?.let {
-                if (!type.isAssignableFrom(it.javaClass)) {
-                    throw IllegalArgumentException("$default is not from class ${type.name}")
-                }
+                require(type.isAssignableFrom(it.javaClass)) {"$default is not from class ${type.name}"}
             }
-            if (type.isAssignableFrom(TfBool::class.java)
+            require(type.isAssignableFrom(TfBool::class.java)
                 || type.isAssignableFrom(TfNumber::class.java)
                 || type.isAssignableFrom(TfString::class.java)
                 || type.isAssignableFrom(TfList::class.java)
                 || type.isAssignableFrom(TfMap::class.java)
                 || type.isAssignableFrom(Raw::class.java)
             ) {
-                return InputVariable(blockBuilder.type(VARIABLE).addLabel(_name.toString()).build(), _name.toString())
+                "${type.name} must be ${TfBool::class.simpleName}, ${TfNumber::class.simpleName}, " +
+                    "${TfString::class.simpleName}, ${TfList::class.simpleName}, " +
+                    "${TfMap::class.simpleName} or ${Raw::class.simpleName}"
             }
-            throw IllegalArgumentException("${type.name} must be ${TfBool::class.simpleName}, ${TfNumber::class.simpleName}, " +
-                "${TfString::class.simpleName}, ${TfList::class.simpleName}, ${TfMap::class.simpleName} or ${Raw::class.simpleName}")
+            return InputVariable(blockBuilder.type(VARIABLE).addLabel(_name.toString()).build(), _name.toString())
         }
 
         private fun checkList(list: TfList) {
@@ -83,7 +82,7 @@ class InputVariable<T : Expression> private constructor(
         }
 
         private fun preventDupName() {
-            if (::_name.isInitialized) throw IllegalArgumentException("name was already set to $_name!")
+            require(!::_name.isInitialized) {"name was already set to $_name!"}
         }
     }
 

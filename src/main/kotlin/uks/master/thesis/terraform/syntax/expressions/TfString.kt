@@ -8,13 +8,8 @@ class TfString(
     var string: String
 
     init {
-        if (!string.contains("\"")) {
-            this.string = string
-        } else {
-            throw IllegalArgumentException(
-                "Found \"$string\". TfString should not contain \"."
-            )
-        }
+        require(!string.contains("\"")) {"Found \"$string\". TfString should not contain \"."}
+        this.string = string
     }
 
     override fun toString(): String = "\"$string\""

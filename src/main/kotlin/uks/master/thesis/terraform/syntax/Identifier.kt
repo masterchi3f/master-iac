@@ -4,14 +4,11 @@ class Identifier(name: String) {
     private var name: String
 
     init {
-        if ("^[a-zA-Z_][a-zA-Z0-9_-]*\$".toRegex().matches(name)) {
-            this.name = name
-        } else {
-            throw IllegalArgumentException(
-                "Found \"$name\". Identifier should only contains dash, underscore, letters and digits." +
-                    " No digit or dash at position 0 allowed."
-            )
+        require("^[a-zA-Z_][a-zA-Z0-9_-]*\$".toRegex().matches(name)) {
+            "Found \"$name\". Identifier should only contains dash, underscore, letters and digits." +
+                " No digit or dash at position 0 allowed."
         }
+        this.name = name
     }
 
     override fun toString(): String = name

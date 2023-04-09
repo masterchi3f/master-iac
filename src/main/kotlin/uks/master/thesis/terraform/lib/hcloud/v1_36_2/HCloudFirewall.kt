@@ -84,7 +84,7 @@ object HCloudFirewall {
             }
 
             private fun preventDupProtocol() {
-                if (::_protocol.isInitialized) throw IllegalArgumentException("protocol was already set to $_protocol!")
+                require(!::_protocol.isInitialized) {"protocol was already set to $_protocol!"}
             }
         }
 
@@ -147,7 +147,8 @@ object HCloudFirewall {
             override fun build() = Resource(buildBlock(), buildSelf())
 
             private fun preventDupApplyTo() {
-                if (hasApplyTo) throw IllegalArgumentException("applyTo was already built") else hasApplyTo = true
+                require(!hasApplyTo) {"applyTo was already built"}
+                hasApplyTo = true
             }
         }
 

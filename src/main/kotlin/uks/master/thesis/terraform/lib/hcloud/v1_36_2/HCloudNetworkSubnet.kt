@@ -55,10 +55,9 @@ object HCloudNetworkSubnet {
                 addElement(typeBuilder.build())
                 addElement(ipRangeBuilder.build())
                 addElement(networkZoneBuilder.build())
+                require(_type != Type.VSWITCH && hasVswitchId) {"vswitchId was set but subnet type is $_type"}
                 if (_type == Type.VSWITCH) {
                     addElement(vswitchIdBuilder.build())
-                } else if (hasVswitchId) {
-                    throw IllegalArgumentException("vswitchId was set but subnet type is $_type")
                 }
                 return Resource(buildBlock(), buildSelf())
             }

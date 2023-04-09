@@ -56,11 +56,8 @@ object HCloudLoadBalancerTarget {
                 addElement(loadBalancerIdBuilder.build())
                 addElement(valueBuilder.build())
                 if (usePrivateIpIsSet) {
-                    if (_type != Type.IP) {
-                        addElement(usePrivateIpBuilder.build())
-                    } else {
-                        throw IllegalArgumentException("usePrivateIp is only allowed with type ${Type.LABEL_SELECTOR} and ${Type.SERVER}")
-                    }
+                    require(_type == Type.IP) { "usePrivateIp is only allowed with type ${Type.LABEL_SELECTOR} and ${Type.SERVER}"}
+                    addElement(usePrivateIpBuilder.build())
                 }
                 return Resource(buildBlock(), buildSelf())
             }

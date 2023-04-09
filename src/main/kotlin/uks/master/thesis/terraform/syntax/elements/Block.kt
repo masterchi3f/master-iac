@@ -23,7 +23,7 @@ class Block private constructor(
         fun build() = Block(_type, _labels, _elements)
 
         private fun preventDupType() {
-            if (::_type.isInitialized) throw IllegalArgumentException("type was already set to $_type!")
+            require(!::_type.isInitialized) {"type was already set to $_type!"}
         }
     }
 

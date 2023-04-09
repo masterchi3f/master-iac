@@ -11,13 +11,10 @@ class SubModule(tfModule: TfModule): ParentModule<SubModule>(), Child {
     override val name: String get() = tfModule.self
 
     init {
-        if (tfModule.type == TfModule.Type.LOCAL) {
-            this.tfModule = tfModule
-        } else {
-            throw IllegalArgumentException(
-                "Found \"${tfModule.type}\". Only modules from type LOCAL are allowed to be SubModules."
-            )
+        require(tfModule.type == TfModule.Type.LOCAL) {
+            "Found \"${tfModule.type}\". Only modules from type LOCAL are allowed to be SubModules."
         }
+        this.tfModule = tfModule
     }
 
     fun <S: Expression>output(outputVariable: OutputVariable<S>): Reference<S> = Reference("${tfModule.self}.${outputVariable.name}")

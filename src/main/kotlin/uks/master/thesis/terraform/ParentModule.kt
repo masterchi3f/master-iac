@@ -30,10 +30,8 @@ abstract class ParentModule<T> {
     } as T
 
     fun addChild(child: Child): T = apply {
-        if (child is TfModule && child.type == TfModule.Type.LOCAL) {
-            throw IllegalArgumentException(
-                "Found TfModule from type LOCAL. Wrap local modules to be SubModules."
-            )
+        require(!(child is TfModule && child.type == TfModule.Type.LOCAL)) {
+            "Found TfModule from type LOCAL. Wrap local modules to be SubModules."
         }
         children = children + child
     } as T

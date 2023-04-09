@@ -50,8 +50,8 @@ class TfModule private constructor(
             } as T
         open fun <S: Expression>addInputVariable(resource: Resource, reference: Reference<S>): T =
             apply {
-                if (reference.toString().replace(Regex("[^.]+"), "").length == 1) {
-                    throw IllegalArgumentException("Wrong method when using $reference! To add a resource reference use the resource as parameter.")
+                require(reference.toString().replace(Regex("[^.]+"), "").length != 1) {
+                    "Wrong method when using $reference! To add a resource reference use the resource as parameter."
                 }
                 val attribute: String = reference.toString().removePrefix("${resource.referenceString()}.")
                 addInputVariable<S>(resource, attribute)
@@ -64,8 +64,8 @@ class TfModule private constructor(
             } as T
         open fun <S: Expression>addInputVariable(dataSource: DataSource, reference: Reference<S>): T =
             apply {
-                if (reference.toString().replace(Regex("[^.]+"), "").length == 2) {
-                    throw IllegalArgumentException("Wrong method when using $reference! To add a datasource reference use the datasource as parameter.")
+                require(reference.toString().replace(Regex("[^.]+"), "").length != 2) {
+                    "Wrong method when using $reference! To add a datasource reference use the datasource as parameter."
                 }
                 val attribute: String = reference.toString().removePrefix("${dataSource.referenceString()}.")
                 addInputVariable<S>(dataSource, attribute)
@@ -108,15 +108,13 @@ class TfModule private constructor(
                 blockBuilder.addElement(Argument.Builder().name(PROVIDERS).value(it.build()).build())
             }
             val name = "$MODULE.$_name"
-            if (subModuleNames.contains(name)) {
-                throw IllegalStateException("An output variable from this module was defined as input variable!")
-            }
+            check(subModuleNames.contains(name)) {"An output variable from this module was defined as input variable!"}
             buildDependencies(blockBuilder, dependencies)
             return TfModule(blockBuilder.build(), name, type)
         }
 
         private fun preventDupName() {
-            if (::_name.isInitialized) throw IllegalArgumentException("name was already set to $_name!")
+            require(!::_name.isInitialized) {"name was already set to $_name!"}
         }
     }
 
