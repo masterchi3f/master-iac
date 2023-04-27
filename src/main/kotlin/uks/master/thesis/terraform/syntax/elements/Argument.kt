@@ -16,6 +16,7 @@ import uks.master.thesis.terraform.syntax.expressions.TfMap
 import uks.master.thesis.terraform.syntax.expressions.TfNull
 import uks.master.thesis.terraform.syntax.expressions.TfNumber
 import uks.master.thesis.terraform.syntax.expressions.Reference
+import uks.master.thesis.terraform.syntax.expressions.TfFile
 import uks.master.thesis.terraform.syntax.expressions.TfString
 
 class Argument private constructor(
@@ -37,6 +38,7 @@ class Argument private constructor(
         fun value(string: String) = apply { preventDupValue(); _value = TfString(string) }
         fun value(list: TfList) = apply { preventDupValue(); _value = list }
         fun value(map: TfMap) = apply { preventDupValue(); _value = map }
+        fun value(file: TfFile) = apply {preventDupValue(); _value = file }
         fun value(inputVariable: InputVariable<out Expression>) = apply { preventDupValue(); _value = inputVariable.reference }
         fun <S: Expression>value(resource: Resource, attribute: String? = null) = apply { preventDupValue(); _value = attribute?.let { resource.reference<S>(attribute) } ?: resource.reference() }
         fun <S: Expression>value(dataSource: DataSource, attribute: String? = null) = apply { preventDupValue(); _value = attribute?.let { dataSource.reference<S>(attribute) } ?: dataSource.reference() }

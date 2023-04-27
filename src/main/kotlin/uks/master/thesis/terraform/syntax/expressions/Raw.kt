@@ -4,7 +4,7 @@ import uks.master.thesis.terraform.syntax.Expression
 
 /**
  * Expression which is only used with class Reference
- * when a resource or data source is directly addressed
+ * when a block, resource or data source is directly addressed
  * without using one of its exported attributes
  */
 class Raw(
