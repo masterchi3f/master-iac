@@ -10,7 +10,7 @@ import uks.master.thesis.terraform.syntax.elements.Block
 import uks.master.thesis.terraform.syntax.expressions.TfList
 import uks.master.thesis.terraform.syntax.expressions.TfMap
 
-class OutputVariable<T: Expression> private constructor(
+class OutputValue<T: Expression> private constructor(
     private val block: Block,
     private val self: String
 ): Element, Child {
@@ -37,9 +37,9 @@ class OutputVariable<T: Expression> private constructor(
         fun value(map: TfMap) = apply { blockBuilder.addElement(valueBuilder.value(map).build()) }
         fun <S: Expression>value(resource: Resource, attribute: String? = null) = apply { blockBuilder.addElement(valueBuilder.value<S>(resource, attribute).build()) }
         fun <S: Expression>value(dataSource: DataSource, attribute: String? = null) = apply { blockBuilder.addElement(valueBuilder.value<S>(dataSource, attribute).build()) }
-        fun value(subModule: SubModule, outputVariable: OutputVariable<out Expression>) = apply { blockBuilder.addElement(valueBuilder.value(subModule, outputVariable).build()) }
+        fun value(subModule: SubModule, outputValue: OutputValue<out Expression>) = apply { blockBuilder.addElement(valueBuilder.value(subModule, outputValue).build()) }
         fun sensitive() = apply { blockBuilder.addElement(sensitiveBuilder.value(true).build()) }
-        fun build() = OutputVariable<T>(
+        fun build() = OutputValue<T>(
             blockBuilder.type(OUTPUT).addLabel(_name.toString()).build(),
             _name.toString()
         )

@@ -7,7 +7,7 @@ import uks.master.thesis.terraform.syntax.Expression
 import uks.master.thesis.terraform.syntax.elements.OneLineComment
 import uks.master.thesis.terraform.syntax.elements.OneLineSymbol
 import uks.master.thesis.terraform.syntax.elements.blocks.InputVariable
-import uks.master.thesis.terraform.syntax.elements.blocks.OutputVariable
+import uks.master.thesis.terraform.syntax.elements.blocks.OutputValue
 import uks.master.thesis.terraform.syntax.elements.blocks.Terraform
 import uks.master.thesis.terraform.syntax.elements.blocks.TfModule
 
@@ -47,7 +47,7 @@ abstract class ParentModule<T> {
         } ?: throw IllegalStateException("Terraform configuration in $name not set!")
         for (child in children) {
             when (child) {
-                is OutputVariable<out Expression> -> outputs += child.toString() + System.lineSeparator()
+                is OutputValue<out Expression> -> outputs += child.toString() + System.lineSeparator()
                 is InputVariable<out Expression> -> variables += child.toString() + System.lineSeparator()
                 else -> main += child.toString() + System.lineSeparator()
             }

@@ -70,12 +70,12 @@ class TfModule private constructor(
                 val attribute: String = reference.toString().removePrefix("${dataSource.referenceString()}.")
                 addInputVariable<S>(dataSource, attribute)
             } as T
-        open fun addInputVariable(subModule: SubModule, outputVariable: OutputVariable<out Expression>): T =
+        open fun addInputVariable(subModule: SubModule, outputValue: OutputValue<out Expression>): T =
             apply {
                 subModuleNames = subModuleNames + subModule.name
                 blockBuilder.addElement(Argument.Builder()
-                    .name(outputVariable.name)
-                    .value(subModule, outputVariable).build())
+                    .name(outputValue.name)
+                    .value(subModule, outputValue).build())
             } as T
         /**
          * @param alternate: If true there are more providers from same type in the root module.
