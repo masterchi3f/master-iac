@@ -66,7 +66,12 @@ open class Resource protected constructor(
     fun referenceString(attribute: String? = null): String = attribute?.let { "$self.$it" } ?: self
     fun <S: Expression>reference(value: String): Reference<S> = Reference("$self.$value")
 
-    fun import(id: String): Import = Import(self, id)
+    /**
+     *  @return Import object with address "((module.<module_name>.)*)<resource_type>.<resource_name>"
+     *  (regular expression is given, real type will be String)
+     */
+    fun import(id: String, modules: List<TfModule>?): Import =
+        Import(modules?.let { m -> "${m.joinToString("") { "${it.reference}." }}$self" } ?: self, id)
 
     override fun toString(): String = block.toString()
 }
