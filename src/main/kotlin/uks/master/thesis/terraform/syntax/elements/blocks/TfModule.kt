@@ -15,7 +15,7 @@ import uks.master.thesis.terraform.utils.Utils.convertToIdentifier
 
 class TfModule private constructor(
     private val block: Block,
-    val self: String,
+    private val self: String,
     val type: Type
 ): Element, Child {
     private companion object {
@@ -24,6 +24,8 @@ class TfModule private constructor(
         const val VERSION: String = "version"
         const val PROVIDERS: String = "providers"
     }
+
+    val reference get() = Reference<Raw>(self)
 
     @Suppress("UNCHECKED_CAST")
     abstract class Builder<T>: DependsOn() {
@@ -108,7 +110,7 @@ class TfModule private constructor(
                 blockBuilder.addElement(Argument.Builder().name(PROVIDERS).value(it.build()).build())
             }
             val name = "$MODULE.$_name"
-            check(subModuleNames.contains(name)) {"An output variable from this module was defined as input variable!"}
+            check(!subModuleNames.contains(name)) {"An output variable from this module was defined as input variable!"}
             buildDependencies(blockBuilder, dependencies)
             return TfModule(blockBuilder.build(), name, type)
         }

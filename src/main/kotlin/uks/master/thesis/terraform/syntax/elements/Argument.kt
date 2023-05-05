@@ -40,8 +40,8 @@ class Argument private constructor(
         fun value(map: TfMap) = apply { preventDupValue(); _value = map }
         fun value(file: TfFile) = apply {preventDupValue(); _value = file }
         fun value(inputVariable: InputVariable<out Expression>) = apply { preventDupValue(); _value = inputVariable.reference }
-        fun <S: Expression>value(resource: Resource, attribute: String? = null) = apply { preventDupValue(); _value = attribute?.let { resource.reference<S>(attribute) } ?: resource.reference() }
-        fun <S: Expression>value(dataSource: DataSource, attribute: String? = null) = apply { preventDupValue(); _value = attribute?.let { dataSource.reference<S>(attribute) } ?: dataSource.reference() }
+        fun <S: Expression>value(resource: Resource, innerValue: String? = null) = apply { preventDupValue(); _value = innerValue?.let { resource.reference<S>(innerValue) } ?: resource.reference }
+        fun <S: Expression>value(dataSource: DataSource, innerValue: String? = null) = apply { preventDupValue(); _value = innerValue?.let { dataSource.reference<S>(innerValue) } ?: dataSource.reference }
         fun value(subModule: SubModule, outputValue: OutputValue<out Expression>) = apply { preventDupValue(); _value = subModule.output(outputValue) }
         /**
          * @param alternate: If true the argument is used in a submodule which has multiple provider from same type.

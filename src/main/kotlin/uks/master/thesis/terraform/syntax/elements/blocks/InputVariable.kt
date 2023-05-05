@@ -26,8 +26,8 @@ class InputVariable<T : Expression> private constructor(
         const val SENSITIVE: String = "sensitive"
     }
 
-    val reference get() = Reference<T>("$VAR.$self")
-    val name get() = self
+    val reference get() = Reference<T>(self)
+    val name get() = self.removePrefix("$VAR.")
 
     class Builder {
         private val blockBuilder: Block.Builder = Block.Builder()
@@ -58,7 +58,7 @@ class InputVariable<T : Expression> private constructor(
                     "${TfString::class.simpleName}, ${TfList::class.simpleName}, " +
                     "${TfMap::class.simpleName} or ${Raw::class.simpleName}"
             }
-            return InputVariable(blockBuilder.type(VARIABLE).addLabel(_name.toString()).build(), _name.toString())
+            return InputVariable(blockBuilder.type(VARIABLE).addLabel(_name.toString()).build(), "$VAR.$_name")
         }
 
         private fun checkList(list: TfList) {

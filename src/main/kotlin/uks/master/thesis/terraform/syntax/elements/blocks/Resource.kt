@@ -23,6 +23,8 @@ open class Resource protected constructor(
         const val PROVIDER: String = "provider"
     }
 
+    val reference get() = Reference<Raw>(self)
+
     @Suppress("UNCHECKED_CAST")
     open class GBuilder<T>: DependsOn() {
         private val blockBuilder: Block.Builder = Block.Builder()
@@ -62,8 +64,7 @@ open class Resource protected constructor(
     class Builder: GBuilder<Builder>()
 
     fun referenceString(attribute: String? = null): String = attribute?.let { "$self.$it" } ?: self
-    fun reference(): Reference<Raw> = Reference(self)
-    fun <S: Expression>reference(attribute: String): Reference<S> = Reference("$self.$attribute")
+    fun <S: Expression>reference(value: String): Reference<S> = Reference("$self.$value")
 
     fun import(id: String): Import = Import(self, id)
 

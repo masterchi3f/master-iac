@@ -8,7 +8,7 @@ import uks.master.thesis.terraform.syntax.expressions.Reference
 
 class SubModule(tfModule: TfModule): ParentModule<SubModule>(), Child {
     private var tfModule: TfModule
-    override val name: String get() = tfModule.self
+    override val name: String get() = tfModule.reference.toString()
 
     init {
         require(tfModule.type == TfModule.Type.LOCAL) {
@@ -17,7 +17,7 @@ class SubModule(tfModule: TfModule): ParentModule<SubModule>(), Child {
         this.tfModule = tfModule
     }
 
-    fun <S: Expression>output(outputValue: OutputValue<S>): Reference<S> = Reference("${tfModule.self}.${outputValue.name}")
+    fun <S: Expression>output(outputValue: OutputValue<S>): Reference<S> = Reference("${tfModule.reference}.${outputValue.name}")
 
     override fun toString(): String = tfModule.toString()
 }
