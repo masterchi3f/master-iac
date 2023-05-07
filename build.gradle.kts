@@ -49,6 +49,10 @@ tasks.jar {
 publishing {
     publications {
         create<MavenPublication>("maven") {
+            groupId = project.group.toString()
+            artifactId = rootProject.name
+            version = project.version.toString()
+
             from(components["java"])
         }
     }
