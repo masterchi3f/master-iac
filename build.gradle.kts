@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "uks.master.thesis"
-version = "1.0.0"
+version = "0.1.0"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
