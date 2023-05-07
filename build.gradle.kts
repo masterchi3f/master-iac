@@ -1,13 +1,18 @@
 plugins {
     kotlin("jvm") version "1.7.22"
+    `java-library`
 }
 
 group = "uks.master.thesis"
-version = "1.0-SNAPSHOT"
+version = "1.0.0"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
+}
+
+java {
+    withSourcesJar()
 }
 
 dependencies {
@@ -29,4 +34,13 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.jar {
+    manifest {
+        attributes(mapOf(
+            "Implementation-Title" to project.name,
+            "Implementation-Version" to project.version
+        ))
+    }
 }
