@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "1.7.22"
     `java-library`
+    `maven-publish`
 }
 
 group = "uks.master.thesis"
@@ -32,7 +33,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     }
 }
 
-tasks.withType<Test> {
+tasks.test {
     useJUnitPlatform()
 }
 
@@ -42,5 +43,13 @@ tasks.jar {
             "Implementation-Title" to project.name,
             "Implementation-Version" to project.version
         ))
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+        }
     }
 }
