@@ -30,7 +30,7 @@ Terraform Language source code generation with Kotlin and execute generated code
 
    ```groovy
    dependencies {
-     implementation 'com.github.masterchi3f:master-iac:0.1.1'
+     implementation 'com.github.masterchi3f:master-iac:0.1.2'
    }
    ```
 
@@ -38,13 +38,13 @@ Terraform Language source code generation with Kotlin and execute generated code
 
    ```kotlin
    dependencies {
-     implementation("com.github.masterchi3f:master-iac:0.1.1")
+     implementation("com.github.masterchi3f:master-iac:0.1.2")
    }
    ```
 
 Information about this dependency on JitPack:
 
 - You can find this dependency on JitPack
-  [here](https://jitpack.io/#masterchi3f/master-iac/0.1.1)
+  [here](https://jitpack.io/#masterchi3f/master-iac/0.1.2)
 - You can find the JitPack build logs
-  [here](https://jitpack.io/com/github/masterchi3f/master-iac/0.1.1/build.log)
+  [here](https://jitpack.io/com/github/masterchi3f/master-iac/0.1.2/build.log)
