@@ -4,9 +4,10 @@ plugins {
     `maven-publish`
 }
 
-group = "uks.master.thesis"
+group = "com.github.masterchi3f"
 version = "0.1.0"
 java.sourceCompatibility = JavaVersion.VERSION_17
+java.targetCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
