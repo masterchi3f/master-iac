@@ -1,13 +1,27 @@
 plugins {
     kotlin("jvm") version "1.7.22"
+    id("com.github.jmongard.git-semver-plugin") version "0.4.3"
     `java-library`
     `maven-publish`
 }
 
-group = "com.github.masterchi3f"
-version = "0.1.2"
+group = "uks.master.thesis"
 java.sourceCompatibility = JavaVersion.VERSION_17
-java.targetCompatibility = JavaVersion.VERSION_17
+
+// Semantic commit versioning
+version = semver.version
+semver {
+    defaultPreRelease = "SNAPSHOT"
+    releasePattern = "\\Arelease(?:\\(\\w+\\))?:"
+    majorPattern = "\\A(feat|fix)(?:\\(\\w+\\))?!:"
+    minorPattern = "\\Afeat(?:\\(\\w+\\))?:"
+    patchPattern = "\\A(fix|refactor)(?:\\(\\w+\\))?:"
+    releaseCommitTextFormat = "release(v%s): %s"
+    releaseTagNameFormat = "%s"
+    groupVersionIncrements = false
+    noDirtyCheck = false
+    noAutoBumb = true
+}
 
 repositories {
     mavenCentral()
@@ -50,10 +64,6 @@ tasks.jar {
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            groupId = project.group.toString()
-            artifactId = rootProject.name
-            version = project.version.toString()
-
             from(components["java"])
         }
     }

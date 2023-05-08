@@ -2,49 +2,54 @@
 
 Terraform Language source code generation with Kotlin and execute generated code through Kotlin subshells.
 
+![Release](https://jitpack.io/v/masterchi3f/master-iac.svg)
+- [Dependency builds](https://jitpack.io/#masterchi3f/master-iac/0.1.2)
+- [Latest build logs](https://jitpack.io/com/github/masterchi3f/master-iac/0.1.2/build.log)
+
 ## Import using Gradle
 
-![Release](https://jitpack.io/v/masterchi3f/master-iac.svg)
+`build.gradle`:
 
-1. Add this at the end of your `repositories` section.
+```groovy
+repositories {
+    maven { url 'https://jitpack.io' }
+}
 
-   Groovy - `build.gradle`:
+dependencies {
+    implementation 'com.github.masterchi3f:master-iac:0.1.2'
+}
+```
 
-   ```groovy
-   repositories {
-     maven { url 'https://jitpack.io' }
-   }
-   ```
+`build.gradle.kts`:
 
-   Kotlin - `build.gradle.kts`:
+```kotlin
+repositories {
+    maven("https://jitpack.io")
+}
 
-   ```kotlin
-   repositories {
-     maven("https://jitpack.io")
-   }
-   ```
+dependencies {
+    implementation("com.github.masterchi3f:master-iac:0.1.2")
+}
+```
 
-2. Add the dependency.
+## Import using Maven
 
-   Groovy - `build.gradle`:
+```xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
 
-   ```groovy
-   dependencies {
-     implementation 'com.github.masterchi3f:master-iac:0.1.2'
-   }
-   ```
+<dependency>
+    <groupId>com.github.masterchi3f</groupId>
+    <artifactId>master-iac</artifactId>
+    <version>0.1.2</version>
+</dependency>
+```
 
-   Kotlin - `build.gradle.kts`:
+## How to use
 
-   ```kotlin
-   dependencies {
-     implementation("com.github.masterchi3f:master-iac:0.1.2")
-   }
-   ```
-
-Information about this dependency on JitPack:
-
-- You can find this dependency on JitPack
-  [here](https://jitpack.io/#masterchi3f/master-iac/0.1.2)
-- You can find the JitPack build logs
-  [here](https://jitpack.io/com/github/masterchi3f/master-iac/0.1.2/build.log)
+See test file:
+- [Terraform.kt](https://github.com/masterchi3f/master-iac/blob/master/src/test/kotlin/uks/master/thesis/Terraform.kt)
