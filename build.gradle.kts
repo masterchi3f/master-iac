@@ -6,22 +6,8 @@ plugins {
 }
 
 group = "uks.master.thesis"
+version = "0.3.0"
 java.sourceCompatibility = JavaVersion.VERSION_17
-
-// Semantic commit versioning
-version = semver.version
-semver {
-    defaultPreRelease = "SNAPSHOT"
-    releasePattern = "\\Arelease(?:\\(\\w+\\))?:"
-    majorPattern = "\\A(feat|fix)(?:\\(\\w+\\))?!:"
-    minorPattern = "\\Afeat(?:\\(\\w+\\))?:"
-    patchPattern = "\\A(fix|refactor)(?:\\(\\w+\\))?:"
-    releaseCommitTextFormat = "release(v%s): %s"
-    releaseTagNameFormat = "%s"
-    groupVersionIncrements = false
-    noDirtyCheck = false
-    noAutoBumb = true
-}
 
 repositories {
     mavenCentral()
