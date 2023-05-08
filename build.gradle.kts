@@ -1,6 +1,5 @@
 plugins {
     kotlin("jvm") version "1.7.22"
-    id("com.github.jmongard.git-semver-plugin") version "0.4.3"
     `java-library`
     `maven-publish`
 }
