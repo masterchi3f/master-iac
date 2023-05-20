@@ -1,7 +1,6 @@
 package uks.master.thesis.terraform
 
 import java.io.File
-import java.net.URL
 import java.nio.file.Files
 import java.nio.file.Paths
 import mu.KLogger
@@ -93,17 +92,18 @@ object RootModule: ParentModule<RootModule>() {
     }
 
     private fun createGitignore() {
-        val url: URL? = javaClass.getResource(GITIGNORE_RESOURCE_PATH)
-        url?.let {
-            val resourceFile = File(it.path)
-            val name: String = resourceFile.name.removePrefix(DOT_TF)
-            val outFile = File(OUT_DIR, name)
-            if (Files.notExists(Paths.get(outFile.toURI()))) {
-                resourceFile.copyTo(outFile, false)
-                logger.debug(
-                    "Copied resource \"${GITIGNORE_RESOURCE_PATH.replace("/", File.separator)}\"" +
-                    " to \"$OUT_DIR${File.separator}$name\""
-                )
+        javaClass.getResourceAsStream(GITIGNORE_RESOURCE_PATH)?.use { stream ->
+            stream.use { input ->
+                val outFile = File(OUT_DIR, GITIGNORE)
+                if (Files.notExists(Paths.get(outFile.toURI()))) {
+                    outFile.outputStream().use { output ->
+                        input.copyTo(output)
+                        logger.debug(
+                            "Copied resource \"${GITIGNORE_RESOURCE_PATH.replace("/", File.separator)}\"" +
+                                " to \"$OUT_DIR${File.separator}$name\""
+                        )
+                    }
+                }
             }
         }
     }

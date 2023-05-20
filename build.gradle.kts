@@ -1,3 +1,5 @@
+import kotlin.text.Regex
+
 plugins {
     kotlin("jvm") version "1.7.22"
     `java-library`
@@ -5,7 +7,7 @@ plugins {
 }
 
 group = "uks.master.thesis"
-version = "0.3.1"
+version = "0.3.2"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
@@ -46,10 +48,24 @@ tasks.jar {
     }
 }
 
+tasks.build {
+    dependsOn("updateVersionInREADME")
+}
+
 publishing {
     publications {
         create<MavenPublication>("maven") {
             from(components["java"])
         }
     }
+}
+
+tasks.register("updateVersionInREADME") {
+    val readme = File(rootDir.absolutePath + "/README.md")
+    val content = readme.readText()
+    val updatedContent = content
+        .replace(Regex("<version>([0-9\\.]+)</version>"), "<version>${version}</version>")
+        .replace(Regex("com\\.github\\.masterchi3f:master-iac\\:([0-9\\.]+)"), "com.github.masterchi3f:master-iac:${version}")
+        .replace(Regex("master-iac\\/([0-9\\.]+)"), "master-iac/${version}")
+    readme.writeText(updatedContent)
 }
