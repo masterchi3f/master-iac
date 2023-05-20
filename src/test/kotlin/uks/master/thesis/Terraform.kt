@@ -82,7 +82,7 @@ class Terraform {
     fun generateTfFiles() {
         val terraform: Terraform = Terraform.Builder()
             .requiredVersion(">= 1.2.4")
-            .requiredProviders(HCloud.requiredProviders)
+            .requiredProviders(HCloud.requiredProviders("1.39.0"))
             .build()
         val hCloudSshKey: HCloudSshKey.Resource = HCloudSshKey.Resource.Builder()
             .resourceName("default")

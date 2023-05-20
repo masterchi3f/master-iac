@@ -3,8 +3,8 @@
 Terraform Language source code generation with Kotlin and execute generated code through Kotlin subshells.
 
 ![Release](https://jitpack.io/v/masterchi3f/master-iac.svg)
-- [Dependency builds](https://jitpack.io/#masterchi3f/master-iac/0.3.2)
-- [Latest build logs](https://jitpack.io/com/github/masterchi3f/master-iac/0.3.2/build.log)
+- [Dependency builds](https://jitpack.io/#masterchi3f/master-iac/0.3.3)
+- [Latest build logs](https://jitpack.io/com/github/masterchi3f/master-iac/0.3.3/build.log)
 
 ## Import using Gradle
 
@@ -16,7 +16,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.masterchi3f:master-iac:0.3.2'
+    implementation 'com.github.masterchi3f:master-iac:0.3.3'
 }
 ```
 
@@ -28,7 +28,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.masterchi3f:master-iac:0.3.2")
+    implementation("com.github.masterchi3f:master-iac:0.3.3")
 }
 ```
 
@@ -45,7 +45,7 @@ dependencies {
 <dependency>
     <groupId>com.github.masterchi3f</groupId>
     <artifactId>master-iac</artifactId>
-    <version>0.3.2</version>
+    <version>0.3.3</version>
 </dependency>
 ```
 
