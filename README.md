@@ -51,5 +51,6 @@ dependencies {
 
 ## How to use
 
-See test file:
-- [Terraform.kt](https://github.com/masterchi3f/master-iac/blob/master/src/test/kotlin/uks/master/thesis/Terraform.kt)
+See test file: [Terraform.kt](https://github.com/masterchi3f/master-iac/blob/master/src/test/kotlin/uks/master/thesis/Terraform.kt)
+
+See example code in repository: [Example for Terraform infrastructure-as-code with Kotlin](https://github.com/masterchi3f/master-iac-example)
