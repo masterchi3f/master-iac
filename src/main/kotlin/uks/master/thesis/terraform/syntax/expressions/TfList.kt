@@ -5,6 +5,8 @@ import uks.master.thesis.terraform.syntax.Expression
 class TfList private constructor(
     val expressions: List<Expression>
 ): Expression {
+    private var additionalSpaces: Int = 0
+
     class Builder {
         private var _expressions: List<Expression> = mutableListOf()
 
@@ -18,16 +20,22 @@ class TfList private constructor(
         fun build() = TfList(_expressions)
     }
 
+    fun setAdditionalSpaces(spaces: Int) = apply { additionalSpaces = spaces }
+
     override fun toString(): String {
         var str = "["
         if (isSizeMoreThanOne()) {
             str += System.lineSeparator()
         }
         expressions.forEachIndexed { index, it ->
+            when (it) {
+                is TfList -> it.setAdditionalSpaces(additionalSpaces + 2)
+                is TfMap -> it.setAdditionalSpaces(additionalSpaces + 2)
+            }
             if (isSizeMoreThanOne()) {
                 str += "  "
             }
-            str += it
+            str += "${" ".repeat(additionalSpaces)}$it"
             if (index + 1 != expressions.size) {
                 str += ","
             }
@@ -35,9 +43,10 @@ class TfList private constructor(
                 str += System.lineSeparator()
             }
         }
-        str += "]"
+        str += "${" ".repeat(additionalSpaces)}]"
         return str
     }
 
     private fun isSizeMoreThanOne(): Boolean = expressions.size > 1
+        || expressions.size == 1 && (expressions[0] is TfList || expressions[0] is TfMap)
 }

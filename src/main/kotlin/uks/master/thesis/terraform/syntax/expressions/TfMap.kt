@@ -6,6 +6,8 @@ import uks.master.thesis.terraform.syntax.Identifier
 class TfMap private constructor(
     val entries: Map<Identifier, Expression>
 ): Expression {
+    private var additionalSpaces: Int = 0
+
     class Builder {
         private var _entries: Map<Identifier, Expression> = mutableMapOf()
 
@@ -19,6 +21,8 @@ class TfMap private constructor(
         fun build() = TfMap(_entries)
     }
 
+    fun setAdditionalSpaces(spaces: Int) = apply { additionalSpaces = spaces }
+
     override fun toString(): String {
         var str = "{${System.lineSeparator()}"
         var longestKey = 0
@@ -30,11 +34,15 @@ class TfMap private constructor(
         }
         entries.forEach {
             val spaces: Int = longestKey - it.key.toString().length
-            str += "  ${it.key}"
+            str += "  ${" ".repeat(additionalSpaces)}${it.key}"
             str += " ".repeat(spaces)
+            when (it.value) {
+                is TfList -> (it.value as TfList).setAdditionalSpaces(additionalSpaces + 2)
+                is TfMap -> (it.value as TfMap).setAdditionalSpaces(additionalSpaces + 2)
+            }
             str += " = ${it.value}${System.lineSeparator()}"
         }
-        str += "}"
+        str += "${" ".repeat(additionalSpaces)}}"
         return str
     }
 }
