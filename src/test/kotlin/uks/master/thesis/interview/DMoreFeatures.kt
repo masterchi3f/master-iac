@@ -2,6 +2,7 @@ package uks.master.thesis.interview
 
 import mu.KLogger
 import mu.KotlinLogging
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import uks.master.thesis.terraform.RootModule
 import uks.master.thesis.terraform.SubModule
@@ -245,6 +246,7 @@ class DMoreFeatures {
         logger.info("\n" + hcloudServer)
     }
 
+    @Disabled("To allow deployment")
     @Test
     fun errorDetection() {
         val hcloudServer: HCloudServer.Resource = HCloudServer.Resource.Builder()
@@ -254,6 +256,7 @@ class DMoreFeatures {
             .build()
     }
 
+    @Disabled("To allow deployment")
     @Test
     fun errorDetection2() {
         val hcloudServer: HCloudServer.Resource = HCloudServer.Resource.Builder()

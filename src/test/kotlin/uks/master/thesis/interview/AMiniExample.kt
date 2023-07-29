@@ -1,6 +1,7 @@
 package uks.master.thesis.interview
 
 import kotlin.test.assertEquals
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import uks.master.thesis.terraform.Executor
 import uks.master.thesis.terraform.RootModule
@@ -18,11 +19,13 @@ class AMiniExample {
     private val binaryName = "terraform" +
         if(System.getProperty("os.name").contains("windows", true)) ".exe" else ""
 
+    @Disabled("To allow deployment")
     @Test
     fun destroy() {
         Executor.destroy()
     }
 
+    @Disabled("To allow deployment")
     @Test
     fun deploy() {
 

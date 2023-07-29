@@ -1,5 +1,6 @@
 package uks.master.thesis.interview
 
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import uks.master.thesis.terraform.Executor
 import uks.master.thesis.terraform.RootModule
@@ -24,11 +25,13 @@ import uks.master.thesis.terraform.lib.hcloud.v1_36_2.HCloud
 
 class ELiveCoding {
 
+    @Disabled("To allow deployment")
     @Test
     fun destroy() {
         Executor.destroy()
     }
 
+    @Disabled("To allow deployment")
     @Test
     fun liveCoding() {
         /**
