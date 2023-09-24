@@ -1,5 +1,6 @@
 package uks.master.thesis.colloquium
 
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import uks.master.thesis.terraform.Executor
 import uks.master.thesis.terraform.RootModule
@@ -68,6 +69,7 @@ class ShortExample {
     }
 
     @Test
+    @Disabled("Executor function!")
     fun start() {
         Executor.downloadTerraformBinary(
             "https://releases.hashicorp.com/terraform/1.3.3/terraform_1.3.3_windows_386.zip",
@@ -79,6 +81,7 @@ class ShortExample {
     }
 
     @Test
+    @Disabled("Executor function!")
     fun destroy() {
         Executor.destroy()
     }
