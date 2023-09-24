@@ -13,12 +13,10 @@ import uks.master.thesis.terraform.lib.hcloud.v1_36_2.HCloudSshKey
 import uks.master.thesis.terraform.syntax.elements.blocks.InputVariable
 import uks.master.thesis.terraform.syntax.elements.blocks.Terraform
 import uks.master.thesis.terraform.syntax.elements.blocks.TfModule
-import uks.master.thesis.terraform.syntax.expressions.Raw
 import uks.master.thesis.terraform.syntax.expressions.Reference
 import uks.master.thesis.terraform.syntax.expressions.TfFile
 import uks.master.thesis.terraform.syntax.expressions.TfList
 import uks.master.thesis.terraform.syntax.expressions.TfNumber
-import uks.master.thesis.terraform.syntax.expressions.TfString
 import uks.master.thesis.terraform.utils.Utils
 
 class LongExample {
